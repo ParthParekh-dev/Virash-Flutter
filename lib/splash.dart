@@ -16,7 +16,7 @@ class _SplashState extends State<Splash> {
   }
 
   void navigationPage() {
-    Navigator.of(context).push(_createRoute());
+    Navigator.of(context).pushReplacement(_createRoute());
   }
 
   @override
