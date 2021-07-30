@@ -14,7 +14,7 @@ class _ShopCourseState extends State<ShopCourse> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All courses'),
+        title: Text('Show All'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
