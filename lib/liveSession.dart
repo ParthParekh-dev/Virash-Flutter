@@ -14,7 +14,7 @@ class _LiveSessionState extends State<LiveSession> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Live Session'),
+        title: Text('Live Session Mehank'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
