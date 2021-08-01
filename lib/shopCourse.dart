@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'shopCoursePOJO.dart';
 
 class ShopCourse extends StatefulWidget {
   static var route = '/shopCourse';
@@ -10,72 +13,69 @@ class ShopCourse extends StatefulWidget {
 }
 
 class _ShopCourseState extends State<ShopCourse> {
+  Future<List<Courses>> _getUsers() async {
+    var response = await get(Uri.parse('https://reqres.in/api/users?page=2'));
+    var jsonData = json.decode(response.body);
+    print(jsonData['data']);
+
+    var listUser = jsonData['data'];
+    List<Courses> users = [];
+
+    for (var u in listUser) {
+      Courses user = Courses(
+          u['id'], u['email'], u['first_name'], u['last_name'], u['avatar']);
+      users.add(user);
+    }
+
+    print(users.length);
+
+    return users;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Show All'),
+        title: Text('All courses'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Hero(
-                  tag: "HeroOne",
-                  child: FaIcon(
-                    FontAwesomeIcons.skyatlas,
-                    size: 80,
-                    color: Colors.white,
-                  ),
+      body: Container(
+        child: FutureBuilder(
+          future: _getUsers(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.data == null) {
+              return Container(
+                child: Center(
+                  child: Text('Loading'),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  NeumorphicButton(
-                      margin: EdgeInsets.only(top: 12),
-                      onPressed: () {},
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.flat,
-                        depth: 3,
-                        color: Color(0xFF3B6AA2),
-                        boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(8)),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(snapshot.data[index].avatar),
+                    ),
+                    title: Text(
+                      snapshot.data[index].firstName +
+                          " " +
+                          snapshot.data[index].lastName,
+                      style: TextStyle(
+                        color: Colors.white,
                       ),
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        "Open Gallery",
-                        style: TextStyle(color: Colors.white),
-                      )),
-                  NeumorphicButton(
-                      margin: EdgeInsets.only(top: 12),
-                      onPressed: () {},
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.flat,
-                        depth: 3,
-                        color: Color(0xFF3B6AA2),
-                        boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(8)),
+                    ),
+                    subtitle: Text(
+                      snapshot.data[index].email,
+                      style: TextStyle(
+                        color: Colors.white,
                       ),
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        "Open Camera",
-                        style: TextStyle(color: Colors.white),
-                      )),
-                ],
-              ),
-            ),
-          ],
+                    ),
+                  );
+                },
+              );
+            }
+          },
         ),
       ),
     );
