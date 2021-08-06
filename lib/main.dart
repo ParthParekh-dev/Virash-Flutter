@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_virash/liveSession.dart';
+import 'package:flutter_virash/productList.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/studyMaterial.dart';
 import 'package:flutter_virash/testSeries.dart';
@@ -30,7 +31,8 @@ void main() {
         TestSeries.route: (context) => TestSeries(),
         LiveSession.route: (context) => LiveSession(),
         StudyMaterial.route: (context) => StudyMaterial(),
-        ShopCourse.route: (context) => ShopCourse()
+        ShopCourse.route: (context) => ShopCourse(),
+        ProductList.route: (context) => ProductList()
       },
     ),
   );
