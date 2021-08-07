@@ -33,6 +33,7 @@ dependencies:
   http: ^0.13.3
   fluttertoast: ^8.0.7
   flutter_spinkit: ^5.0.0
+  vimeo_player_flutter: ^0.0.3+1
 
 dev_dependencies:
   flutter_test:

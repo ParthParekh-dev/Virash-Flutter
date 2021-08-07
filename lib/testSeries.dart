@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_virash/objectiveTest.dart';
 
 class TestSeries extends StatefulWidget {
   static var route = '/testSeries';
@@ -19,24 +19,7 @@ class _TestSeriesState extends State<TestSeries> {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Hero(
-                  tag: "HeroOne",
-                  child: FaIcon(
-                    FontAwesomeIcons.skyatlas,
-                    size: 80,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -44,7 +27,9 @@ class _TestSeriesState extends State<TestSeries> {
                 children: [
                   NeumorphicButton(
                       margin: EdgeInsets.only(top: 12),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, ObjectiveTest.route);
+                      },
                       style: NeumorphicStyle(
                         shape: NeumorphicShape.flat,
                         depth: 3,
@@ -54,7 +39,7 @@ class _TestSeriesState extends State<TestSeries> {
                       ),
                       padding: const EdgeInsets.all(12.0),
                       child: Text(
-                        "Open Gallery",
+                        "Objective",
                         style: TextStyle(color: Colors.white),
                       )),
                   NeumorphicButton(
@@ -69,7 +54,7 @@ class _TestSeriesState extends State<TestSeries> {
                       ),
                       padding: const EdgeInsets.all(12.0),
                       child: Text(
-                        "Open Camera",
+                        "Subjective",
                         style: TextStyle(color: Colors.white),
                       )),
                 ],
