@@ -33,7 +33,7 @@ class _TestSeriesState extends State<TestSeries> {
                       style: NeumorphicStyle(
                         shape: NeumorphicShape.flat,
                         depth: 3,
-                        color: Color(0xFF3B6AA2),
+                        color: Color(0xFFFF7801),
                         boxShape: NeumorphicBoxShape.roundRect(
                             BorderRadius.circular(8)),
                       ),
@@ -48,7 +48,7 @@ class _TestSeriesState extends State<TestSeries> {
                       style: NeumorphicStyle(
                         shape: NeumorphicShape.flat,
                         depth: 3,
-                        color: Color(0xFF3B6AA2),
+                        color: Color(0xFFFF7801),
                         boxShape: NeumorphicBoxShape.roundRect(
                             BorderRadius.circular(8)),
                       ),
