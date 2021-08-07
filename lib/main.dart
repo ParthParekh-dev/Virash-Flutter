@@ -38,8 +38,7 @@ main() async {
         StudyMaterial.route: (context) => StudyMaterial(),
         ShopCourse.route: (context) => ShopCourse(),
         ProductList.route: (context) => ProductList(),
-        ShowCart.route: (context) => ShowCart()
-        ProductList.route: (context) => ProductList(),
+        ShowCart.route: (context) => ShowCart(),
         ObjectiveTest.route: (context) => ObjectiveTest(),
       },
     ),
