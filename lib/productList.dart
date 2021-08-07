@@ -53,6 +53,7 @@ class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;
+    var categoryId = args.toString();
 
     return Scaffold(
       appBar: AppBar(
@@ -60,7 +61,7 @@ class _ProductListState extends State<ProductList> {
       ),
       body: Container(
         child: FutureBuilder(
-          future: _getProducts(args.toString()),
+          future: _getProducts(categoryId),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
               return Container(
@@ -81,8 +82,7 @@ class _ProductListState extends State<ProductList> {
                         padding: const EdgeInsets.all(5.0),
                         child: ListTile(
                           onTap: () {
-                            Navigator.pushNamed(context, ProductList.route,
-                                arguments: snapshot.data[index].id);
+                            print(categoryId + " " + snapshot.data[index].id);
                           },
                           leading: CircleAvatar(
                             radius: 40,

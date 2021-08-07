@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vti.flutter_virash">
    <application
-        android:label="flutter_virash"
+        android:label="Unique"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
