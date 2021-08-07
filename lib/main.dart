@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_virash/cartDataType.dart';
 import 'package:flutter_virash/liveSession.dart';
+import 'package:flutter_virash/objectiveTest.dart';
 import 'package:flutter_virash/productList.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/showCart.dart';
@@ -38,6 +39,8 @@ main() async {
         ShopCourse.route: (context) => ShopCourse(),
         ProductList.route: (context) => ProductList(),
         ShowCart.route: (context) => ShowCart()
+        ProductList.route: (context) => ProductList(),
+        ObjectiveTest.route: (context) => ObjectiveTest(),
       },
     ),
   );
