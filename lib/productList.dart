@@ -93,14 +93,14 @@ class _ProductListState extends State<ProductList> {
                             snapshot.data[index].name,
                             style: TextStyle(
                               fontSize: 16,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                           subtitle: Text(
                             "₹  " + snapshot.data[index].mrp,
                             style: TextStyle(
                               fontSize: 20,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                         ),

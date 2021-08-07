@@ -86,7 +86,7 @@ class _ShopCourseState extends State<ShopCourse> {
                             snapshot.data[index].name,
                             style: TextStyle(
                               fontSize: 16,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                         ),
