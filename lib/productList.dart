@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_virash/cartDataType.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductList extends StatefulWidget {
   static var route = '/productList';
@@ -14,6 +16,25 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
+  String cartString = "";
+  List<CartPojo> cartList = [];
+  late SharedPreferences prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCounter();
+  }
+
+  _loadCounter() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    prefs = await SharedPreferences.getInstance();
+    cartString = prefs.getString('cartList')!;
+    cartList = CartPojo.decode(cartString);
+
+    print(cartList);
+  }
+
   Future<List<ProductPOJO>> _getProducts(String catId) async {
     var response = await post(
       Uri.parse('https://chickensmood.com/api/product.php'),
@@ -96,20 +117,41 @@ class _ProductListState extends State<ProductList> {
                               color: Colors.black,
                             ),
                           ),
-                          subtitle: Text(
-                            "₹  " + snapshot.data[index].mrp,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                            ),
+                          subtitle: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "₹  " + snapshot.data[index].mrp,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  cartList.add(CartPojo(
+                                      avatar: snapshot.data[index].avatar,
+                                      category: categoryId,
+                                      mrp: snapshot.data[index].mrp,
+                                      name: snapshot.data[index].name,
+                                      id: snapshot.data[index].id));
+
+                                  prefs.setString(
+                                      'cartList', CartPojo.encode(cartList));
+
+                                  print(cartList);
+                                },
+                                child: Text('Add to Cart'),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 10),
+                            vertical: 0, horizontal: 30),
                         child: Divider(
-                          thickness: 3,
+                          thickness: 1,
                         ),
                       ),
                     ],
