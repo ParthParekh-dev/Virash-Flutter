@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_virash/homePage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:http/http.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoginPage extends StatefulWidget {
   static var route = '/login';
@@ -13,7 +19,20 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isObscure = true;
-  late String username, password;
+  String username = "", password = "";
+  Widget loginChild = LoginButton();
+
+  void showLoader() {
+    setState(() {
+      loginChild = Spinner();
+    });
+  }
+
+  void hideLoader() {
+    setState(() {
+      loginChild = LoginButton();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +191,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/home');
+                      if (username == "" || password == "") {
+                        Fluttertoast.showToast(
+                            msg: 'Please enter the email or password',
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.SNACKBAR,
+                            timeInSecForIosWeb: 2);
+                      } else {
+                        checkLogin(username, password);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFF133157),
@@ -180,14 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: new BorderRadius.circular(5.0),
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      child: Text(
-                        "Log In",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+                    child: loginChild,
                   ),
                   SizedBox(
                     height: 20,
@@ -295,7 +315,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/home');
+                        Navigator.pushNamed(context, HomePage.route);
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xFF133157),
@@ -319,6 +339,62 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ],
       )),
+    );
+  }
+
+  void checkLogin(String username, String password) async {
+    showLoader();
+    Response response = await post(
+      Uri.parse('https://reqres.in/api/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body:
+          jsonEncode(<String, String>{'email': username, 'password': password}),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      hideLoader();
+      Navigator.pushNamed(context, '/home');
+    } else {
+      hideLoader();
+      Fluttertoast.showToast(
+          msg: "Incorrect email or password!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 2);
+    }
+  }
+}
+
+class LoginButton extends StatelessWidget {
+  const LoginButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Text(
+        "Log In",
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+}
+
+class Spinner extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Center(
+        child: SpinKitCircle(
+          color: Colors.white,
+          size: 25.0,
+        ),
+      ),
     );
   }
 }

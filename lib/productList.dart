@@ -1,59 +1,66 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_virash/productList.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:http/http.dart';
-import 'dart:async';
 import 'dart:convert';
 
-class ShopCourse extends StatefulWidget {
-  static var route = '/shopCourse';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:http/http.dart';
+
+class ProductList extends StatefulWidget {
+  static var route = '/productList';
+
+  const ProductList({Key? key}) : super(key: key);
 
   @override
-  _ShopCourseState createState() => _ShopCourseState();
+  _ProductListState createState() => _ProductListState();
 }
 
-class _ShopCourseState extends State<ShopCourse> {
-  Future<List<Courses>> _getUsers() async {
+class _ProductListState extends State<ProductList> {
+  Future<List<ProductPOJO>> _getProducts(String catId) async {
     var response = await post(
-      Uri.parse('https://chickensmood.com/api/category.php'),
+      Uri.parse('https://chickensmood.com/api/product.php'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode([
-        {"mobile_number": "none", "token": "none"}
+        {
+          "mobile_number": "none",
+          "token": "none",
+          "product_type": "none",
+          "category_id": catId
+        }
       ]),
     );
     var jsonData = json.decode(response.body);
 
-    var listUser = jsonData;
+    var listProducts = jsonData;
 
-    List<Courses> users = [];
+    List<ProductPOJO> products = [];
 
-    var u = listUser;
+    var u = listProducts;
 
-    for (int i = 0; i <= listUser.length - 1; i++) {
-      var name = u[i]['category_name'];
-      var id = u[i]['cat_id'].toString();
-      var pic = "https://chickensmood.com/api/" + u[i]['category_photo'];
-      Courses user = Courses(id, name, pic);
+    for (int i = 0; i <= listProducts.length - 1; i++) {
+      var name = u[i]['product_name'];
+      var id = u[i]['product_id'];
+      var pic = "https://chickensmood.com/api/" + u[i]['product_image'];
+      var mrp = u[i]['mrp'];
+      ProductPOJO user = ProductPOJO(id, name, pic, mrp);
 
-      users.add(user);
+      products.add(user);
     }
 
-    return users;
+    return products;
   }
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('All courses'),
       ),
       body: Container(
         child: FutureBuilder(
-          future: _getUsers(),
+          future: _getProducts(args.toString()),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
               return Container(
@@ -89,6 +96,13 @@ class _ShopCourseState extends State<ShopCourse> {
                               color: Colors.white,
                             ),
                           ),
+                          subtitle: Text(
+                            "₹  " + snapshot.data[index].mrp,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                       Padding(
@@ -110,10 +124,11 @@ class _ShopCourseState extends State<ShopCourse> {
   }
 }
 
-class Courses {
+class ProductPOJO {
   final String id;
   final String name;
   final String avatar;
+  final String mrp;
 
-  Courses(this.id, this.name, this.avatar);
+  ProductPOJO(this.id, this.name, this.avatar, this.mrp);
 }
