@@ -27,11 +27,7 @@ class _AddAssignmentState extends State<AddAssignment> {
                 children: [
                   Hero(
                     tag: "HeroOne",
-                    child: FaIcon(
-                      FontAwesomeIcons.skyatlas,
-                      size: 80,
-                      color: Colors.white,
-                    ),
+                    child: Image.asset('assets/logo_unique.png'),
                   ),
                   SizedBox(
                     height: 10,

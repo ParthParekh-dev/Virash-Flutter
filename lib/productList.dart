@@ -66,7 +66,7 @@ class _ProductListState extends State<ProductList> {
               return Container(
                 child: Center(
                   child: SpinKitCubeGrid(
-                    color: Colors.white,
+                    color: Color(0xFFFF7801),
                     size: 50.0,
                   ),
                 ),

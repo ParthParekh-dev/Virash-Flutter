@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_virash/homePage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lottie/lottie.dart';
 import 'package:http/http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -40,17 +39,6 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
           body: Stack(
         children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: Lottie.asset(
-              'assets/backbubbles.json',
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Lottie.asset('assets/backbubbles.json'),
-          ),
           Center(
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -60,19 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Hero(
                     tag: "HeroOne",
-                    child: FaIcon(
-                      FontAwesomeIcons.skyatlas,
-                      size: 80,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      'Virash',
-                      style: TextStyle(
-                          fontFamily: 'Poppinsbold', color: Colors.white),
-                    ),
+                    child: Image.asset('assets/logo_unique.png'),
                   ),
                   Padding(
                     padding:
@@ -84,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                     ),
@@ -117,7 +93,8 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         filled: true,
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.white),
+                          borderSide:
+                              BorderSide(width: 2, color: Color(0xFFFF7801)),
                           borderRadius: BorderRadius.all(Radius.circular(40)),
                         ),
                         fillColor: Colors.white,
@@ -146,7 +123,8 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         filled: true,
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Colors.white),
+                          borderSide:
+                              BorderSide(width: 2, color: Color(0xFFFF7801)),
                           borderRadius: BorderRadius.all(Radius.circular(40)),
                         ),
                         fillColor: Colors.white,
@@ -157,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: EdgeInsets.only(right: 20),
                           icon: Icon(
                             isObscure ? Icons.visibility : Icons.visibility_off,
-                            color: Color(0xFF3B6AA2),
+                            color: Color(0xFFFF7801),
                           ),
                           onPressed: () {
                             setState(() {
@@ -181,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                         '?Forgot Password',
                         textDirection: TextDirection.rtl,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Color(0xFFFF7801),
                         ),
                       ),
                     ),
@@ -202,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF133157),
+                      primary: Color(0xFFFF7801),
                       shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(5.0),
                       ),
@@ -223,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Sign In with: ',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Color(0xFFFF7801),
                       ),
                     ),
                   ),
@@ -237,7 +215,7 @@ class _LoginPageState extends State<LoginPage> {
                             print("onClick");
                           },
                           style: NeumorphicStyle(
-                            color: Color(0xFF3B6AA2),
+                            color: Color(0xFFFF7801),
                             shape: NeumorphicShape.flat,
                             depth: 3,
                             boxShape: NeumorphicBoxShape.circle(),
@@ -256,7 +234,7 @@ class _LoginPageState extends State<LoginPage> {
                             print("onClick");
                           },
                           style: NeumorphicStyle(
-                            color: Color(0xFF3B6AA2),
+                            color: Color(0xFFFF7801),
                             shape: NeumorphicShape.flat,
                             depth: 3,
                             boxShape: NeumorphicBoxShape.circle(),
@@ -275,7 +253,7 @@ class _LoginPageState extends State<LoginPage> {
                             print("onClick");
                           },
                           style: NeumorphicStyle(
-                            color: Color(0xFF3B6AA2),
+                            color: Color(0xFFFF7801),
                             shape: NeumorphicShape.flat,
                             depth: 3,
                             boxShape: NeumorphicBoxShape.circle(),
@@ -294,7 +272,7 @@ class _LoginPageState extends State<LoginPage> {
                             print("onClick");
                           },
                           style: NeumorphicStyle(
-                            color: Color(0xFF3B6AA2),
+                            color: Color(0xFFFF7801),
                             shape: NeumorphicShape.flat,
                             depth: 3,
                             boxShape: NeumorphicBoxShape.circle(),
@@ -318,7 +296,7 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.pushNamed(context, HomePage.route);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF133157),
+                        primary: Color(0xFFFF7801),
                         shape: new RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(5.0),
                         ),

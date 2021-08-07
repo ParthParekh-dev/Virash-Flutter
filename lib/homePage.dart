@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
   static var route = '/home';
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -22,50 +23,15 @@ class _HomePageState extends State<HomePage> {
           children: [
             Expanded(
               flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(30, 30, 0, 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Hero(
-                      tag: "HeroOne",
-                      child: FaIcon(
-                        FontAwesomeIcons.skyatlas,
-                        color: Colors.white,
-                        size: 40,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Welcome to Virash',
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 14,
-                              color: Colors.white),
-                        ),
-                        Text(
-                          'Hey, Parth!',
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 18,
-                              color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ],
+              child: Center(
+                child: Hero(
+                  tag: "HeroOne",
+                  child: Image.asset('assets/logo_unique.png'),
                 ),
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
                 child: MainCard(
@@ -76,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Icon(
                           Icons.cloud_upload_outlined,
-                          color: Color(0xFF133157),
+                          color: Color(0xFFFFFFFF),
                           size: 60,
                         ),
                         Column(
@@ -86,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontFamily: 'PoppinsBold',
-                                  color: Color(0xFF133157),
+                                  color: Colors.white,
                                   fontSize: 18),
                             ),
                             Text(
@@ -94,27 +60,27 @@ class _HomePageState extends State<HomePage> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontFamily: 'Poppins',
-                                  color: Color(0xFF133157),
+                                  color: Colors.white,
                                   fontSize: 12),
                             ),
                           ],
                         ),
                         ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF133157),
+                            primary: Colors.white,
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(30.0),
                             ),
                           ),
                           icon: Icon(
                             Icons.add_circle,
-                            color: Colors.white,
+                            color: Color(0xFFFF7801),
                             size: 24.0,
                           ),
                           label: Text(
                             'Add document',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Color(0xFFFF7801),
                             ),
                           ),
                           onPressed: () {
@@ -133,18 +99,27 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 7.5, 15),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, LiveSession.route);
-                          },
-                          child: MainCard(
-                            cardChild: Center(child: Text('Live Sessions')),
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 7.5, 15),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, LiveSession.route);
+                        },
+                        child: MainCard(
+                          cardChild: Center(
+                            child: Text(
+                              'Live Sessions',
+                              style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 16,
+                                  color: Colors.white),
+                            ),
                           ),
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
                   Expanded(
                       flex: 1,
                       child: Padding(
@@ -154,7 +129,15 @@ class _HomePageState extends State<HomePage> {
                             Navigator.pushNamed(context, ShopCourse.route);
                           },
                           child: MainCard(
-                            cardChild: Center(child: Text('All Courses')),
+                            cardChild: Center(
+                              child: Text(
+                                'All Courses',
+                                style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 16,
+                                    color: Colors.white),
+                              ),
+                            ),
                           ),
                         ),
                       ))
@@ -175,7 +158,15 @@ class _HomePageState extends State<HomePage> {
                             Navigator.pushNamed(context, StudyMaterial.route);
                           },
                           child: MainCard(
-                            cardChild: Center(child: Text('Study Material')),
+                            cardChild: Center(
+                              child: Text(
+                                'Study Material',
+                                style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 16,
+                                    color: Colors.white),
+                              ),
+                            ),
                           ),
                         ),
                       )),
@@ -188,74 +179,19 @@ class _HomePageState extends State<HomePage> {
                             Navigator.pushNamed(context, TestSeries.route);
                           },
                           child: MainCard(
-                            cardChild: Center(child: Text('Test Series')),
+                            cardChild: Center(
+                              child: Text(
+                                'Test Series',
+                                style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 16,
+                                    color: Colors.white),
+                              ),
+                            ),
                           ),
                         ),
                       ))
                 ],
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-                child: MainCard(
-                  cardChild: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.cloud_upload_outlined,
-                          color: Color(0xFF133157),
-                          size: 60,
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              'Upload Assignment',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: 'PoppinsBold',
-                                  color: Color(0xFF133157),
-                                  fontSize: 18),
-                            ),
-                            Text(
-                              'Add document from internal storage',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  color: Color(0xFF133157),
-                                  fontSize: 12),
-                            ),
-                          ],
-                        ),
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF133157),
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          icon: Icon(
-                            Icons.add_circle,
-                            color: Colors.white,
-                            size: 24.0,
-                          ),
-                          label: Text(
-                            'Add document',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/addAssignment');
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               ),
             ),
           ],
@@ -273,7 +209,7 @@ class MainCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: Color(0xFFFF7801),
       elevation: 20,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
