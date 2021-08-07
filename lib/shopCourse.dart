@@ -59,7 +59,7 @@ class _ShopCourseState extends State<ShopCourse> {
               return Container(
                 child: Center(
                   child: SpinKitCubeGrid(
-                    color: Colors.white,
+                    color: Color(0xFFFF7801),
                     size: 50.0,
                   ),
                 ),
@@ -86,7 +86,7 @@ class _ShopCourseState extends State<ShopCourse> {
                             snapshot.data[index].name,
                             style: TextStyle(
                               fontSize: 16,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                         ),

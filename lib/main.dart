@@ -18,9 +18,9 @@ void main() {
     MaterialApp(
       theme: ThemeData(
           fontFamily: 'Poppins',
-          scaffoldBackgroundColor: Color(0xFF3B6AA2),
+          scaffoldBackgroundColor: Color(0xFFFFFFFF),
           appBarTheme: AppBarTheme(
-            color: Color(0xFF133157),
+            color: Color(0xFFFF7801),
           )),
       debugShowCheckedModeBanner: false,
       home: Splash(),

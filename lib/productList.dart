@@ -53,6 +53,7 @@ class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;
+    var categoryId = args.toString();
 
     return Scaffold(
       appBar: AppBar(
@@ -60,13 +61,13 @@ class _ProductListState extends State<ProductList> {
       ),
       body: Container(
         child: FutureBuilder(
-          future: _getProducts(args.toString()),
+          future: _getProducts(categoryId),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
               return Container(
                 child: Center(
                   child: SpinKitCubeGrid(
-                    color: Colors.white,
+                    color: Color(0xFFFF7801),
                     size: 50.0,
                   ),
                 ),
@@ -81,8 +82,7 @@ class _ProductListState extends State<ProductList> {
                         padding: const EdgeInsets.all(5.0),
                         child: ListTile(
                           onTap: () {
-                            Navigator.pushNamed(context, ProductList.route,
-                                arguments: snapshot.data[index].id);
+                            print(categoryId + " " + snapshot.data[index].id);
                           },
                           leading: CircleAvatar(
                             radius: 40,
@@ -93,14 +93,14 @@ class _ProductListState extends State<ProductList> {
                             snapshot.data[index].name,
                             style: TextStyle(
                               fontSize: 16,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                           subtitle: Text(
                             "₹  " + snapshot.data[index].mrp,
                             style: TextStyle(
                               fontSize: 20,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           ),
                         ),
