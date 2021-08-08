@@ -22,14 +22,13 @@ class _ShowCartState extends State<ShowCart> {
   }
 
   _loadCounter() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    // WidgetsFlutterBinding.ensureInitialized();
     prefs = await SharedPreferences.getInstance();
     cartString = prefs.getString('cartList')!;
-    cartList = CartPojo.decode(cartString);
-
-    for (var u in cartList) {
-      print(u.name);
-    }
+    setState(() {
+      cartList = CartPojo.decode(cartString);
+    });
+    print(cartList.length);
   }
 
   @override
@@ -41,62 +40,64 @@ class _ShowCartState extends State<ShowCart> {
       body: ListView.builder(
         itemCount: cartList.length,
         itemBuilder: (BuildContext context, int index) {
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: ListTile(
-                  onTap: () {},
-                  leading: CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage(cartList[index].avatar),
-                  ),
-                  title: Text(
-                    cartList[index].name,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
+          if (cartList.isEmpty) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('No Items in Cart'),
+              ],
+            );
+          } else {
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: NetworkImage(cartList[index].avatar),
+                    ),
+                    title: Text(
+                      cartList[index].name,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "₹  " + cartList[index].mrp,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              cartList.removeAt(index);
+                              prefs.setString(
+                                  'cartList', CartPojo.encode(cartList));
+                            });
+                          },
+                          child: Text('Remove'),
+                        ),
+                      ],
                     ),
                   ),
-                  subtitle: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "₹  " + cartList[index].mrp,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          // cartList.add(CartPojo(
-                          //     avatar: snapshot.data[index].avatar,
-                          //     category: categoryId,
-                          //     mrp: snapshot.data[index].mrp,
-                          //     name: snapshot.data[index].name,
-                          //     id: snapshot.data[index].id));
-                          //
-                          // prefs.setString(
-                          //     'cartList', CartPojo.encode(cartList));
-                          //
-                          // print(cartList);
-                        },
-                        child: Text('Add to Cart'),
-                      ),
-                    ],
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
+                  child: Divider(
+                    thickness: 1,
                   ),
                 ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-                child: Divider(
-                  thickness: 1,
-                ),
-              ),
-            ],
-          );
+              ],
+            );
+          }
         },
       ),
     );

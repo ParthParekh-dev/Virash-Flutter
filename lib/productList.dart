@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/cartDataType.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'showCart.dart';
 
 class ProductList extends StatefulWidget {
   static var route = '/productList';
@@ -19,6 +22,7 @@ class _ProductListState extends State<ProductList> {
   String cartString = "";
   List<CartPojo> cartList = [];
   late SharedPreferences prefs;
+  var count = 0;
 
   @override
   void initState() {
@@ -31,8 +35,9 @@ class _ProductListState extends State<ProductList> {
     prefs = await SharedPreferences.getInstance();
     cartString = prefs.getString('cartList')!;
     cartList = CartPojo.decode(cartString);
-
-    print(cartList);
+    setState(() {
+      count = cartList.length;
+    });
   }
 
   Future<List<ProductPOJO>> _getProducts(String catId) async {
@@ -77,9 +82,51 @@ class _ProductListState extends State<ProductList> {
     var categoryId = args.toString();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('All courses'),
-      ),
+      appBar: AppBar(title: Text('All courses'), actions: <Widget>[
+        new Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Container(
+              height: 150.0,
+              width: 30.0,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, ShowCart.route);
+                },
+                child: Stack(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: Colors.white,
+                      ),
+                      onPressed: null,
+                    ),
+                    cartList.length == 0
+                        ? Container()
+                        : Positioned(
+                            child: Stack(
+                            children: <Widget>[
+                              Icon(Icons.brightness_1,
+                                  size: 20.0, color: Colors.green[800]),
+                              Positioned(
+                                  top: 3.0,
+                                  right: 4.0,
+                                  child: Center(
+                                    child: Text(
+                                      count.toString(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 11.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  )),
+                            ],
+                          )),
+                  ],
+                ),
+              )),
+        )
+      ]),
       body: Container(
         child: FutureBuilder(
           future: _getProducts(categoryId),
@@ -139,9 +186,18 @@ class _ProductListState extends State<ProductList> {
                                   prefs.setString(
                                       'cartList', CartPojo.encode(cartList));
 
-                                  print(cartList);
+                                  setState(() {
+                                    count = cartList.length;
+                                    Text('Remove');
+                                  });
+
+                                  Fluttertoast.showToast(
+                                      msg: snapshot.data[index].name +
+                                          "\nAdded to Cart",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.SNACKBAR,
+                                      timeInSecForIosWeb: 2);
                                 },
-                                child: Text('Add to Cart'),
                               ),
                             ],
                           ),

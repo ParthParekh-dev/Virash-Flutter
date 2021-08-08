@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pushNamed(context, '/addAssignment');
+                            // Navigator.pushNamed(context, '/addAssignment');
                           },
                         ),
                       ],
