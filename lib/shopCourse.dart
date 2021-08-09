@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/productList.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_virash/showCart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -50,6 +51,14 @@ class _ShopCourseState extends State<ShopCourse> {
     return Scaffold(
       appBar: AppBar(
         title: Text('All courses'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, ShowCart.route);
+            },
+            icon: Icon(Icons.shopping_cart_rounded),
+          ),
+        ],
       ),
       body: Container(
         child: FutureBuilder(
@@ -93,9 +102,9 @@ class _ShopCourseState extends State<ShopCourse> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 10),
+                            vertical: 0, horizontal: 30),
                         child: Divider(
-                          thickness: 3,
+                          thickness: 1,
                         ),
                       ),
                     ],

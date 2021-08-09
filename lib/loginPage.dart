@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_virash/homePage.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -187,9 +186,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: loginChild,
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.6,
                     height: 1,
@@ -199,95 +195,11 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Text(
-                      'Sign In with: ',
+                      'OR',
                       style: TextStyle(
                         color: Color(0xFFFF7801),
                       ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: NeumorphicButton(
-                          onPressed: () {
-                            print("onClick");
-                          },
-                          style: NeumorphicStyle(
-                            color: Color(0xFFFF7801),
-                            shape: NeumorphicShape.flat,
-                            depth: 3,
-                            boxShape: NeumorphicBoxShape.circle(),
-                          ),
-                          child: FaIcon(
-                            FontAwesomeIcons.snapchatGhost,
-                            size: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: NeumorphicButton(
-                          onPressed: () {
-                            print("onClick");
-                          },
-                          style: NeumorphicStyle(
-                            color: Color(0xFFFF7801),
-                            shape: NeumorphicShape.flat,
-                            depth: 3,
-                            boxShape: NeumorphicBoxShape.circle(),
-                          ),
-                          child: FaIcon(
-                            FontAwesomeIcons.google,
-                            size: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: NeumorphicButton(
-                          onPressed: () {
-                            print("onClick");
-                          },
-                          style: NeumorphicStyle(
-                            color: Color(0xFFFF7801),
-                            shape: NeumorphicShape.flat,
-                            depth: 3,
-                            boxShape: NeumorphicBoxShape.circle(),
-                          ),
-                          child: FaIcon(
-                            FontAwesomeIcons.twitter,
-                            size: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: NeumorphicButton(
-                          onPressed: () {
-                            print("onClick");
-                          },
-                          style: NeumorphicStyle(
-                            color: Color(0xFFFF7801),
-                            shape: NeumorphicShape.flat,
-                            depth: 3,
-                            boxShape: NeumorphicBoxShape.circle(),
-                          ),
-                          child: FaIcon(
-                            FontAwesomeIcons.facebookF,
-                            size: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),

@@ -2,7 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_virash/cartDataType.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'showCart.dart';
 
 class ProductList extends StatefulWidget {
   static var route = '/productList';
@@ -14,6 +19,27 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
+  String cartString = "";
+  List<CartPojo> cartList = [];
+  late SharedPreferences prefs;
+  var count = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCounter();
+  }
+
+  _loadCounter() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    prefs = await SharedPreferences.getInstance();
+    cartString = prefs.getString('cartList')!;
+    cartList = CartPojo.decode(cartString);
+    setState(() {
+      count = cartList.length;
+    });
+  }
+
   Future<List<ProductPOJO>> _getProducts(String catId) async {
     var response = await post(
       Uri.parse('https://chickensmood.com/api/product.php'),
@@ -56,9 +82,51 @@ class _ProductListState extends State<ProductList> {
     var categoryId = args.toString();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('All courses'),
-      ),
+      appBar: AppBar(title: Text('All courses'), actions: <Widget>[
+        new Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Container(
+              height: 150.0,
+              width: 30.0,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, ShowCart.route);
+                },
+                child: Stack(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: Colors.white,
+                      ),
+                      onPressed: null,
+                    ),
+                    cartList.length == 0
+                        ? Container()
+                        : Positioned(
+                            child: Stack(
+                            children: <Widget>[
+                              Icon(Icons.brightness_1,
+                                  size: 20.0, color: Colors.green[800]),
+                              Positioned(
+                                  top: 3.0,
+                                  right: 4.0,
+                                  child: Center(
+                                    child: Text(
+                                      count.toString(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 11.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  )),
+                            ],
+                          )),
+                  ],
+                ),
+              )),
+        )
+      ]),
       body: Container(
         child: FutureBuilder(
           future: _getProducts(categoryId),
@@ -96,20 +164,50 @@ class _ProductListState extends State<ProductList> {
                               color: Colors.black,
                             ),
                           ),
-                          subtitle: Text(
-                            "₹  " + snapshot.data[index].mrp,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                            ),
+                          subtitle: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "₹  " + snapshot.data[index].mrp,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  cartList.add(CartPojo(
+                                      avatar: snapshot.data[index].avatar,
+                                      category: categoryId,
+                                      mrp: snapshot.data[index].mrp,
+                                      name: snapshot.data[index].name,
+                                      id: snapshot.data[index].id));
+
+                                  prefs.setString(
+                                      'cartList', CartPojo.encode(cartList));
+
+                                  setState(() {
+                                    count = cartList.length;
+                                    Text('Remove');
+                                  });
+
+                                  Fluttertoast.showToast(
+                                      msg: snapshot.data[index].name +
+                                          "\nAdded to Cart",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.SNACKBAR,
+                                      timeInSecForIosWeb: 2);
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 10),
+                            vertical: 0, horizontal: 30),
                         child: Divider(
-                          thickness: 3,
+                          thickness: 1,
                         ),
                       ),
                     ],
