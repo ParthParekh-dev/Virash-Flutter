@@ -4,7 +4,7 @@ import 'package:flutter_virash/liveSession.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/studyMaterial.dart';
 import 'package:flutter_virash/testSeries.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
   static var route = '/home';

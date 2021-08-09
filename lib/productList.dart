@@ -175,6 +175,7 @@ class _ProductListState extends State<ProductList> {
                                 ),
                               ),
                               ElevatedButton(
+                                child: Text("Add To Cart"),
                                 onPressed: () {
                                   cartList.add(CartPojo(
                                       avatar: snapshot.data[index].avatar,
