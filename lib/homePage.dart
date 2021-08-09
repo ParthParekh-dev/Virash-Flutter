@@ -16,9 +16,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
@@ -40,30 +40,33 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
+                        Expanded(
+                            child: Icon(
                           Icons.cloud_upload_outlined,
                           color: Color(0xFFFFFFFF),
                           size: 60,
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              'Upload Assignment',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: 'PoppinsBold',
-                                  color: Colors.white,
-                                  fontSize: 18),
-                            ),
-                            Text(
-                              'Add document from internal storage',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.white,
-                                  fontSize: 12),
-                            ),
-                          ],
+                        )),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Text(
+                                'Upload Assignment',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: 'PoppinsBold',
+                                    color: Colors.white,
+                                    fontSize: 18),
+                              ),
+                              Text(
+                                'Add document from internal storage',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                    fontSize: 12),
+                              ),
+                            ],
+                          ),
                         ),
                         ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(

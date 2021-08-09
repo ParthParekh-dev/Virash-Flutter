@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_virash/videos.dart';
+import 'package:vimeo_player_flutter/vimeo_player_flutter.dart';
 
 class LiveSession extends StatefulWidget {
   static var route = '/liveSession';
@@ -10,69 +10,46 @@ class LiveSession extends StatefulWidget {
 }
 
 class _LiveSessionState extends State<LiveSession> {
+  List<LiveSessionVideo> _videos = sample_videos
+      .map(
+        (video) => LiveSessionVideo(
+            id: video['id'], title: video['title'], videoId: video['videoId']),
+      )
+      .toList();
+
   @override
   Widget build(BuildContext context) {
+    print(_videos[0]);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Live Session Mehank'),
+        title: Text('Live Sessions'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Hero(
-                  tag: "HeroOne",
-                  child: Image.asset('assets/logo_unique.png'),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  NeumorphicButton(
-                      margin: EdgeInsets.only(top: 12),
-                      onPressed: () {},
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.flat,
-                        depth: 3,
-                        color: Color(0xFF3B6AA2),
-                        boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(8)),
+        child: ListView.builder(
+            itemCount: _videos.length,
+            itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 200,
+                        child: VimeoPlayer(
+                          videoId: "${_videos[index].videoId}",
+                        ),
                       ),
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        "Open Gallery",
-                        style: TextStyle(color: Colors.white),
-                      )),
-                  NeumorphicButton(
-                      margin: EdgeInsets.only(top: 12),
-                      onPressed: () {},
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.flat,
-                        depth: 3,
-                        color: Color(0xFF3B6AA2),
-                        boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(8)),
-                      ),
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        "Open Camera",
-                        style: TextStyle(color: Colors.white),
-                      )),
-                ],
-              ),
-            ),
-          ],
-        ),
+                      Text(
+                        "${_videos[index].title}",
+                        style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                )),
       ),
     );
   }
