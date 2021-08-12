@@ -17,12 +17,10 @@ class NewUserRegistration extends StatefulWidget {
 }
 
 class _NewUserRegistrationState extends State<NewUserRegistration> {
-  String name = "", mobile = "", email = "", course = "";
+  String name = "", mobile = "", email = "";
   Widget signinChild = SignInButton();
-  // ignore: non_constant_identifier_names
-  List<String> course_name = ['1', '2', '3'];
-  // ignore: non_constant_identifier_names
-  List<String> course_id = ['1', '2', '3'];
+  List _courses = [];
+  var course;
 
   void showLoader() {
     setState(() {
@@ -36,36 +34,20 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
     });
   }
 
-  // ignore: unused_field
-  String _mySelection = "";
-
-  final String url = "https://virashtechnologies.com/unique/api/course.php";
-
-  List data = []; //edited line
-
-  Future<String> getSWData() async {
-    var res =
-        await get(Uri.parse(url), headers: {"Accept": "application/json"});
-    var resBody = json.decode(res.body);
-
-    for (int i = 0; i <= resBody.length - 1; i++) {
-      course_name.add(resBody[i]['course_name']);
-      course_id.add(resBody[i]['course_id'].toString());
-    }
-
+  Future<String> fetchCourse() async {
+    final url = "https://virashtechnologies.com/unique/api/course.php";
+    var res = await get(Uri.parse(url));
+    final resBody = jsonDecode(res.body) as List;
     setState(() {
-      data = resBody;
+      _courses = resBody;
     });
-
-    print(" " + data.toString());
-
-    return "Sucesss";
+    return "Success";
   }
 
   @override
   void initState() {
     super.initState();
-    this.getSWData();
+    fetchCourse();
   }
 
   @override
@@ -194,31 +176,41 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      cursorColor: Colors.black,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: Colors.black,
-                      ),
-                      onChanged: (value) {
-                        course = value;
-                      },
-                      decoration: InputDecoration(
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 2, color: Color(0xFFFF7801)),
-                          borderRadius: BorderRadius.all(Radius.circular(40)),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 15),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.black.withOpacity(0.6), width: 1),
+                          borderRadius: BorderRadius.circular(40)),
+                      child: DropdownButton<int>(
+                        isExpanded: true,
+                        value: course,
+                        hint: Text(
+                          "Select Course",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                          ),
                         ),
-                        fillColor: Colors.white,
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                        labelText: 'Course',
-                        labelStyle: TextStyle(
-                          color: Colors.black54,
-                        ),
+                        items: _courses.map(
+                          (course) {
+                            return DropdownMenuItem(
+                              child: Text(
+                                course['course_name'],
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black,
+                                ),
+                              ),
+                              value: course['course_id'] as int,
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (int? value) {
+                          setState(() {
+                            course = value ?? 0;
+                          });
+                        },
                       ),
                     ),
                   ),
@@ -244,7 +236,7 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
                       if (name == "" ||
                           email == "" ||
                           mobile == "" ||
-                          course == "" ||
+                          course == null ||
                           mobile.length != 10) {
                         Fluttertoast.showToast(
                             msg: 'Please enter the all the fields correctly',
@@ -272,7 +264,7 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
     );
   }
 
-  void register(String name, String mobile, String email, String course) async {
+  void register(String name, String mobile, String email, int course) async {
     showLoader();
     Response response = await post(
       Uri.parse(
@@ -285,7 +277,7 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
           "name": name,
           "mobile_number": mobile,
           "email": email,
-          "course": course
+          "course": "$course"
         }
       ]),
     );
@@ -298,7 +290,7 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
         prefs.setString('name', name);
         prefs.setString('mobile', mobile);
         prefs.setString('email', email);
-        prefs.setString('course_id', course);
+        prefs.setString('course_id', "$course");
 
         Navigator.pushNamed(context, OTPVerificationScreen.route,
             arguments: mobile);
