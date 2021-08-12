@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_virash/questions.dart';
 
-typedef QuestionCheckCallback<Question, int> = void Function(
-    Question question, int selectedIndex);
-
 class ObjectiveTest extends StatefulWidget {
   static var route = '/objectiveTest';
 
@@ -48,7 +45,6 @@ class _ObjectiveTestState extends State<ObjectiveTest>
   var selectedAns;
   int questionNumber = 1;
   int numOfCorrectAns = 0;
-  bool showScore = false;
 
   void checkAns(Question question, int selectedIndex) {
     setState(() {
@@ -60,7 +56,7 @@ class _ObjectiveTestState extends State<ObjectiveTest>
 
       _controller.stop();
 
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(Duration(milliseconds: 1500), () {
         nextQuestion();
       });
     });
@@ -78,9 +74,7 @@ class _ObjectiveTestState extends State<ObjectiveTest>
 
       _controller.forward().whenComplete(nextQuestion);
     } else {
-      setState(() {
-        showScore = true;
-      });
+      print("${numOfCorrectAns * 10} / ${_questions.length * 10}");
     }
   }
 

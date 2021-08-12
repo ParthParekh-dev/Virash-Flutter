@@ -9,6 +9,7 @@ import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/showCart.dart';
 import 'package:flutter_virash/studyMaterial.dart';
 import 'package:flutter_virash/testSeries.dart';
+import 'package:flutter_virash/whatsappForm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'homePage.dart';
 import 'loginPage.dart';
@@ -25,7 +26,9 @@ main() async {
           scaffoldBackgroundColor: Color(0xFFFFFFFF),
           appBarTheme: AppBarTheme(
             color: Color(0xFFFF7801),
-          )),
+          ),
+          textSelectionTheme:
+              TextSelectionThemeData(cursorColor: Color(0xFFFF7801))),
       debugShowCheckedModeBanner: false,
       home: Splash(),
       initialRoute: '/',
@@ -40,6 +43,7 @@ main() async {
         ProductList.route: (context) => ProductList(),
         ShowCart.route: (context) => ShowCart(),
         ObjectiveTest.route: (context) => ObjectiveTest(),
+        WhatsappForm.route: (context) => WhatsappForm(),
       },
     ),
   );
