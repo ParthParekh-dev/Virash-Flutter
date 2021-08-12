@@ -60,12 +60,35 @@ main() async {
 Future<void> getSharedPref() async {
   WidgetsFlutterBinding.ensureInitialized();
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-
   if (!prefs.containsKey('cartList')) {
     final String encodedData = CartPojo.encode([]);
     await prefs.setString('cartList', encodedData);
-    print(CartPojo.decode(prefs.getString('cartList')!));
-  } else {
-    print(CartPojo.decode(prefs.getString('cartList')!));
+  }
+  if (!prefs.containsKey('mobile')) {
+    prefs.setString('mobile', '');
+  }
+  if (!prefs.containsKey('email')) {
+    prefs.setString('email', '');
+  }
+  if (!prefs.containsKey('name')) {
+    prefs.setString('name', '');
+  }
+  if (!prefs.containsKey('course_id')) {
+    prefs.setString('course_id', '');
+  }
+  if (!prefs.containsKey('exam_id')) {
+    prefs.setString('exam_id', '');
+  }
+  if (!prefs.containsKey('subject_id')) {
+    prefs.setString('subject_id', '');
+  }
+  if (!prefs.containsKey('chapter_id')) {
+    prefs.setString('chapter_id', '');
+  }
+  if (!prefs.containsKey('user_id')) {
+    prefs.setString('user_id', '');
+  }
+  if (!prefs.containsKey('isLoggedIn')) {
+    prefs.setBool('isLoggedIn', false);
   }
 }

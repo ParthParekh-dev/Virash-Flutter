@@ -6,6 +6,8 @@ import 'package:http/http.dart';
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class ExamList extends StatefulWidget {
   static var route = '/examList';
 
@@ -14,14 +16,18 @@ class ExamList extends StatefulWidget {
 }
 
 class _ExamListState extends State<ExamList> {
+  late SharedPreferences prefs;
+
   Future<List<Exams>> _getExams() async {
+    prefs = await SharedPreferences.getInstance();
+
     var response = await post(
       Uri.parse('https://virashtechnologies.com/unique/api/exam.php'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode([
-        {"course_id": 2}
+        {"course_id": prefs.getString('course_id')}
       ]),
     );
     var jsonData = json.decode(response.body);

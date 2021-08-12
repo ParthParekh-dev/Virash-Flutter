@@ -6,6 +6,8 @@ import 'package:http/http.dart';
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class ChapterList extends StatefulWidget {
   static var route = '/chapterList';
 
@@ -14,7 +16,12 @@ class ChapterList extends StatefulWidget {
 }
 
 class _ChapterListState extends State<ChapterList> {
+  late SharedPreferences prefs;
+
   Future<List<Chapter>> _getChapter(String subject_id) async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.setString('subject_id', subject_id);
+
     var response = await post(
       Uri.parse('https://virashtechnologies.com/unique/api/chapter.php'),
       headers: <String, String>{

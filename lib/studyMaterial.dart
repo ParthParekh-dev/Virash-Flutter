@@ -15,21 +15,12 @@ class StudyMaterial extends StatefulWidget {
 }
 
 class _StudyMaterialState extends State<StudyMaterial> {
-  @override
-  void initState() {
-    super.initState();
-    // _loadCounter();
-  }
+  late SharedPreferences prefs;
 
-  //Loading counter value on start
-  void _loadCounter() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.getInt('counter');
-    prefs.getInt('counter');
-    prefs.getInt('counter');
-  }
+  Future<List<PdfDetails>> _getMaterials(String chapter_id) async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.setString('chapter_id', chapter_id);
 
-  Future<List<PdfDetails>> _getMaterials() async {
     var response = await post(
       Uri.parse('https://virashtechnologies.com/unique/api/study-material.php'),
       headers: <String, String>{
@@ -37,11 +28,11 @@ class _StudyMaterialState extends State<StudyMaterial> {
       },
       body: jsonEncode([
         {
-          "mobile_number": "8082019432",
-          "user_id": "1",
-          "exam_id": 5,
-          "subject_id": 1,
-          "chapter_id": 86
+          "mobile_number": prefs.getString('mobile')!,
+          "user_id": prefs.getString('user_id')!,
+          "exam_id": prefs.getString('exam_id')!,
+          "subject_id": prefs.getString('subject_id')!,
+          "chapter_id": prefs.getString('chapter_id')!
         }
       ]),
     );
@@ -68,13 +59,16 @@ class _StudyMaterialState extends State<StudyMaterial> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments;
+    var chapter_id = args.toString();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Study Material'),
       ),
       body: Container(
         child: FutureBuilder(
-          future: _getMaterials(),
+          future: _getMaterials(chapter_id),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
               return Container(

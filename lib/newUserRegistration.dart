@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/homePage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'verifyOTP.dart';
 
@@ -289,6 +290,12 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
       hideLoader();
       var success = (json.decode(response.body)[0]['success']);
       if (success == "1") {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('name', name);
+        prefs.setString('mobile', mobile);
+        prefs.setString('email', email);
+        prefs.setString('course_id', course);
+
         Navigator.pushNamed(context, OTPVerificationScreen.route,
             arguments: mobile);
       } else {

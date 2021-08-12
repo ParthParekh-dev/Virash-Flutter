@@ -7,6 +7,7 @@ import 'package:flutter_virash/homePage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OTPVerificationScreen extends StatefulWidget {
   static var route = '/otpVerification';
@@ -30,14 +31,19 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
 
   @override
   void initState() {
-    final args = ModalRoute.of(context)!.settings.arguments;
-    mobile_no = args.toString();
-
+    getMobile();
     var rng = new Random();
     otp = (rng.nextInt(900000) + 100000).toString();
     sendOTP(otp, mobile_no);
     errorController = StreamController<ErrorAnimationType>();
     super.initState();
+  }
+
+  getMobile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      mobile_no = prefs.getString('mobile')!;
+    });
   }
 
   @override
@@ -296,6 +302,10 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
     );
     print(response.statusCode);
     if (response.statusCode == 200) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('user_id', json.decode(response.body)[0]['user_id']);
+      prefs.setBool('isLoggedIn', true);
+
       var success = (json.decode(response.body)[0]['success']);
       if (success == "1") {
         Navigator.pushNamed(context, HomePage.route);
