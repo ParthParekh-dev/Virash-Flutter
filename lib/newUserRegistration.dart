@@ -241,9 +241,10 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
                       if (name == "" ||
                           email == "" ||
                           mobile == "" ||
-                          course == "") {
+                          course == "" ||
+                          mobile.length != 10) {
                         Fluttertoast.showToast(
-                            msg: 'Please enter the all the fields',
+                            msg: 'Please enter the all the fields correctly',
                             toastLength: Toast.LENGTH_LONG,
                             gravity: ToastGravity.SNACKBAR,
                             timeInSecForIosWeb: 2);
