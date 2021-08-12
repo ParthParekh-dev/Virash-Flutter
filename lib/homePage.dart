@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_virash/examList.dart';
 import 'package:flutter_virash/liveSession.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/studyMaterial.dart';
@@ -158,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.fromLTRB(15, 0, 7.5, 15),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, StudyMaterial.route);
+                            Navigator.pushNamed(context, ExamList.route);
                           },
                           child: MainCard(
                             cardChild: Center(

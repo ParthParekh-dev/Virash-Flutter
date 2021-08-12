@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_virash/pdfViewer.dart';
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StudyMaterial extends StatefulWidget {
   static var route = '/studyMaterial';
@@ -11,69 +16,126 @@ class StudyMaterial extends StatefulWidget {
 
 class _StudyMaterialState extends State<StudyMaterial> {
   @override
+  void initState() {
+    super.initState();
+    // _loadCounter();
+  }
+
+  //Loading counter value on start
+  void _loadCounter() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.getInt('counter');
+    prefs.getInt('counter');
+    prefs.getInt('counter');
+  }
+
+  Future<List<PdfDetails>> _getMaterials() async {
+    var response = await post(
+      Uri.parse('https://virashtechnologies.com/unique/api/study-material.php'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode([
+        {
+          "mobile_number": "8082019432",
+          "user_id": "1",
+          "exam_id": 5,
+          "subject_id": 1,
+          "chapter_id": 86
+        }
+      ]),
+    );
+    var jsonData = json.decode(response.body);
+
+    var listMaterial = jsonData;
+
+    List<PdfDetails> users = [];
+
+    var u = listMaterial;
+
+    for (int i = 0; i <= listMaterial.length - 1; i++) {
+      var name = u[i]['title'];
+      var attachment = u[i]['attachment'];
+      var id = u[i]['id'].toString();
+      var pic = u[i]['thumbnail'];
+      PdfDetails user = PdfDetails(id, name, pic, attachment);
+
+      users.add(user);
+    }
+
+    return users;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All courses'),
+        title: Text('Study Material'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Hero(
-                  tag: "HeroOne",
-                  child: Image.asset('assets/logo_unique.png'),
+      body: Container(
+        child: FutureBuilder(
+          future: _getMaterials(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.data == null) {
+              return Container(
+                child: Center(
+                  child: SpinKitCubeGrid(
+                    color: Color(0xFFFF7801),
+                    size: 50.0,
+                  ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  NeumorphicButton(
-                      margin: EdgeInsets.only(top: 12),
-                      onPressed: () {},
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.flat,
-                        depth: 3,
-                        color: Color(0xFF3B6AA2),
-                        boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(8)),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.pushNamed(context, PdfViewer.route,
+                                arguments: snapshot.data[index].attachment);
+                          },
+                          leading: CircleAvatar(
+                            radius: 40,
+                            backgroundImage:
+                                NetworkImage(snapshot.data[index].avatar),
+                          ),
+                          title: Text(
+                            snapshot.data[index].title,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
                       ),
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        "Open Gallery",
-                        style: TextStyle(color: Colors.white),
-                      )),
-                  NeumorphicButton(
-                      margin: EdgeInsets.only(top: 12),
-                      onPressed: () {},
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.flat,
-                        depth: 3,
-                        color: Color(0xFF3B6AA2),
-                        boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(8)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 30),
+                        child: Divider(
+                          thickness: 1,
+                        ),
                       ),
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        "Open Camera",
-                        style: TextStyle(color: Colors.white),
-                      )),
-                ],
-              ),
-            ),
-          ],
+                    ],
+                  );
+                },
+              );
+            }
+          },
         ),
       ),
     );
   }
+}
+
+class PdfDetails {
+  final String id;
+  final String title;
+  final String avatar;
+  final String attachment;
+
+  PdfDetails(this.id, this.title, this.avatar, this.attachment);
 }

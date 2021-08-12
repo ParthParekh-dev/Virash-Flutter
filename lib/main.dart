@@ -1,14 +1,20 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_virash/chapterList.dart';
+import 'package:flutter_virash/examList.dart';
 import 'package:flutter_virash/cartDataType.dart';
 import 'package:flutter_virash/liveSession.dart';
+import 'package:flutter_virash/newUserRegistration.dart';
 import 'package:flutter_virash/objectiveTest.dart';
+import 'package:flutter_virash/pdfViewer.dart';
 import 'package:flutter_virash/productList.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/showCart.dart';
 import 'package:flutter_virash/studyMaterial.dart';
+import 'package:flutter_virash/subjectList.dart';
 import 'package:flutter_virash/testSeries.dart';
+import 'package:flutter_virash/verifyOTP.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'homePage.dart';
 import 'loginPage.dart';
@@ -40,6 +46,12 @@ main() async {
         ProductList.route: (context) => ProductList(),
         ShowCart.route: (context) => ShowCart(),
         ObjectiveTest.route: (context) => ObjectiveTest(),
+        OTPVerificationScreen.route: (context) => OTPVerificationScreen(),
+        NewUserRegistration.route: (context) => NewUserRegistration(),
+        ExamList.route: (context) => ExamList(),
+        SubjectList.route: (context) => SubjectList(),
+        ChapterList.route: (context) => ChapterList(),
+        PdfViewer.route: (context) => PdfViewer()
       },
     ),
   );

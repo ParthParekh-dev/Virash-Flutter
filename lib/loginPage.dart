@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_virash/homePage.dart';
+import 'package:flutter_virash/newUserRegistration.dart';
+import 'package:flutter_virash/verifyOTP.dart';
 import 'package:http/http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
