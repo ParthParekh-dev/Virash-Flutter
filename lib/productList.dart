@@ -189,7 +189,6 @@ class _ProductListState extends State<ProductList> {
 
                                   setState(() {
                                     count = cartList.length;
-                                    Text('Remove');
                                   });
 
                                   Fluttertoast.showToast(

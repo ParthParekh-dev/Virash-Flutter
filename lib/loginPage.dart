@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_virash/homePage.dart';
+import 'package:flutter_virash/newUserRegistration.dart';
 import 'package:http/http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   static var route = '/login';
@@ -16,8 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isObscure = true;
-  String username = "", password = "";
+  String mobile = "";
   Widget loginChild = LoginButton();
 
   void showLoader() {
@@ -81,13 +82,14 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
                     child: TextField(
+                      keyboardType: TextInputType.number,
                       cursorColor: Colors.black,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         color: Colors.black,
                       ),
                       onChanged: (value) {
-                        username = value;
+                        mobile = value;
                       },
                       decoration: InputDecoration(
                         filled: true,
@@ -100,65 +102,9 @@ class _LoginPageState extends State<LoginPage> {
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                        labelText: 'Username',
+                        labelText: 'Mobile number',
                         labelStyle: TextStyle(
                           color: Colors.black54,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
-                    child: TextField(
-                      cursorColor: Colors.black,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: Colors.black,
-                      ),
-                      onChanged: (value) {
-                        password = value;
-                      },
-                      obscureText: isObscure,
-                      decoration: InputDecoration(
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 2, color: Color(0xFFFF7801)),
-                          borderRadius: BorderRadius.all(Radius.circular(40)),
-                        ),
-                        fillColor: Colors.white,
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                        suffixIcon: IconButton(
-                          padding: EdgeInsets.only(right: 20),
-                          icon: Icon(
-                            isObscure ? Icons.visibility : Icons.visibility_off,
-                            color: Color(0xFFFF7801),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              isObscure = !isObscure;
-                            });
-                          },
-                        ),
-                        labelText: 'Password',
-                        labelStyle: TextStyle(
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        '?Forgot Password',
-                        textDirection: TextDirection.rtl,
-                        style: TextStyle(
-                          color: Color(0xFFFF7801),
                         ),
                       ),
                     ),
@@ -168,14 +114,14 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      if (username == "" || password == "") {
+                      if (mobile == "") {
                         Fluttertoast.showToast(
-                            msg: 'Please enter the email or password',
+                            msg: 'Please enter the mobile number',
                             toastLength: Toast.LENGTH_LONG,
                             gravity: ToastGravity.SNACKBAR,
                             timeInSecForIosWeb: 2);
                       } else {
-                        checkLogin(username, password);
+                        verifyUser(mobile);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -205,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, HomePage.route);
+                        Navigator.pushNamed(context, NewUserRegistration.route);
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xFFFF7801),
@@ -232,24 +178,46 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void checkLogin(String username, String password) async {
+  void verifyUser(String mobileNo) async {
     showLoader();
     Response response = await post(
-      Uri.parse('https://reqres.in/api/login'),
+      Uri.parse('https://virashtechnologies.com/unique/api/user-login.php'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body:
-          jsonEncode(<String, String>{'email': username, 'password': password}),
+      body: jsonEncode([
+        {"mobile_number": mobileNo}
+      ]),
     );
     print(response.statusCode);
     if (response.statusCode == 200) {
+      var result = json.decode(response.body)[0];
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('user_id', result['user_id'].toString());
+      prefs.setString('name', result['name'].toString());
+      prefs.setString('mobile', result['mobile_number'].toString());
+      prefs.setString('email', result['email'].toString());
+      prefs.setString('course_id', result['course'].toString());
+      prefs.setBool('isLoggedIn', true);
+
+      var success = (json.decode(response.body)[0]['success']);
       hideLoader();
-      Navigator.pushNamed(context, '/home');
+      if (success == "1") {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            HomePage.route, (Route<dynamic> route) => false);
+      } else {
+        Fluttertoast.showToast(
+            msg: "Seems like you aren't registered user. Please Sign In",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.SNACKBAR,
+            timeInSecForIosWeb: 2);
+      }
     } else {
       hideLoader();
       Fluttertoast.showToast(
-          msg: "Incorrect email or password!",
+          msg:
+              "Something went wrong, couldn't find the user. Please contact admin.",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.SNACKBAR,
           timeInSecForIosWeb: 2);
