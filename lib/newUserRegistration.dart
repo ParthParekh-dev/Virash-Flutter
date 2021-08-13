@@ -52,215 +52,218 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          body: Stack(
-        children: [
-          Center(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              physics: PageScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Hero(
-                    tag: "HeroOne",
-                    child: Image.asset(
-                      'assets/logo_unique.png',
-                      height: MediaQuery.of(context).size.width * 0.3,
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'New User Registration',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: SafeArea(
+        child: Scaffold(
+            body: Stack(
+          children: [
+            Center(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                physics: PageScrollPhysics(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Hero(
+                      tag: "HeroOne",
+                      child: Image.asset(
+                        'assets/logo_unique.png',
+                        height: MediaQuery.of(context).size.width * 0.3,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
-                    child: TextField(
-                      cursorColor: Colors.black,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: Colors.black,
-                      ),
-                      onChanged: (value) {
-                        name = value;
-                      },
-                      decoration: InputDecoration(
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 2, color: Color(0xFFFF7801)),
-                          borderRadius: BorderRadius.all(Radius.circular(40)),
-                        ),
-                        fillColor: Colors.white,
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                        labelText: 'Name',
-                        labelStyle: TextStyle(
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      cursorColor: Colors.black,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: Colors.black,
-                      ),
-                      onChanged: (value) {
-                        mobile = value;
-                      },
-                      decoration: InputDecoration(
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 2, color: Color(0xFFFF7801)),
-                          borderRadius: BorderRadius.all(Radius.circular(40)),
-                        ),
-                        fillColor: Colors.white,
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                        labelText: 'Mobile',
-                        labelStyle: TextStyle(
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
-                    child: TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      cursorColor: Colors.black,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: Colors.black,
-                      ),
-                      onChanged: (value) {
-                        email = value;
-                      },
-                      decoration: InputDecoration(
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 2, color: Color(0xFFFF7801)),
-                          borderRadius: BorderRadius.all(Radius.circular(40)),
-                        ),
-                        fillColor: Colors.white,
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                        labelText: 'Email',
-                        labelStyle: TextStyle(
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
-                    child: Container(
+                    Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 4, horizontal: 15),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.black.withOpacity(0.6), width: 1),
-                          borderRadius: BorderRadius.circular(40)),
-                      child: DropdownButton<int>(
-                        isExpanded: true,
-                        value: course,
-                        hint: Text(
-                          "Select Course",
+                          vertical: 0, horizontal: 20),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'New User Registration',
                           style: TextStyle(
-                            fontFamily: 'Poppins',
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
                           ),
                         ),
-                        items: _courses.map(
-                          (course) {
-                            return DropdownMenuItem(
-                              child: Text(
-                                course['course_name'],
-                                style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.black,
-                                ),
-                              ),
-                              value: course['course_id'] as int,
-                            );
-                          },
-                        ).toList(),
-                        onChanged: (int? value) {
-                          setState(() {
-                            course = value ?? 0;
-                          });
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
+                      child: TextField(
+                        cursorColor: Colors.black,
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          color: Colors.black,
+                        ),
+                        onChanged: (value) {
+                          name = value;
                         },
+                        decoration: InputDecoration(
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2, color: Color(0xFFFF7801)),
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                          ),
+                          fillColor: Colors.white,
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 30),
+                          labelText: 'Name',
+                          labelStyle: TextStyle(
+                            color: Colors.black54,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  // DropdownButton<String>(
-                  //   items: course_id.map((String val) {
-                  //     return new DropdownMenuItem<String>(
-                  //       value: val,
-                  //       child: new Text(val),
-                  //     );
-                  //   }).toList(),
-                  //   onChanged: (newVal) {
-                  //     setState(() {
-                  //       _mySelection = newVal.toString();
-                  //     });
-                  //   },
-                  //   value: _mySelection,
-                  // ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (name == "" ||
-                          email == "" ||
-                          mobile == "" ||
-                          course == null ||
-                          mobile.length != 10) {
-                        Fluttertoast.showToast(
-                            msg: 'Please enter the all the fields correctly',
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.SNACKBAR,
-                            timeInSecForIosWeb: 2);
-                      } else {
-                        register(name, mobile, email, course);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFFF7801),
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        cursorColor: Colors.black,
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          color: Colors.black,
+                        ),
+                        onChanged: (value) {
+                          mobile = value;
+                        },
+                        decoration: InputDecoration(
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2, color: Color(0xFFFF7801)),
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                          ),
+                          fillColor: Colors.white,
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 30),
+                          labelText: 'Mobile',
+                          labelStyle: TextStyle(
+                            color: Colors.black54,
+                          ),
+                        ),
                       ),
                     ),
-                    child: signinChild,
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
+                      child: TextField(
+                        keyboardType: TextInputType.emailAddress,
+                        cursorColor: Colors.black,
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          color: Colors.black,
+                        ),
+                        onChanged: (value) {
+                          email = value;
+                        },
+                        decoration: InputDecoration(
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2, color: Color(0xFFFF7801)),
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                          ),
+                          fillColor: Colors.white,
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 30),
+                          labelText: 'Email',
+                          labelStyle: TextStyle(
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 15),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.black.withOpacity(0.6), width: 1),
+                            borderRadius: BorderRadius.circular(40)),
+                        child: DropdownButton<int>(
+                          isExpanded: true,
+                          value: course,
+                          hint: Text(
+                            "Select Course",
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                          items: _courses.map(
+                            (course) {
+                              return DropdownMenuItem(
+                                child: Text(
+                                  course['course_name'],
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                value: course['course_id'] as int,
+                              );
+                            },
+                          ).toList(),
+                          onChanged: (int? value) {
+                            setState(() {
+                              course = value ?? 0;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    // DropdownButton<String>(
+                    //   items: course_id.map((String val) {
+                    //     return new DropdownMenuItem<String>(
+                    //       value: val,
+                    //       child: new Text(val),
+                    //     );
+                    //   }).toList(),
+                    //   onChanged: (newVal) {
+                    //     setState(() {
+                    //       _mySelection = newVal.toString();
+                    //     });
+                    //   },
+                    //   value: _mySelection,
+                    // ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (name == "" ||
+                            email == "" ||
+                            mobile == "" ||
+                            course == null ||
+                            mobile.length != 10) {
+                          Fluttertoast.showToast(
+                              msg: 'Please enter the all the fields correctly',
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.SNACKBAR,
+                              timeInSecForIosWeb: 2);
+                        } else {
+                          register(name, mobile, email, course);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFFF7801),
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(5.0),
+                        ),
+                      ),
+                      child: signinChild,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      )),
+          ],
+        )),
+      ),
     );
   }
 

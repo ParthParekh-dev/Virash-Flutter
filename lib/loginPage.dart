@@ -35,123 +35,96 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          body: Stack(
-        children: [
-          Center(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              physics: PageScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Hero(
-                    tag: "HeroOne",
-                    child: Image.asset('assets/logo_unique.png'),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Login',
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: SafeArea(
+        child: Scaffold(
+            body: Stack(
+          children: [
+            Center(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                physics: PageScrollPhysics(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Hero(
+                      tag: "HeroOne",
+                      child: Image.asset('assets/logo_unique.png'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 20),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 20),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'To continue with your account',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Color(0xFF37DBFF),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        cursorColor: Colors.black,
                         style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
                           color: Colors.black,
                         ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'To continue with your account',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xFF37DBFF),
+                        onChanged: (value) {
+                          mobile = value;
+                        },
+                        decoration: InputDecoration(
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2, color: Color(0xFFFF7801)),
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                          ),
+                          fillColor: Colors.white,
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 30),
+                          labelText: 'Mobile number',
+                          labelStyle: TextStyle(
+                            color: Colors.black54,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      cursorColor: Colors.black,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: Colors.black,
-                      ),
-                      onChanged: (value) {
-                        mobile = value;
-                      },
-                      decoration: InputDecoration(
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 2, color: Color(0xFFFF7801)),
-                          borderRadius: BorderRadius.all(Radius.circular(40)),
-                        ),
-                        fillColor: Colors.white,
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                        labelText: 'Mobile number',
-                        labelStyle: TextStyle(
-                          color: Colors.black54,
-                        ),
-                      ),
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (mobile == "") {
-                        Fluttertoast.showToast(
-                            msg: 'Please enter the mobile number',
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.SNACKBAR,
-                            timeInSecForIosWeb: 2);
-                      } else {
-                        verifyUser(mobile);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFFF7801),
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                      ),
-                    ),
-                    child: loginChild,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    height: 1,
-                    margin: EdgeInsets.only(top: 8),
-                    color: Color(0xFFFFFFFFF),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(
-                      'OR',
-                      style: TextStyle(
-                        color: Color(0xFFFF7801),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: ElevatedButton(
+                    ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, NewUserRegistration.route);
+                        if (mobile == "") {
+                          Fluttertoast.showToast(
+                              msg: 'Please enter the mobile number',
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.SNACKBAR,
+                              timeInSecForIosWeb: 2);
+                        } else {
+                          verifyUser(mobile);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xFFFF7801),
@@ -159,22 +132,53 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: new BorderRadius.circular(5.0),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
-                        child: Text(
-                          "Sign Up",
-                          style: TextStyle(color: Colors.white),
+                      child: loginChild,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      height: 1,
+                      margin: EdgeInsets.only(top: 8),
+                      color: Color(0xFFFFFFFFF),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        'OR',
+                        style: TextStyle(
+                          color: Color(0xFFFF7801),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, NewUserRegistration.route);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFFF7801),
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      )),
+          ],
+        )),
+      ),
     );
   }
 

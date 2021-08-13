@@ -18,25 +18,19 @@ class OTPVerificationScreen extends StatefulWidget {
 
 class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   TextEditingController textEditingController = TextEditingController();
-  // ..text = "123456";
 
-  // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
 
   bool hasError = false;
   String currentText = "";
   final formKey = GlobalKey<FormState>();
   String otp = "";
-  // ignore: non_constant_identifier_names
   String mobile_no = "";
 
   @override
   void initState() {
-    getMobile();
-    var rng = new Random();
-    otp = (rng.nextInt(900000) + 100000).toString();
-    sendOTP(otp, mobile_no);
     errorController = StreamController<ErrorAnimationType>();
+    getMobile();
     super.initState();
   }
 
@@ -45,6 +39,11 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
     setState(() {
       mobile_no = prefs.getString('mobile')!;
     });
+    var rng = new Random();
+    otp = (rng.nextInt(900000) + 100000).toString();
+
+    print(mobile_no + " " + otp);
+    sendOTP(otp, mobile_no);
   }
 
   @override
@@ -304,7 +303,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
     print(response.statusCode);
     if (response.statusCode == 200) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('user_id', json.decode(response.body)[0]['user_id']);
+      prefs.setString(
+          'user_id', json.decode(response.body)[0]['user_id'].toString());
       prefs.setBool('isLoggedIn', true);
 
       var success = (json.decode(response.body)[0]['success']);

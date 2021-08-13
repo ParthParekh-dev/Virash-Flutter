@@ -21,6 +21,7 @@ import 'homePage.dart';
 import 'loginPage.dart';
 import 'addAssignment.dart';
 import 'splash.dart';
+import 'strategyExamList.dart';
 
 main() async {
   await getSharedPref();
@@ -55,7 +56,8 @@ main() async {
         ExamList.route: (context) => ExamList(),
         SubjectList.route: (context) => SubjectList(),
         ChapterList.route: (context) => ChapterList(),
-        PdfViewer.route: (context) => PdfViewer()
+        PdfViewer.route: (context) => PdfViewer(),
+        StrategyExamList.route: (context) => StrategyExamList()
       },
     ),
   );
