@@ -8,6 +8,8 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'homePage.dart';
+
 class ChapterList extends StatefulWidget {
   static var route = '/chapterList';
 
@@ -58,6 +60,15 @@ class _ChapterListState extends State<ChapterList> {
     return Scaffold(
       appBar: AppBar(
         title: Text('All Chapters'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HomePage.route, (r) => false);
+            },
+            icon: Icon(Icons.home),
+          ),
+        ],
       ),
       body: Container(
         child: FutureBuilder(

@@ -295,7 +295,7 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
         prefs.setString('email', email);
         prefs.setString('course_id', "$course");
 
-        Navigator.pushNamed(context, OTPVerificationScreen.route,
+        Navigator.pushReplacementNamed(context, OTPVerificationScreen.route,
             arguments: mobile);
       } else {
         Fluttertoast.showToast(

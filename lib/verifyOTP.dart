@@ -309,7 +309,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
 
       var success = (json.decode(response.body)[0]['success']);
       if (success == "1") {
-        Navigator.pushNamed(context, HomePage.route);
+        Navigator.pushReplacementNamed(context, HomePage.route);
       } else {
         snackBar("Access Denied");
       }

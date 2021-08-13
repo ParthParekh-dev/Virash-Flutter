@@ -7,6 +7,8 @@ import 'package:flutter_virash/pdfViewer.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'homePage.dart';
+
 class StudyMaterial extends StatefulWidget {
   static var route = '/studyMaterial';
 
@@ -65,6 +67,15 @@ class _StudyMaterialState extends State<StudyMaterial> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Study Material'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HomePage.route, (r) => false);
+            },
+            icon: Icon(Icons.home),
+          ),
+        ],
       ),
       body: Container(
         child: FutureBuilder(

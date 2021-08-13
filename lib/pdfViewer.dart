@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 
+import 'homePage.dart';
+
 class PdfViewer extends StatefulWidget {
   static var route = '/pdfViewer';
 
@@ -17,6 +19,15 @@ class _PdfViewerState extends State<PdfViewer> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Pdf Viewer'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, HomePage.route, (r) => false);
+              },
+              icon: Icon(Icons.home),
+            ),
+          ],
         ),
         body: PDF().cachedFromUrl(
           pdfUrl,

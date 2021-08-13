@@ -8,6 +8,8 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'homePage.dart';
+
 class StrategyExamList extends StatefulWidget {
   static var route = '/strategyExamList';
 
@@ -54,6 +56,15 @@ class _StrategyExamListState extends State<StrategyExamList> {
     return Scaffold(
       appBar: AppBar(
         title: Text('All Exams'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HomePage.route, (r) => false);
+            },
+            icon: Icon(Icons.home),
+          ),
+        ],
       ),
       body: Container(
         child: FutureBuilder(
