@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/paymentSuccess.dart';
+import 'package:flutter_virash/providers/cart_provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 import 'cartDataType.dart';
 
@@ -19,9 +21,8 @@ class ShowCart extends StatefulWidget {
 
 class _ShowCartState extends State<ShowCart> {
   String cartString = "";
-  List<CartPojo> cartList = [];
   late SharedPreferences prefs;
-  double cartTotal = 0.0;
+  // ignore: non_constant_identifier_names
   late String order_id;
   late Razorpay razorpay;
   Widget loginChild = PaymentButton();
@@ -58,7 +59,7 @@ class _ShowCartState extends State<ShowCart> {
   void openRazorpay() {
     var options = {
       'key': 'rzp_test_qSWt4ArR6JPRSE',
-      'amount': cartTotal.toInt() * 100,
+      'amount': context.watch<CartProvider>().cartTotal.toInt() * 100,
       'name': 'Unique',
       'description': 'Commerce Courses',
       'prefill': {
@@ -96,38 +97,21 @@ class _ShowCartState extends State<ShowCart> {
     // WidgetsFlutterBinding.ensureInitialized();
     prefs = await SharedPreferences.getInstance();
     cartString = prefs.getString('cartList')!;
-    setState(() {
-      cartList = CartPojo.decode(cartString);
-    });
-
-    calculateTotal();
-  }
-
-  calculateTotal() {
-    var u = cartList;
-    double total = 0.0;
-    for (int i = 0; i <= cartList.length - 1; i++) {
-      total = total + (double.parse(u[i].mrp));
-    }
-    setState(() {
-      cartTotal = total;
-    });
-    print(cartTotal);
+    context.read<CartProvider>().setCart(CartPojo.decode(cartString));
   }
 
   @override
   Widget build(BuildContext context) {
+    final cartList = context.watch<CartProvider>().cartList;
     return Scaffold(
       appBar: AppBar(
         title: Text('Cart'),
         actions: [
+          // ignore: deprecated_member_use
           FlatButton(
             onPressed: () {
-              setState(() {
-                cartList = [];
-              });
+              context.read<CartProvider>().clearCart();
               prefs.setString('cartList', CartPojo.encode(cartList));
-              calculateTotal();
             },
             child: Row(children: [
               Text("Clear All"),
@@ -179,12 +163,11 @@ class _ShowCartState extends State<ShowCart> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                setState(() {
-                                  cartList.removeAt(index);
-                                  calculateTotal();
-                                  prefs.setString(
-                                      'cartList', CartPojo.encode(cartList));
-                                });
+                                context
+                                    .read<CartProvider>()
+                                    .removeFromCart(cartList[index].id);
+                                prefs.setString(
+                                    'cartList', CartPojo.encode(cartList));
                               },
                               child: Text('Remove'),
                             ),
@@ -214,7 +197,8 @@ class _ShowCartState extends State<ShowCart> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text('Total Amount : $cartTotal'),
+                        Text(
+                            'Total Amount : ${context.watch<CartProvider>().cartTotal}'),
                         GestureDetector(
                           onTap: () {
                             submitCart();
@@ -236,9 +220,9 @@ class _ShowCartState extends State<ShowCart> {
   submitCart() async {
     showLoader();
     List checkoutList = [];
-    var u = cartList;
+    var u = context.watch<CartProvider>().cartList;
 
-    for (int i = 0; i <= cartList.length - 1; i++) {
+    for (int i = 0; i <= u.length - 1; i++) {
       Map<String, String> map1 = {
         "product_id": u[i].id,
         "product_name": u[i].name,
@@ -250,7 +234,7 @@ class _ShowCartState extends State<ShowCart> {
         "sub_total": "",
         "discount": "",
         "shipping_charges": "0",
-        "order_amount": cartTotal.toString(),
+        "order_amount": context.watch<CartProvider>().cartTotal.toString(),
         "expected_delivery": "",
         "geo_latitude": "",
         "geo_longitude": "",
@@ -290,7 +274,7 @@ class _ShowCartState extends State<ShowCart> {
       body: jsonEncode([
         {
           "pg_payment_id": paymentId,
-          "amount": cartTotal,
+          "amount": context.watch<CartProvider>().cartTotal,
           "payment_status": "Success",
           "amount_status": "Paid",
           "mode_of_payment": "Online",
