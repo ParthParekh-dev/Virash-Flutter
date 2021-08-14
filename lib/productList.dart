@@ -1,12 +1,13 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/cartDataType.dart';
+import 'package:flutter_virash/providers/cart_provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'showCart.dart';
+import 'package:provider/provider.dart';
 
 class ProductList extends StatefulWidget {
   static var route = '/productList';
@@ -19,9 +20,7 @@ class ProductList extends StatefulWidget {
 
 class _ProductListState extends State<ProductList> {
   String cartString = "";
-  List<CartPojo> cartList = [];
   late SharedPreferences prefs;
-  var count = 0;
 
   @override
   void initState() {
@@ -33,10 +32,7 @@ class _ProductListState extends State<ProductList> {
     WidgetsFlutterBinding.ensureInitialized();
     prefs = await SharedPreferences.getInstance();
     cartString = prefs.getString('cartList')!;
-    cartList = CartPojo.decode(cartString);
-    setState(() {
-      count = cartList.length;
-    });
+    context.read<CartProvider>().setCart(CartPojo.decode(cartString));
   }
 
   Future<List<ProductPOJO>> _getProducts(String catId) async {
@@ -75,6 +71,7 @@ class _ProductListState extends State<ProductList> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;
     var categoryId = args.toString();
+    final cartList = context.watch<CartProvider>().cartList;
 
     return Scaffold(
       appBar: AppBar(title: Text('All Products'), actions: <Widget>[
@@ -96,7 +93,7 @@ class _ProductListState extends State<ProductList> {
                       ),
                       onPressed: null,
                     ),
-                    cartList.length == 0
+                    context.watch<CartProvider>().cartCount == 0
                         ? Container()
                         : Positioned(
                             child: Stack(
@@ -108,7 +105,10 @@ class _ProductListState extends State<ProductList> {
                                   right: 4.0,
                                   child: Center(
                                     child: Text(
-                                      count.toString(),
+                                      context
+                                          .watch<CartProvider>()
+                                          .cartCount
+                                          .toString(),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 11.0,
@@ -169,31 +169,52 @@ class _ProductListState extends State<ProductList> {
                                   color: Colors.black,
                                 ),
                               ),
-                              ElevatedButton(
-                                child: Text("Add To Cart"),
-                                onPressed: () {
-                                  cartList.add(CartPojo(
-                                      avatar: snapshot.data[index].avatar,
-                                      category: categoryId,
-                                      mrp: snapshot.data[index].mrp,
-                                      name: snapshot.data[index].name,
-                                      id: snapshot.data[index].id));
+                              cartList
+                                      .map((e) => e.id)
+                                      .contains(snapshot.data[index].id)
+                                  ? ElevatedButton(
+                                      child: Text("Remove"),
+                                      onPressed: () {
+                                        context
+                                            .read<CartProvider>()
+                                            .removeFromCart(
+                                                snapshot.data[index].id);
+                                        prefs.setString('cartList',
+                                            CartPojo.encode(cartList));
 
-                                  prefs.setString(
-                                      'cartList', CartPojo.encode(cartList));
+                                        Fluttertoast.showToast(
+                                            msg: snapshot.data[index].name +
+                                                "\nRemoved from Cart",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.SNACKBAR,
+                                            timeInSecForIosWeb: 2);
+                                      },
+                                    )
+                                  : ElevatedButton(
+                                      child: Text("Add To Cart"),
+                                      onPressed: () {
+                                        context.read<CartProvider>().addToCart(
+                                            CartPojo(
+                                                avatar:
+                                                    snapshot.data[index].avatar,
+                                                category: categoryId,
+                                                mrp: snapshot.data[index].mrp,
+                                                name: snapshot.data[index].name,
+                                                id: snapshot.data[index].id));
 
-                                  setState(() {
-                                    count = cartList.length;
-                                  });
+                                        print(cartList);
 
-                                  Fluttertoast.showToast(
-                                      msg: snapshot.data[index].name +
-                                          "\nAdded to Cart",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.SNACKBAR,
-                                      timeInSecForIosWeb: 2);
-                                },
-                              ),
+                                        prefs.setString('cartList',
+                                            CartPojo.encode(cartList));
+
+                                        Fluttertoast.showToast(
+                                            msg: snapshot.data[index].name +
+                                                "\nAdded to Cart",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.SNACKBAR,
+                                            timeInSecForIosWeb: 2);
+                                      },
+                                    ),
                             ],
                           ),
                         ),

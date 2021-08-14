@@ -19,12 +19,14 @@ class OTPVerificationScreen extends StatefulWidget {
 class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   TextEditingController textEditingController = TextEditingController();
 
+  // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
 
   bool hasError = false;
   String currentText = "";
   final formKey = GlobalKey<FormState>();
   String otp = "";
+  // ignore: non_constant_identifier_names
   String mobile_no = "";
 
   @override
