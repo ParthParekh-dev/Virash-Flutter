@@ -31,8 +31,8 @@ class _WhatsappFormState extends State<WhatsappForm> {
 
   bool loading = false;
 
-  // List _cities = [];
-  // var selectedCity;
+  List _cities = [];
+  var selectedCity;
 
   List _purpose = ["Testing", "Testing 2", "Testing 3"];
   var selectedPurpose;
@@ -76,16 +76,15 @@ class _WhatsappFormState extends State<WhatsappForm> {
     return "Success";
   }
 
-  // Future<String> fetchCities() async {
-  //   final url = "https://virashtechnologies.com/unique/api/cities.php";
-  //   var res = await get(Uri.parse(url));
-  //   final resBody = jsonDecode(res.body) as List;
-  //   // _cities = resBody;
-  //   // setState(() {
-  //   //   _cities = resBody;
-  //   // });
-  //   return "Success";
-  // }
+  Future<String> fetchCities() async {
+    final url = "https://virashtechnologies.com/unique/api/cities.php";
+    var res = await get(Uri.parse(url));
+    final resBody = jsonDecode(res.body) as List;
+    setState(() {
+      _cities = resBody;
+    });
+    return "Success";
+  }
 
   void submitData() async {
     if (name.text.isEmpty) {
@@ -136,6 +135,12 @@ class _WhatsappFormState extends State<WhatsappForm> {
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.SNACKBAR,
           timeInSecForIosWeb: 2);
+    } else if (selectedCity == null) {
+      Fluttertoast.showToast(
+          msg: "Please Select Your City!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          timeInSecForIosWeb: 2);
     } else if (selectedPurpose == null) {
       Fluttertoast.showToast(
           msg: "Please Select Your Purpose!",
@@ -158,7 +163,7 @@ class _WhatsappFormState extends State<WhatsappForm> {
         "exam": "$selectedExam",
         "attempt": "$selectedAttempt",
         "gender": selectedGender,
-        "city": "Mumbai",
+        "city": "$selectedCity",
         "purpose": selectedPurpose
       };
       var res = await post(
@@ -179,6 +184,7 @@ class _WhatsappFormState extends State<WhatsappForm> {
           selectedCourse = null;
           selectedExam = null;
           selectedAttempt = null;
+          selectedCity = null;
           selectedPurpose = null;
         });
       }
@@ -207,7 +213,7 @@ class _WhatsappFormState extends State<WhatsappForm> {
     super.initState();
     fetchCourse();
     fetchAttempts();
-    // fetchCities();
+    fetchCities();
   }
 
   @override
@@ -446,6 +452,43 @@ class _WhatsappFormState extends State<WhatsappForm> {
                       onChanged: (int? value) {
                         setState(() {
                           selectedAttempt = value ?? 0;
+                        });
+                      },
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 14.0),
+                    margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.black.withOpacity(0.6), width: 1),
+                        borderRadius: BorderRadius.circular(4)),
+                    child: DropdownButton<int>(
+                      isExpanded: true,
+                      value: selectedCity,
+                      hint: Text(
+                        "Select City",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      items: _cities.map(
+                        (city) {
+                          return DropdownMenuItem(
+                            child: Text(
+                              city['name'],
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                color: Colors.black,
+                              ),
+                            ),
+                            value: city['id'] as int,
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (int? value) {
+                        setState(() {
+                          selectedCity = value ?? 0;
                         });
                       },
                     ),
