@@ -261,6 +261,10 @@ class _ShowCartState extends State<ShowCart> {
         hideLoader();
         openRazorpay();
       }
+    } else {
+      hideLoader();
+      Fluttertoast.showToast(
+          msg: "saveOrder.php != 200", toastLength: Toast.LENGTH_LONG);
     }
   }
 
