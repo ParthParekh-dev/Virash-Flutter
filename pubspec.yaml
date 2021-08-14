@@ -37,6 +37,7 @@ dependencies:
   pin_code_fields: ^7.3.0
   flutter_cached_pdfview: any
   provider: ^5.0.0
+  razorpay_flutter: ^1.2.7
 
 dev_dependencies:
   flutter_test:

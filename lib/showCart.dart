@@ -1,7 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_virash/paymentSuccess.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cartDataType.dart';
@@ -18,11 +22,74 @@ class _ShowCartState extends State<ShowCart> {
   List<CartPojo> cartList = [];
   late SharedPreferences prefs;
   double cartTotal = 0.0;
+  late String order_id;
+  late Razorpay razorpay;
+  Widget loginChild = PaymentButton();
 
   @override
   void initState() {
     super.initState();
+    razorpay = new Razorpay();
+    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+
     _loadCounter();
+  }
+
+  void showLoader() {
+    setState(() {
+      loginChild = Spinner();
+    });
+  }
+
+  void hideLoader() {
+    setState(() {
+      loginChild = PaymentButton();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    razorpay.clear();
+  }
+
+  void openRazorpay() {
+    var options = {
+      'key': 'rzp_test_qSWt4ArR6JPRSE',
+      'amount': cartTotal.toInt() * 100,
+      'name': 'Unique',
+      'description': 'Commerce Courses',
+      'prefill': {
+        'contact': prefs.getString('mobile').toString(),
+        'email': prefs.getString('email').toString()
+      }
+    };
+
+    try {
+      razorpay.open(options);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    Fluttertoast.showToast(
+        msg: "SUCCESS: " + response.paymentId!, toastLength: Toast.LENGTH_LONG);
+    paymentFinal(response.paymentId!.toString());
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    Fluttertoast.showToast(
+        msg: "ERROR: " + response.code.toString() + " - " + response.message!,
+        toastLength: Toast.LENGTH_SHORT);
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    Fluttertoast.showToast(
+        msg: "EXTERNAL_WALLET: " + response.walletName!,
+        toastLength: Toast.LENGTH_SHORT);
   }
 
   _loadCounter() async {
@@ -69,7 +136,7 @@ class _ShowCartState extends State<ShowCart> {
           )
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
           ListView.builder(
             scrollDirection: Axis.vertical,
@@ -137,20 +204,29 @@ class _ShowCartState extends State<ShowCart> {
               }
             },
           ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text('Total Amount : $cartTotal'),
-                  ElevatedButton(
-                    onPressed: () => {submitCart()},
-                    child: Text('Proceed to Pay'),
+          Row(
+            children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    color: Colors.blue,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text('Total Amount : $cartTotal'),
+                        GestureDetector(
+                          onTap: () {
+                            submitCart();
+                          },
+                          child: loginChild,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           )
         ],
       ),
@@ -158,6 +234,7 @@ class _ShowCartState extends State<ShowCart> {
   }
 
   submitCart() async {
+    showLoader();
     List checkoutList = [];
     var u = cartList;
 
@@ -193,5 +270,78 @@ class _ShowCartState extends State<ShowCart> {
       body: jsonEncode(checkoutList),
     );
     print(response.body);
+    if (response.statusCode == 200) {
+      var success = (json.decode(response.body)[0]['success']).toString();
+      order_id = (json.decode(response.body)[0]['order_id']).toString();
+      if (success == "1") {
+        hideLoader();
+        openRazorpay();
+      }
+    }
+  }
+
+  paymentFinal(String paymentId) async {
+    showLoader();
+    Response response = await post(
+      Uri.parse('https://virashtechnologies.com/unique/api/payment.php'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode([
+        {
+          "pg_payment_id": paymentId,
+          "amount": cartTotal,
+          "payment_status": "Success",
+          "amount_status": "Paid",
+          "mode_of_payment": "Online",
+          "mobile_number": prefs.getString('mobile'),
+          "order_id": order_id,
+          "email": prefs.getString('email')
+        }
+      ]),
+    );
+    if (response.statusCode == 200) {
+      print(response.body);
+      prefs.setString('cartList', CartPojo.encode([]));
+      hideLoader();
+      Navigator.pushNamedAndRemoveUntil(
+          context, PaymentSuccess.route, (r) => false);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Payment.php != 200", toastLength: Toast.LENGTH_LONG);
+      hideLoader();
+    }
+  }
+}
+
+class PaymentButton extends StatelessWidget {
+  const PaymentButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Text(
+        "Proceed to Payment",
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+}
+
+class Spinner extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Center(
+        child: SpinKitCubeGrid(
+          color: Color(0xFFFF7801),
+          size: 50.0,
+        ),
+      ),
+    );
   }
 }

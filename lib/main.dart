@@ -8,6 +8,7 @@ import 'package:flutter_virash/examStrategy.dart';
 import 'package:flutter_virash/liveSession.dart';
 import 'package:flutter_virash/newUserRegistration.dart';
 import 'package:flutter_virash/objectiveTest.dart';
+import 'package:flutter_virash/paymentSuccess.dart';
 import 'package:flutter_virash/pdfViewer.dart';
 import 'package:flutter_virash/productList.dart';
 import 'package:flutter_virash/providers/cart_provider.dart';
@@ -62,7 +63,8 @@ main() async {
         ChapterList.route: (context) => ChapterList(),
         PdfViewer.route: (context) => PdfViewer(),
         StrategyExamList.route: (context) => StrategyExamList(),
-        ExamStrategy.route: (context) => ExamStrategy()
+        ExamStrategy.route: (context) => ExamStrategy(),
+        PaymentSuccess.route: (context) => PaymentSuccess()
       },
     ),
   ));
