@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_virash/productList.dart';
-import 'package:flutter_virash/showCart.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'homePage.dart';
+import 'productList.dart';
 
 class ShopCourse extends StatefulWidget {
   static var route = '/shopCourse';
@@ -16,29 +18,32 @@ class ShopCourse extends StatefulWidget {
 }
 
 class _ShopCourseState extends State<ShopCourse> {
-  Future<List<Courses>> _getUsers() async {
+  late SharedPreferences prefs;
+
+  Future<List<Exams>> _getExams() async {
+    prefs = await SharedPreferences.getInstance();
+
     var response = await post(
-      Uri.parse('https://chickensmood.com/api/category.php'),
+      Uri.parse('https://virashtechnologies.com/unique/api/exam.php'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode([
-        {"mobile_number": "none", "token": "none"}
+        {"course_id": prefs.getString('course_id')}
       ]),
     );
     var jsonData = json.decode(response.body);
 
-    var listUser = jsonData;
+    var listExams = jsonData;
 
-    List<Courses> users = [];
+    List<Exams> users = [];
 
-    var u = listUser;
+    var u = listExams;
 
-    for (int i = 0; i <= listUser.length - 1; i++) {
-      var name = u[i]['category_name'];
-      var id = u[i]['cat_id'].toString();
-      var pic = "https://chickensmood.com/api/" + u[i]['category_photo'];
-      Courses user = Courses(id, name, pic);
+    for (int i = 0; i <= listExams.length - 1; i++) {
+      var name = u[i]['exam_name'];
+      var id = u[i]['exam_id'].toString();
+      Exams user = Exams(id, name);
 
       users.add(user);
     }
@@ -50,19 +55,20 @@ class _ShopCourseState extends State<ShopCourse> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All courses'),
+        title: Text('All Exams'),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, ShowCart.route);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HomePage.route, (r) => false);
             },
-            icon: Icon(Icons.shopping_cart_rounded),
+            icon: Icon(Icons.home),
           ),
         ],
       ),
       body: Container(
         child: FutureBuilder(
-          future: _getUsers(),
+          future: _getExams(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
               return Container(
@@ -83,14 +89,10 @@ class _ShopCourseState extends State<ShopCourse> {
                         padding: const EdgeInsets.all(5.0),
                         child: ListTile(
                           onTap: () {
+                            print(snapshot.data[index].id);
                             Navigator.pushNamed(context, ProductList.route,
                                 arguments: snapshot.data[index].id);
                           },
-                          leading: CircleAvatar(
-                            radius: 40,
-                            backgroundImage:
-                                NetworkImage(snapshot.data[index].avatar),
-                          ),
                           title: Text(
                             snapshot.data[index].name,
                             style: TextStyle(
@@ -119,10 +121,9 @@ class _ShopCourseState extends State<ShopCourse> {
   }
 }
 
-class Courses {
+class Exams {
   final String id;
   final String name;
-  final String avatar;
 
-  Courses(this.id, this.name, this.avatar);
+  Exams(this.id, this.name);
 }

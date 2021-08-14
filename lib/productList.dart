@@ -6,7 +6,6 @@ import 'package:flutter_virash/cartDataType.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'showCart.dart';
 
 class ProductList extends StatefulWidget {
@@ -42,22 +41,18 @@ class _ProductListState extends State<ProductList> {
 
   Future<List<ProductPOJO>> _getProducts(String catId) async {
     var response = await post(
-      Uri.parse('https://chickensmood.com/api/product.php'),
+      Uri.parse('https://virashtechnologies.com/unique/api/product.php'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode([
-        {
-          "mobile_number": "none",
-          "token": "none",
-          "product_type": "none",
-          "category_id": catId
-        }
+        {"exam_id": "5"}
       ]),
     );
     var jsonData = json.decode(response.body);
 
     var listProducts = jsonData;
+    print(listProducts.length);
 
     List<ProductPOJO> products = [];
 
@@ -65,10 +60,10 @@ class _ProductListState extends State<ProductList> {
 
     for (int i = 0; i <= listProducts.length - 1; i++) {
       var name = u[i]['product_name'];
-      var id = u[i]['product_id'];
-      var pic = "https://chickensmood.com/api/" + u[i]['product_image'];
-      var mrp = u[i]['mrp'];
-      ProductPOJO user = ProductPOJO(id, name, pic, mrp);
+      var id = u[i]['product_id'].toString();
+      var image = u[i]['product_image'].toString();
+      var mrp = u[i]['mrp'].toString();
+      ProductPOJO user = ProductPOJO(id, name, image, mrp);
 
       products.add(user);
     }
@@ -82,7 +77,7 @@ class _ProductListState extends State<ProductList> {
     var categoryId = args.toString();
 
     return Scaffold(
-      appBar: AppBar(title: Text('All courses'), actions: <Widget>[
+      appBar: AppBar(title: Text('All Products'), actions: <Widget>[
         new Padding(
           padding: const EdgeInsets.all(10.0),
           child: Container(
