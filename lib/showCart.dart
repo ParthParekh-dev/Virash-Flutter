@@ -59,7 +59,7 @@ class _ShowCartState extends State<ShowCart> {
   void openRazorpay() {
     var options = {
       'key': 'rzp_test_qSWt4ArR6JPRSE',
-      'amount': context.watch<CartProvider>().cartTotal.toInt() * 100,
+      'amount': context.read<CartProvider>().cartTotal.toInt() * 100,
       'name': 'Unique',
       'description': 'Commerce Courses',
       'prefill': {
@@ -103,6 +103,7 @@ class _ShowCartState extends State<ShowCart> {
   @override
   Widget build(BuildContext context) {
     final cartList = context.watch<CartProvider>().cartList;
+    final cartTotal = context.watch<CartProvider>().cartTotal;
     return Scaffold(
       appBar: AppBar(
         title: Text('Cart'),
@@ -197,8 +198,7 @@ class _ShowCartState extends State<ShowCart> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
-                            'Total Amount : ${context.watch<CartProvider>().cartTotal}'),
+                        Text('Total Amount : $cartTotal'),
                         GestureDetector(
                           onTap: () {
                             submitCart();
@@ -220,7 +220,7 @@ class _ShowCartState extends State<ShowCart> {
   submitCart() async {
     showLoader();
     List checkoutList = [];
-    var u = context.watch<CartProvider>().cartList;
+    var u = context.read<CartProvider>().cartList;
 
     for (int i = 0; i <= u.length - 1; i++) {
       Map<String, String> map1 = {
@@ -234,7 +234,7 @@ class _ShowCartState extends State<ShowCart> {
         "sub_total": "",
         "discount": "",
         "shipping_charges": "0",
-        "order_amount": context.watch<CartProvider>().cartTotal.toString(),
+        "order_amount": context.read<CartProvider>().cartTotal.toString(),
         "expected_delivery": "",
         "geo_latitude": "",
         "geo_longitude": "",
@@ -274,7 +274,7 @@ class _ShowCartState extends State<ShowCart> {
       body: jsonEncode([
         {
           "pg_payment_id": paymentId,
-          "amount": context.watch<CartProvider>().cartTotal,
+          "amount": context.read<CartProvider>().cartTotal,
           "payment_status": "Success",
           "amount_status": "Paid",
           "mode_of_payment": "Online",
