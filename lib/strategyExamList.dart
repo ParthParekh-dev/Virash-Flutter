@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/examStrategy.dart';
-import 'package:flutter_virash/subjectList.dart';
+// import 'package:flutter_virash/subjectList.dart';
 import 'package:http/http.dart';
 import 'dart:async';
 import 'dart:convert';
