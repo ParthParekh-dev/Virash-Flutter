@@ -5,6 +5,7 @@ import 'package:flutter_virash/subjectList.dart';
 import 'package:http/http.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'animationWidgets.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,6 +20,7 @@ class ExamList extends StatefulWidget {
 
 class _ExamListState extends State<ExamList> {
   late SharedPreferences prefs;
+  var count = 0;
 
   Future<List<Exams>> _getExams() async {
     prefs = await SharedPreferences.getInstance();
@@ -47,6 +49,8 @@ class _ExamListState extends State<ExamList> {
 
       users.add(user);
     }
+
+    count = users.length;
 
     return users;
   }
@@ -80,39 +84,43 @@ class _ExamListState extends State<ExamList> {
                 ),
               );
             } else {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: ListTile(
-                          onTap: () {
-                            print(snapshot.data[index].id);
-                            Navigator.pushNamed(context, SubjectList.route,
-                                arguments: snapshot.data[index].id);
-                          },
-                          title: Text(
-                            snapshot.data[index].name,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
+              if (count == 0) {
+                return AnimationWidgets().noData;
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: ListTile(
+                            onTap: () {
+                              print(snapshot.data[index].id);
+                              Navigator.pushNamed(context, SubjectList.route,
+                                  arguments: snapshot.data[index].id);
+                            },
+                            title: Text(
+                              snapshot.data[index].name,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 30),
-                        child: Divider(
-                          thickness: 1,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 30),
+                          child: Divider(
+                            thickness: 1,
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              );
+                      ],
+                    );
+                  },
+                );
+              }
             }
           },
         ),
