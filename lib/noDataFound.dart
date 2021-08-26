@@ -5,7 +5,9 @@ class NoDataFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [Lottie.asset('assets/nodata.json')],
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [Lottie.asset('assets/nodata.json'), Text('No Data Found')],
     );
   }
 }

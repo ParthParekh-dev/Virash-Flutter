@@ -1,8 +1,8 @@
 package com.vti.flutter_virash
+
+import io.flutter.embedding.android.FlutterActivity
 import android.view.WindowManager.LayoutParams
-import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.embedding.android.FlutterActivity
 
 class MainActivity: FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
