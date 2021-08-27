@@ -48,14 +48,9 @@ class _HomePageState extends State<HomePage> {
                           Navigator.pushNamed(context, LiveSession.route);
                         },
                         child: MainCard(
-                          title: 'Live Sessions',
-                          subTitle: '7k+',
-                          childIcon: FaIcon(
-                            FontAwesomeIcons.ggCircle,
-                            size: 40,
-                            color: Color(0xFFFF7801),
-                          ),
-                        ),
+                            title: 'Live Sessions',
+                            subTitle: '7k+',
+                            childIcon: FontAwesomeIcons.ggCircle),
                       ),
                     ),
                     Expanded(
@@ -65,14 +60,9 @@ class _HomePageState extends State<HomePage> {
                           Navigator.pushNamed(context, ShopCourse.route);
                         },
                         child: MainCard(
-                          title: 'All Courses',
-                          subTitle: '50+',
-                          childIcon: FaIcon(
-                            FontAwesomeIcons.graduationCap,
-                            size: 40,
-                            color: Color(0xFFFF7801),
-                          ),
-                        ),
+                            title: 'All Courses',
+                            subTitle: '50+',
+                            childIcon: FontAwesomeIcons.graduationCap),
                       ),
                     ),
                   ],
@@ -90,14 +80,9 @@ class _HomePageState extends State<HomePage> {
                           Navigator.pushNamed(context, ExamList.route);
                         },
                         child: MainCard(
-                          title: 'Study Material',
-                          subTitle: '14k+',
-                          childIcon: FaIcon(
-                            FontAwesomeIcons.leanpub,
-                            size: 40,
-                            color: Color(0xFFFF7801),
-                          ),
-                        ),
+                            title: 'Study Material',
+                            subTitle: '14k+',
+                            childIcon: FontAwesomeIcons.leanpub),
                       ),
                     ),
                     Expanded(
@@ -107,14 +92,9 @@ class _HomePageState extends State<HomePage> {
                           Navigator.pushNamed(context, TestSeries.route);
                         },
                         child: MainCard(
-                          title: 'Test Series',
-                          subTitle: '700+',
-                          childIcon: FaIcon(
-                            FontAwesomeIcons.joomla,
-                            size: 40,
-                            color: Color(0xFFFF7801),
-                          ),
-                        ),
+                            title: 'Test Series',
+                            subTitle: '700+',
+                            childIcon: FontAwesomeIcons.joomla),
                       ),
                     ),
                   ],
@@ -132,14 +112,9 @@ class _HomePageState extends State<HomePage> {
                             Navigator.pushNamed(context, WhatsappForm.route);
                           },
                           child: MainCard(
-                            title: 'Whatsapp Groups',
-                            subTitle: '70+',
-                            childIcon: FaIcon(
-                              FontAwesomeIcons.whatsapp,
-                              size: 40,
-                              color: Color(0xFFFF7801),
-                            ),
-                          ),
+                              title: 'Whatsapp Groups',
+                              subTitle: '70+',
+                              childIcon: FontAwesomeIcons.whatsapp),
                         )),
                     Expanded(
                       flex: 1,
@@ -148,14 +123,9 @@ class _HomePageState extends State<HomePage> {
                           Navigator.pushNamed(context, StrategyExamList.route);
                         },
                         child: MainCard(
-                          title: 'Exam Strategy',
-                          subTitle: '14k+',
-                          childIcon: FaIcon(
-                            FontAwesomeIcons.empire,
-                            size: 40,
-                            color: Color(0xFFFF7801),
-                          ),
-                        ),
+                            title: 'Exam Strategy',
+                            subTitle: '14k+',
+                            childIcon: FontAwesomeIcons.empire),
                       ),
                     ),
                   ],
@@ -173,7 +143,7 @@ class MainCard extends StatelessWidget {
   MainCard(
       {required this.childIcon, required this.title, required this.subTitle});
 
-  final Widget childIcon;
+  final IconData childIcon;
   final String title;
   final String subTitle;
 
@@ -232,7 +202,11 @@ class MainCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: IconButton(
-                  icon: childIcon,
+                  icon: FaIcon(
+                    childIcon,
+                    size: 40,
+                    color: Color(0xFFFF7801),
+                  ),
                   onPressed: () {},
                 )),
           ),
