@@ -22,234 +22,147 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Hero(
-                  tag: "HeroOne",
-                  child: Image.asset('assets/logo_unique.png'),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Hero(
+                    tag: "HeroOne",
+                    child: Image.asset('assets/logo_unique.png'),
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 0, 7.5, 25),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      flex: 1,
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context, LiveSession.route);
                         },
                         child: MainCard(
-                          cardChild: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FaIcon(
-                                  FontAwesomeIcons.ggCircle,
-                                  size: 50,
-                                  color: Color(0xFFFF7801),
-                                ),
-                                Text(
-                                  'Live Sessions',
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 16,
-                                      color: Colors.black),
-                                ),
-                              ],
-                            ),
+                          title: 'Live Sessions',
+                          subTitle: '7k+',
+                          childIcon: FaIcon(
+                            FontAwesomeIcons.ggCircle,
+                            size: 40,
+                            color: Color(0xFFFF7801),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(7.5, 0, 15, 25),
+                    Expanded(
+                      flex: 1,
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context, ShopCourse.route);
                         },
                         child: MainCard(
-                          cardChild: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FaIcon(
-                                  FontAwesomeIcons.graduationCap,
-                                  size: 50,
-                                  color: Color(0xFFFF7801),
-                                ),
-                                Text(
-                                  'All Courses',
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 16,
-                                      color: Colors.black),
-                                ),
-                              ],
-                            ),
+                          title: 'All Courses',
+                          subTitle: '50+',
+                          childIcon: FaIcon(
+                            FontAwesomeIcons.graduationCap,
+                            size: 40,
+                            color: Color(0xFFFF7801),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 0, 7.5, 25),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      flex: 1,
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context, ExamList.route);
                         },
                         child: MainCard(
-                          cardChild: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FaIcon(
-                                  FontAwesomeIcons.leanpub,
-                                  size: 50,
-                                  color: Color(0xFFFF7801),
-                                ),
-                                Text(
-                                  'Study Material',
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 16,
-                                      color: Colors.black),
-                                ),
-                              ],
-                            ),
+                          title: 'Study Material',
+                          subTitle: '14k+',
+                          childIcon: FaIcon(
+                            FontAwesomeIcons.leanpub,
+                            size: 40,
+                            color: Color(0xFFFF7801),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(7.5, 0, 15, 25),
+                    Expanded(
+                      flex: 1,
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context, TestSeries.route);
                         },
                         child: MainCard(
-                          cardChild: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FaIcon(
-                                  FontAwesomeIcons.joomla,
-                                  size: 50,
-                                  color: Color(0xFFFF7801),
-                                ),
-                                Text(
-                                  'Test Series',
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 16,
-                                      color: Colors.black),
-                                ),
-                              ],
-                            ),
+                          title: 'Test Series',
+                          subTitle: '700+',
+                          childIcon: FaIcon(
+                            FontAwesomeIcons.joomla,
+                            size: 40,
+                            color: Color(0xFFFF7801),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 7.5, 25),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                        flex: 1,
                         child: GestureDetector(
                           onTap: () {
                             Navigator.pushNamed(context, WhatsappForm.route);
                           },
                           child: MainCard(
-                            cardChild: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  FaIcon(
-                                    FontAwesomeIcons.whatsapp,
-                                    size: 50,
-                                    color: Color(0xFFFF7801),
-                                  ),
-                                  Text(
-                                    'Whatsapp Groups',
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 16,
-                                        color: Colors.black),
-                                  ),
-                                ],
-                              ),
+                            title: 'Whatsapp Groups',
+                            subTitle: '70+',
+                            childIcon: FaIcon(
+                              FontAwesomeIcons.whatsapp,
+                              size: 40,
+                              color: Color(0xFFFF7801),
                             ),
                           ),
-                        ),
-                      )),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(7.5, 0, 15, 25),
+                        )),
+                    Expanded(
+                      flex: 1,
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context, StrategyExamList.route);
                         },
                         child: MainCard(
-                          cardChild: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FaIcon(
-                                  FontAwesomeIcons.empire,
-                                  size: 50,
-                                  color: Color(0xFFFF7801),
-                                ),
-                                Text(
-                                  'Exam Strategy',
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 16,
-                                      color: Colors.black),
-                                ),
-                              ],
-                            ),
+                          title: 'Exam Strategy',
+                          subTitle: '14k+',
+                          childIcon: FaIcon(
+                            FontAwesomeIcons.empire,
+                            size: 40,
+                            color: Color(0xFFFF7801),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -257,19 +170,74 @@ class _HomePageState extends State<HomePage> {
 }
 
 class MainCard extends StatelessWidget {
-  MainCard({required this.cardChild});
+  MainCard(
+      {required this.childIcon, required this.title, required this.subTitle});
 
-  final Widget cardChild;
+  final Widget childIcon;
+  final String title;
+  final String subTitle;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Color(0xFFFFFFFF),
-      elevation: 20,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: cardChild,
+    return Stack(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height * 0.20,
+          width: MediaQuery.of(context).size.width * 0.45,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Card(
+              color: Color(0xFFFFFFFF),
+              elevation: 20,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                          fontFamily: 'Poppins-SemiBold',
+                          fontSize: 16,
+                          color: Colors.black),
+                    ),
+                    Text(
+                      subTitle,
+                      style: TextStyle(
+                          fontFamily: 'Poppins-SemiBold',
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 130,
+          left: 110,
+          child: Container(
+            height: 80,
+            width: 80,
+            child: Card(
+                color: Color(0xFFFFFFFF),
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: IconButton(
+                  icon: childIcon,
+                  onPressed: () {},
+                )),
+          ),
+        ),
+      ],
     );
   }
 }
