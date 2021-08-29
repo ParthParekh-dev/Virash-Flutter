@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_virash/homePage.dart';
+import 'package:lottie/lottie.dart';
 
 class PaymentSuccess extends StatelessWidget {
   static var route = '/paymentSuccess';
@@ -11,13 +12,13 @@ class PaymentSuccess extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Payment Successfull'),
-        MaterialButton(
+        Lottie.asset('assets/paymentdone.json'),
+        ElevatedButton(
           onPressed: () {
             Navigator.pushNamedAndRemoveUntil(
                 context, HomePage.route, (r) => false);
           },
-          child: Text('OK'),
+          child: Text('Okay'),
         )
       ],
     );

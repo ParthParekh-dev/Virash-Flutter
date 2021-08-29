@@ -8,6 +8,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'animationWidgets.dart';
 import 'homePage.dart';
 
 class ChapterList extends StatefulWidget {
@@ -19,6 +20,7 @@ class ChapterList extends StatefulWidget {
 
 class _ChapterListState extends State<ChapterList> {
   late SharedPreferences prefs;
+  var count = 0;
 
   Future<List<Chapter>> _getChapter(String subjectId) async {
     prefs = await SharedPreferences.getInstance();
@@ -48,6 +50,8 @@ class _ChapterListState extends State<ChapterList> {
 
       users.add(user);
     }
+
+    count = users.length;
 
     return users;
   }
@@ -84,39 +88,43 @@ class _ChapterListState extends State<ChapterList> {
                 ),
               );
             } else {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: ListTile(
-                          onTap: () {
-                            // print(snapshot.data[index].id);
-                            Navigator.pushNamed(context, StudyMaterial.route,
-                                arguments: snapshot.data[index].id);
-                          },
-                          title: Text(
-                            snapshot.data[index].name,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
+              if (count == 0) {
+                return AnimationWidgets().noData;
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: ListTile(
+                            onTap: () {
+                              // print(snapshot.data[index].id);
+                              Navigator.pushNamed(context, StudyMaterial.route,
+                                  arguments: snapshot.data[index].id);
+                            },
+                            title: Text(
+                              snapshot.data[index].name,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 30),
-                        child: Divider(
-                          thickness: 1,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 30),
+                          child: Divider(
+                            thickness: 1,
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              );
+                      ],
+                    );
+                  },
+                );
+              }
             }
           },
         ),

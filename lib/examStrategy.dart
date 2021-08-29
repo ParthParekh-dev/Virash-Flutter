@@ -7,6 +7,7 @@ import 'package:flutter_virash/pdfViewer.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'animationWidgets.dart';
 import 'homePage.dart';
 
 class ExamStrategy extends StatefulWidget {
@@ -18,6 +19,7 @@ class ExamStrategy extends StatefulWidget {
 
 class _ExamStrategyState extends State<ExamStrategy> {
   late SharedPreferences prefs;
+  var count = 0;
 
   Future<List<PdfDetails>> _getStrategy(String examId) async {
     prefs = await SharedPreferences.getInstance();
@@ -54,6 +56,8 @@ class _ExamStrategyState extends State<ExamStrategy> {
       users.add(user);
     }
 
+    count = users.length;
+
     return users;
   }
 
@@ -89,43 +93,47 @@ class _ExamStrategyState extends State<ExamStrategy> {
                 ),
               );
             } else {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: ListTile(
-                          onTap: () {
-                            Navigator.pushNamed(context, PdfViewer.route,
-                                arguments: snapshot.data[index].attachment);
-                          },
-                          leading: CircleAvatar(
-                            radius: 40,
-                            backgroundImage:
-                                NetworkImage(snapshot.data[index].avatar),
-                          ),
-                          title: Text(
-                            snapshot.data[index].title,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
+              if (count == 0) {
+                return AnimationWidgets().noData;
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.pushNamed(context, PdfViewer.route,
+                                  arguments: snapshot.data[index].attachment);
+                            },
+                            leading: CircleAvatar(
+                              radius: 40,
+                              backgroundImage:
+                                  NetworkImage(snapshot.data[index].avatar),
+                            ),
+                            title: Text(
+                              snapshot.data[index].title,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 30),
-                        child: Divider(
-                          thickness: 1,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 30),
+                          child: Divider(
+                            thickness: 1,
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              );
+                      ],
+                    );
+                  },
+                );
+              }
             }
           },
         ),

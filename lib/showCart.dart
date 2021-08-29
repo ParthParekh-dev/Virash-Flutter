@@ -115,8 +115,14 @@ class _ShowCartState extends State<ShowCart> {
               prefs.setString('cartList', CartPojo.encode(cartList));
             },
             child: Row(children: [
-              Text("Clear All"),
-              Icon(Icons.delete_forever),
+              Text(
+                "Clear All",
+                style: TextStyle(color: Colors.white),
+              ),
+              Icon(
+                Icons.delete_forever,
+                color: Colors.white,
+              ),
             ]),
           )
         ],
@@ -128,64 +134,55 @@ class _ShowCartState extends State<ShowCart> {
             shrinkWrap: true,
             itemCount: cartList.length,
             itemBuilder: (BuildContext context, int index) {
-              if (cartList.isEmpty) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('No Items in Cart'),
-                  ],
-                );
-              } else {
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 40,
-                          backgroundImage: NetworkImage(cartList[index].avatar),
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        radius: 40,
+                        backgroundImage: NetworkImage(cartList[index].avatar),
+                      ),
+                      title: Text(
+                        cartList[index].name,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
                         ),
-                        title: Text(
-                          cartList[index].name,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
+                      ),
+                      subtitle: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "₹  " + cartList[index].mrp,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                        subtitle: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "₹  " + cartList[index].mrp,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                context
-                                    .read<CartProvider>()
-                                    .removeFromCart(cartList[index].id);
-                                prefs.setString(
-                                    'cartList', CartPojo.encode(cartList));
-                              },
-                              child: Text('Remove'),
-                            ),
-                          ],
-                        ),
+                          ElevatedButton(
+                            onPressed: () {
+                              context
+                                  .read<CartProvider>()
+                                  .removeFromCart(cartList[index].id);
+                              prefs.setString(
+                                  'cartList', CartPojo.encode(cartList));
+                            },
+                            child: Text('Remove'),
+                          ),
+                        ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 30),
-                      child: Divider(
-                        thickness: 1,
-                      ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
+                    child: Divider(
+                      thickness: 1,
                     ),
-                  ],
-                );
-              }
+                  ),
+                ],
+              );
             },
           ),
           Row(

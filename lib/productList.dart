@@ -6,6 +6,7 @@ import 'package:flutter_virash/providers/cart_provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'animationWidgets.dart';
 import 'showCart.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,7 @@ class ProductList extends StatefulWidget {
 class _ProductListState extends State<ProductList> {
   String cartString = "";
   late SharedPreferences prefs;
+  var count = 0;
 
   @override
   void initState() {
@@ -63,6 +65,8 @@ class _ProductListState extends State<ProductList> {
 
       products.add(user);
     }
+
+    count = products.length;
 
     return products;
   }
@@ -136,100 +140,106 @@ class _ProductListState extends State<ProductList> {
                 ),
               );
             } else {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: ListTile(
-                          onTap: () {
-                            print(categoryId + " " + snapshot.data[index].id);
-                          },
-                          leading: CircleAvatar(
-                            radius: 40,
-                            backgroundImage:
-                                NetworkImage(snapshot.data[index].avatar),
-                          ),
-                          title: Text(
-                            snapshot.data[index].name,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
+              if (count == 0) {
+                return AnimationWidgets().noData;
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: ListTile(
+                            onTap: () {
+                              print(categoryId + " " + snapshot.data[index].id);
+                            },
+                            leading: CircleAvatar(
+                              radius: 40,
+                              backgroundImage:
+                                  NetworkImage(snapshot.data[index].avatar),
+                            ),
+                            title: Text(
+                              snapshot.data[index].name,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                            subtitle: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "₹  " + snapshot.data[index].mrp,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                cartList
+                                        .map((e) => e.id)
+                                        .contains(snapshot.data[index].id)
+                                    ? ElevatedButton(
+                                        child: Text("Remove"),
+                                        onPressed: () {
+                                          context
+                                              .read<CartProvider>()
+                                              .removeFromCart(
+                                                  snapshot.data[index].id);
+                                          prefs.setString('cartList',
+                                              CartPojo.encode(cartList));
+
+                                          Fluttertoast.showToast(
+                                              msg: snapshot.data[index].name +
+                                                  "\nRemoved from Cart",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.SNACKBAR,
+                                              timeInSecForIosWeb: 2);
+                                        },
+                                      )
+                                    : ElevatedButton(
+                                        child: Text("Add To Cart"),
+                                        onPressed: () {
+                                          context
+                                              .read<CartProvider>()
+                                              .addToCart(CartPojo(
+                                                  avatar: snapshot
+                                                      .data[index].avatar,
+                                                  category: categoryId,
+                                                  mrp: snapshot.data[index].mrp,
+                                                  name:
+                                                      snapshot.data[index].name,
+                                                  id: snapshot.data[index].id));
+
+                                          print(cartList);
+
+                                          prefs.setString('cartList',
+                                              CartPojo.encode(cartList));
+
+                                          Fluttertoast.showToast(
+                                              msg: snapshot.data[index].name +
+                                                  "\nAdded to Cart",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.SNACKBAR,
+                                              timeInSecForIosWeb: 2);
+                                        },
+                                      ),
+                              ],
                             ),
                           ),
-                          subtitle: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "₹  " + snapshot.data[index].mrp,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              cartList
-                                      .map((e) => e.id)
-                                      .contains(snapshot.data[index].id)
-                                  ? ElevatedButton(
-                                      child: Text("Remove"),
-                                      onPressed: () {
-                                        context
-                                            .read<CartProvider>()
-                                            .removeFromCart(
-                                                snapshot.data[index].id);
-                                        prefs.setString('cartList',
-                                            CartPojo.encode(cartList));
-
-                                        Fluttertoast.showToast(
-                                            msg: snapshot.data[index].name +
-                                                "\nRemoved from Cart",
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.SNACKBAR,
-                                            timeInSecForIosWeb: 2);
-                                      },
-                                    )
-                                  : ElevatedButton(
-                                      child: Text("Add To Cart"),
-                                      onPressed: () {
-                                        context.read<CartProvider>().addToCart(
-                                            CartPojo(
-                                                avatar:
-                                                    snapshot.data[index].avatar,
-                                                category: categoryId,
-                                                mrp: snapshot.data[index].mrp,
-                                                name: snapshot.data[index].name,
-                                                id: snapshot.data[index].id));
-
-                                        print(cartList);
-
-                                        prefs.setString('cartList',
-                                            CartPojo.encode(cartList));
-
-                                        Fluttertoast.showToast(
-                                            msg: snapshot.data[index].name +
-                                                "\nAdded to Cart",
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.SNACKBAR,
-                                            timeInSecForIosWeb: 2);
-                                      },
-                                    ),
-                            ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 30),
+                          child: Divider(
+                            thickness: 1,
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 30),
-                        child: Divider(
-                          thickness: 1,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
+                      ],
+                    );
+                  },
+                );
+              }
             }
           },
         ),
