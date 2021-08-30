@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                         child: MainCard(
                             title: 'Live Sessions',
                             subTitle: '7k+',
-                            childIcon: FontAwesomeIcons.ggCircle),
+                            childIcon: 'assets/live.png'),
                       ),
                     ),
                     Expanded(
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                         child: MainCard(
                             title: 'All Courses',
                             subTitle: '50+',
-                            childIcon: FontAwesomeIcons.graduationCap),
+                            childIcon: 'assets/course.png'),
                       ),
                     ),
                   ],
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                         child: MainCard(
                             title: 'Study Material',
                             subTitle: '14k+',
-                            childIcon: FontAwesomeIcons.leanpub),
+                            childIcon: 'assets/material.png'),
                       ),
                     ),
                     Expanded(
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                         child: MainCard(
                             title: 'Test Series',
                             subTitle: '700+',
-                            childIcon: FontAwesomeIcons.joomla),
+                            childIcon: 'assets/test.png'),
                       ),
                     ),
                   ],
@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                           child: MainCard(
                               title: 'Whatsapp Groups',
                               subTitle: '70+',
-                              childIcon: FontAwesomeIcons.whatsapp),
+                              childIcon: 'assets/whatsapp.png'),
                         )),
                     Expanded(
                       flex: 1,
@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                         child: MainCard(
                             title: 'Exam Strategy',
                             subTitle: '14k+',
-                            childIcon: FontAwesomeIcons.empire),
+                            childIcon: 'assets/strategy.png'),
                       ),
                     ),
                   ],
@@ -143,7 +143,7 @@ class MainCard extends StatelessWidget {
   MainCard(
       {required this.childIcon, required this.title, required this.subTitle});
 
-  final IconData childIcon;
+  final String childIcon;
   final String title;
   final String subTitle;
 
@@ -201,13 +201,9 @@ class MainCard extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: IconButton(
-                  icon: FaIcon(
-                    childIcon,
-                    size: 40,
-                    color: Color(0xFFFF7801),
-                  ),
-                  onPressed: () {},
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Image.asset(childIcon),
                 )),
           ),
         ),
@@ -215,3 +211,14 @@ class MainCard extends StatelessWidget {
     );
   }
 }
+
+/*
+IconButton(
+                  icon: FaIcon(
+                    childIcon,
+                    size: 40,
+                    color: Color(0xFFFF7801),
+                  ),
+                  onPressed: () {},
+                )
+ */
