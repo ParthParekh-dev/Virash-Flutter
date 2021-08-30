@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/paymentSuccess.dart';
@@ -111,8 +113,46 @@ class _ShowCartState extends State<ShowCart> {
           // ignore: deprecated_member_use
           FlatButton(
             onPressed: () {
-              context.read<CartProvider>().clearCart();
-              prefs.setString('cartList', CartPojo.encode(cartList));
+              Widget cancel = new TextButton(
+                child: Text("Cancel"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              );
+              Widget confirm = new TextButton(
+                child: Text("Clear"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  context.read<CartProvider>().clearCart();
+                  prefs.setString('cartList', CartPojo.encode(cartList));
+                },
+              );
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  if (Platform.isAndroid) {
+                    return AlertDialog(
+                      title: Text("Are You Sure?"),
+                      content: Text(
+                          "Would you like to remove all the items from your cart?"),
+                      actions: [
+                        cancel,
+                        confirm,
+                      ],
+                    );
+                  } else {
+                    return CupertinoAlertDialog(
+                      title: Text("Are You Sure?"),
+                      content: Text(
+                          "Would you like to remove all the items from your cart?"),
+                      actions: [
+                        cancel,
+                        confirm,
+                      ],
+                    );
+                  }
+                },
+              );
             },
             child: Row(children: [
               Text(
@@ -162,11 +202,49 @@ class _ShowCartState extends State<ShowCart> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              context
-                                  .read<CartProvider>()
-                                  .removeFromCart(cartList[index].id);
-                              prefs.setString(
-                                  'cartList', CartPojo.encode(cartList));
+                              Widget cancel = new TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              );
+                              Widget confirm = new TextButton(
+                                child: Text("Remove"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  context
+                                      .read<CartProvider>()
+                                      .removeFromCart(cartList[index].id);
+                                  prefs.setString(
+                                      'cartList', CartPojo.encode(cartList));
+                                },
+                              );
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  if (Platform.isAndroid) {
+                                    return AlertDialog(
+                                      title: Text("Are You Sure?"),
+                                      content: Text(
+                                          "Would you like to remove this item from your cart?"),
+                                      actions: [
+                                        cancel,
+                                        confirm,
+                                      ],
+                                    );
+                                  } else {
+                                    return CupertinoAlertDialog(
+                                      title: Text("Are You Sure?"),
+                                      content: Text(
+                                          "Would you like to remove this item from your cart?"),
+                                      actions: [
+                                        cancel,
+                                        confirm,
+                                      ],
+                                    );
+                                  }
+                                },
+                              );
                             },
                             child: Text('Remove'),
                           ),

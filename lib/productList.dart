@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/cartDataType.dart';
@@ -182,19 +184,60 @@ class _ProductListState extends State<ProductList> {
                                     ? ElevatedButton(
                                         child: Text("Remove"),
                                         onPressed: () {
-                                          context
-                                              .read<CartProvider>()
-                                              .removeFromCart(
-                                                  snapshot.data[index].id);
-                                          prefs.setString('cartList',
-                                              CartPojo.encode(cartList));
+                                          Widget cancel = new TextButton(
+                                            child: Text("Cancel"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          );
+                                          Widget confirm = new TextButton(
+                                            child: Text("Remove"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                              context
+                                                  .read<CartProvider>()
+                                                  .removeFromCart(
+                                                      snapshot.data[index].id);
+                                              prefs.setString('cartList',
+                                                  CartPojo.encode(cartList));
 
-                                          Fluttertoast.showToast(
-                                              msg: snapshot.data[index].name +
-                                                  "\nRemoved from Cart",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              gravity: ToastGravity.SNACKBAR,
-                                              timeInSecForIosWeb: 2);
+                                              Fluttertoast.showToast(
+                                                  msg: snapshot
+                                                          .data[index].name +
+                                                      "\nRemoved from Cart",
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  gravity:
+                                                      ToastGravity.SNACKBAR,
+                                                  timeInSecForIosWeb: 2);
+                                            },
+                                          );
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              if (Platform.isAndroid) {
+                                                return AlertDialog(
+                                                  title: Text("Are You Sure?"),
+                                                  content: Text(
+                                                      "Would you like to remove this item from your cart?"),
+                                                  actions: [
+                                                    cancel,
+                                                    confirm,
+                                                  ],
+                                                );
+                                              } else {
+                                                return CupertinoAlertDialog(
+                                                  title: Text("Are You Sure?"),
+                                                  content: Text(
+                                                      "Would you like to remove this item from your cart?"),
+                                                  actions: [
+                                                    cancel,
+                                                    confirm,
+                                                  ],
+                                                );
+                                              }
+                                            },
+                                          );
                                         },
                                       )
                                     : ElevatedButton(

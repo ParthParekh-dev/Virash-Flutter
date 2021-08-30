@@ -12,6 +12,7 @@ import 'package:flutter_virash/paymentSuccess.dart';
 import 'package:flutter_virash/pdfViewer.dart';
 import 'package:flutter_virash/productList.dart';
 import 'package:flutter_virash/providers/cart_provider.dart';
+import 'package:flutter_virash/providers/internet_provider.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/showCart.dart';
 import 'package:flutter_virash/studyMaterial.dart';
@@ -31,7 +32,10 @@ main() async {
   await getSharedPref();
 
   runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (_) => CartProvider())],
+    providers: [
+      ChangeNotifierProvider(create: (_) => CartProvider()),
+      ChangeNotifierProvider(create: (_) => InternetProvider())
+    ],
     child: MaterialApp(
       theme: ThemeData(
           fontFamily: 'Poppins',

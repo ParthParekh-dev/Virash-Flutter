@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_virash/animationWidgets.dart';
 import 'package:flutter_virash/examList.dart';
 import 'package:flutter_virash/liveSession.dart';
+import 'package:flutter_virash/providers/internet_provider.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/strategyExamList.dart';
 // import 'package:flutter_virash/studyMaterial.dart';
 import 'package:flutter_virash/testSeries.dart';
 import 'package:flutter_virash/whatsappForm.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   static var route = '/home';
@@ -19,120 +21,132 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    super.initState();
+    context.read<InternetProvider>().startMonitoring();
+    print(context.read<InternetProvider>().isConnected);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    bool isConnected = context.watch<InternetProvider>().isConnected;
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Hero(
-                    tag: "HeroOne",
-                    child: Image.asset('assets/logo_unique.png'),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Row(
+          child: isConnected
+              ? Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
                       flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, LiveSession.route);
-                        },
-                        child: MainCard(
-                            title: 'Live Sessions',
-                            subTitle: '7k+',
-                            childIcon: FontAwesomeIcons.ggCircle),
+                      child: Center(
+                        child: Hero(
+                          tag: "HeroOne",
+                          child: Image.asset('assets/logo_unique.png'),
+                        ),
                       ),
                     ),
                     Expanded(
                       flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, ShopCourse.route);
-                        },
-                        child: MainCard(
-                            title: 'All Courses',
-                            subTitle: '50+',
-                            childIcon: FontAwesomeIcons.graduationCap),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, LiveSession.route);
+                              },
+                              child: MainCard(
+                                  title: 'Live Sessions',
+                                  subTitle: '7k+',
+                                  childIcon: FontAwesomeIcons.ggCircle),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, ShopCourse.route);
+                              },
+                              child: MainCard(
+                                  title: 'All Courses',
+                                  subTitle: '50+',
+                                  childIcon: FontAwesomeIcons.graduationCap),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, ExamList.route);
+                              },
+                              child: MainCard(
+                                  title: 'Study Material',
+                                  subTitle: '14k+',
+                                  childIcon: FontAwesomeIcons.leanpub),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, TestSeries.route);
+                              },
+                              child: MainCard(
+                                  title: 'Test Series',
+                                  subTitle: '700+',
+                                  childIcon: FontAwesomeIcons.joomla),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, WhatsappForm.route);
+                                },
+                                child: MainCard(
+                                    title: 'Whatsapp Groups',
+                                    subTitle: '70+',
+                                    childIcon: FontAwesomeIcons.whatsapp),
+                              )),
+                          Expanded(
+                            flex: 1,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, StrategyExamList.route);
+                              },
+                              child: MainCard(
+                                  title: 'Exam Strategy',
+                                  subTitle: '14k+',
+                                  childIcon: FontAwesomeIcons.empire),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, ExamList.route);
-                        },
-                        child: MainCard(
-                            title: 'Study Material',
-                            subTitle: '14k+',
-                            childIcon: FontAwesomeIcons.leanpub),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, TestSeries.route);
-                        },
-                        child: MainCard(
-                            title: 'Test Series',
-                            subTitle: '700+',
-                            childIcon: FontAwesomeIcons.joomla),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, WhatsappForm.route);
-                          },
-                          child: MainCard(
-                              title: 'Whatsapp Groups',
-                              subTitle: '70+',
-                              childIcon: FontAwesomeIcons.whatsapp),
-                        )),
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, StrategyExamList.route);
-                        },
-                        child: MainCard(
-                            title: 'Exam Strategy',
-                            subTitle: '14k+',
-                            childIcon: FontAwesomeIcons.empire),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+                )
+              : AnimationWidgets().noInternet,
         ),
       ),
     );

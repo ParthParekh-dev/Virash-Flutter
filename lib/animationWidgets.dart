@@ -4,16 +4,13 @@ import 'package:lottie/lottie.dart';
 
 class AnimationWidgets {
   Widget noInternet = Container(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Lottie.asset('assets/nointernet.json'),
-        ElevatedButton(
-          onPressed: () {},
-          child: Text('Refresh'),
-        )
-      ],
+    child: Center(
+      child: Column(
+        children: [
+          Lottie.asset('assets/nointernet.json'),
+          Text("Check Your Internet Connection And Try Again!")
+        ],
+      ),
     ),
   );
 
