@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_virash/examList.dart';
+import 'package:flutter_virash/exitPopup.dart';
 import 'package:flutter_virash/liveSession.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/strategyExamList.dart';
@@ -20,118 +21,122 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Hero(
-                    tag: "HeroOne",
-                    child: Image.asset('assets/logo_unique.png'),
+    return WillPopScope(
+      onWillPop: () => showExitPopup(context),
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: Hero(
+                      tag: "HeroOne",
+                      child: Image.asset('assets/logo_unique.png'),
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, LiveSession.route);
-                        },
-                        child: MainCard(
-                            title: 'Live Sessions',
-                            subTitle: '7k+',
-                            childIcon: 'assets/live.png'),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, ShopCourse.route);
-                        },
-                        child: MainCard(
-                            title: 'All Courses',
-                            subTitle: '50+',
-                            childIcon: 'assets/course.png'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, ExamList.route);
-                        },
-                        child: MainCard(
-                            title: 'Study Material',
-                            subTitle: '14k+',
-                            childIcon: 'assets/material.png'),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, TestSeries.route);
-                        },
-                        child: MainCard(
-                            title: 'Test Series',
-                            subTitle: '700+',
-                            childIcon: 'assets/test.png'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
                         flex: 1,
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, WhatsappForm.route);
+                            Navigator.pushNamed(context, LiveSession.route);
                           },
                           child: MainCard(
-                              title: 'Whatsapp Groups',
-                              subTitle: '70+',
-                              childIcon: 'assets/whatsapp.png'),
-                        )),
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, StrategyExamList.route);
-                        },
-                        child: MainCard(
-                            title: 'Exam Strategy',
-                            subTitle: '14k+',
-                            childIcon: 'assets/strategy.png'),
+                              title: 'Recorded Sessions',
+                              subTitle: '7k+',
+                              childIcon: 'assets/live.png'),
+                        ),
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, ShopCourse.route);
+                          },
+                          child: MainCard(
+                              title: 'Buy Course',
+                              subTitle: '50+',
+                              childIcon: 'assets/course.png'),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, ExamList.route);
+                          },
+                          child: MainCard(
+                              title: 'Study Material',
+                              subTitle: '14k+',
+                              childIcon: 'assets/material.png'),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, TestSeries.route);
+                          },
+                          child: MainCard(
+                              title: 'Test Series',
+                              subTitle: '700+',
+                              childIcon: 'assets/test.png'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, WhatsappForm.route);
+                            },
+                            child: MainCard(
+                                title: 'Whatsapp Groups',
+                                subTitle: '70+',
+                                childIcon: 'assets/whatsapp.png'),
+                          )),
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, StrategyExamList.route);
+                          },
+                          child: MainCard(
+                              title: 'Exam Strategy',
+                              subTitle: '14k+',
+                              childIcon: 'assets/strategy.png'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vti.flutter_virash">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Unique"
         android:icon="@mipmap/launcher_icon">

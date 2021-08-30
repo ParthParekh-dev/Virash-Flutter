@@ -50,7 +50,10 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Hero(
                       tag: "HeroOne",
-                      child: Image.asset('assets/logo_unique.png'),
+                      child: Image.asset(
+                        'assets/logo_unique.png',
+                        height: MediaQuery.of(context).size.height * 0.2,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -114,25 +117,28 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: 20,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (mobile == "") {
-                          Fluttertoast.showToast(
-                              msg: 'Please enter the mobile number',
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.SNACKBAR,
-                              timeInSecForIosWeb: 2);
-                        } else {
-                          verifyUser(mobile);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFFF7801),
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(5.0),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (mobile == "") {
+                            Fluttertoast.showToast(
+                                msg: 'Please enter the mobile number',
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.SNACKBAR,
+                                timeInSecForIosWeb: 2);
+                          } else {
+                            verifyUser(mobile);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFFF7801),
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(5.0),
+                          ),
                         ),
+                        child: loginChild,
                       ),
-                      child: loginChild,
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.6,
@@ -151,23 +157,26 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 20.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, NewUserRegistration.route);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFFF7801),
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(5.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, NewUserRegistration.route);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Color(0xFFFF7801),
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(5.0),
+                            ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
-                          child: Text(
-                            "Sign Up",
-                            style: TextStyle(color: Colors.white),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            child: Text(
+                              "Sign Up",
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
