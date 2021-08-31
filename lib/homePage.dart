@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_virash/animationWidgets.dart';
 import 'package:flutter_virash/examList.dart';
+import 'package:flutter_virash/exitPopup.dart';
 import 'package:flutter_virash/liveSession.dart';
 import 'package:flutter_virash/providers/internet_provider.dart';
 import 'package:flutter_virash/shopCourse.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_virash/strategyExamList.dart';
 // import 'package:flutter_virash/studyMaterial.dart';
 import 'package:flutter_virash/testSeries.dart';
 import 'package:flutter_virash/whatsappForm.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,123 +30,129 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     bool isConnected = context.watch<InternetProvider>().isConnected;
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: isConnected
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Center(
-                        child: Hero(
-                          tag: "HeroOne",
-                          child: Image.asset('assets/logo_unique.png'),
+    return WillPopScope(
+      onWillPop: () => showExitPopup(context),
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: isConnected
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Center(
+                          child: Hero(
+                            tag: "HeroOne",
+                            child: Image.asset('assets/logo_unique.png'),
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, LiveSession.route);
-                              },
-                              child: MainCard(
-                                  title: 'Live Sessions',
-                                  subTitle: '7k+',
-                                  childIcon: FontAwesomeIcons.ggCircle),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, ShopCourse.route);
-                              },
-                              child: MainCard(
-                                  title: 'All Courses',
-                                  subTitle: '50+',
-                                  childIcon: FontAwesomeIcons.graduationCap),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, ExamList.route);
-                              },
-                              child: MainCard(
-                                  title: 'Study Material',
-                                  subTitle: '14k+',
-                                  childIcon: FontAwesomeIcons.leanpub),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, TestSeries.route);
-                              },
-                              child: MainCard(
-                                  title: 'Test Series',
-                                  subTitle: '700+',
-                                  childIcon: FontAwesomeIcons.joomla),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(
+                      Expanded(
+                        flex: 1,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
                               flex: 1,
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.pushNamed(
-                                      context, WhatsappForm.route);
+                                      context, LiveSession.route);
                                 },
                                 child: MainCard(
-                                    title: 'Whatsapp Groups',
-                                    subTitle: '70+',
-                                    childIcon: FontAwesomeIcons.whatsapp),
-                              )),
-                          Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, StrategyExamList.route);
-                              },
-                              child: MainCard(
-                                  title: 'Exam Strategy',
-                                  subTitle: '14k+',
-                                  childIcon: FontAwesomeIcons.empire),
+                                    title: 'Recorded Sessions',
+                                    subTitle: '7k+',
+                                    childIcon: 'assets/live.png'),
+                              ),
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, ShopCourse.route);
+                                },
+                                child: MainCard(
+                                    title: 'Buy Course',
+                                    subTitle: '50+',
+                                    childIcon: 'assets/course.png'),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              : AnimationWidgets().noInternet,
+                      Expanded(
+                        flex: 1,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, ExamList.route);
+                                },
+                                child: MainCard(
+                                    title: 'Study Material',
+                                    subTitle: '14k+',
+                                    childIcon: 'assets/material.png'),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, TestSeries.route);
+                                },
+                                child: MainCard(
+                                    title: 'Test Series',
+                                    subTitle: '700+',
+                                    childIcon: 'assets/test.png'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, WhatsappForm.route);
+                                  },
+                                  child: MainCard(
+                                      title: 'Whatsapp Groups',
+                                      subTitle: '70+',
+                                      childIcon: 'assets/whatsapp.png'),
+                                )),
+                            Expanded(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, StrategyExamList.route);
+                                },
+                                child: MainCard(
+                                    title: 'Exam Strategy',
+                                    subTitle: '14k+',
+                                    childIcon: 'assets/strategy.png'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                : AnimationWidgets().noInternet,
+          ),
         ),
       ),
     );
@@ -157,7 +163,7 @@ class MainCard extends StatelessWidget {
   MainCard(
       {required this.childIcon, required this.title, required this.subTitle});
 
-  final IconData childIcon;
+  final String childIcon;
   final String title;
   final String subTitle;
 
@@ -215,13 +221,9 @@ class MainCard extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: IconButton(
-                  icon: FaIcon(
-                    childIcon,
-                    size: 40,
-                    color: Color(0xFFFF7801),
-                  ),
-                  onPressed: () {},
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Image.asset(childIcon),
                 )),
           ),
         ),
@@ -229,3 +231,14 @@ class MainCard extends StatelessWidget {
     );
   }
 }
+
+/*
+IconButton(
+                  icon: FaIcon(
+                    childIcon,
+                    size: 40,
+                    color: Color(0xFFFF7801),
+                  ),
+                  onPressed: () {},
+                )
+ */
