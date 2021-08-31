@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:flutter_virash/objectiveTest.dart';
+import 'package:flutter_virash/objective/examList.dart';
 
 import 'package:provider/provider.dart';
 import 'package:flutter_virash/providers/internet_provider.dart';
@@ -48,7 +48,7 @@ class _TestSeriesState extends State<TestSeries> {
                     NeumorphicButton(
                         margin: EdgeInsets.only(top: 12),
                         onPressed: () {
-                          Navigator.pushNamed(context, ObjectiveTest.route);
+                          Navigator.pushNamed(context, ExamList.route);
                         },
                         style: NeumorphicStyle(
                           shape: NeumorphicShape.flat,

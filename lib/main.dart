@@ -7,12 +7,21 @@ import 'package:flutter_virash/cartDataType.dart';
 import 'package:flutter_virash/examStrategy.dart';
 import 'package:flutter_virash/liveSession.dart';
 import 'package:flutter_virash/newUserRegistration.dart';
+import 'package:flutter_virash/objective/examList.dart' as ObjectiveExamList;
+import 'package:flutter_virash/objective/subjectList.dart'
+    as ObjectiveSubjectList;
+import 'package:flutter_virash/objective/chapterList.dart'
+    as ObjectiveChapterList;
+import 'package:flutter_virash/objective/mcqList.dart';
+import 'package:flutter_virash/objective/mcq.dart';
+import 'package:flutter_virash/objective/scores.dart';
 import 'package:flutter_virash/objectiveTest.dart';
 import 'package:flutter_virash/paymentSuccess.dart';
 import 'package:flutter_virash/pdfViewer.dart';
 import 'package:flutter_virash/productList.dart';
 import 'package:flutter_virash/providers/cart_provider.dart';
 import 'package:flutter_virash/providers/internet_provider.dart';
+import 'package:flutter_virash/providers/objective_provider.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/showCart.dart';
 import 'package:flutter_virash/studyMaterial.dart';
@@ -34,7 +43,8 @@ main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => CartProvider()),
-      ChangeNotifierProvider(create: (_) => InternetProvider())
+      ChangeNotifierProvider(create: (_) => InternetProvider()),
+      ChangeNotifierProvider(create: (_) => ObjectiveProvider())
     ],
     child: MaterialApp(
       theme: ThemeData(
@@ -68,7 +78,18 @@ main() async {
         PdfViewer.route: (context) => PdfViewer(),
         StrategyExamList.route: (context) => StrategyExamList(),
         ExamStrategy.route: (context) => ExamStrategy(),
-        PaymentSuccess.route: (context) => PaymentSuccess()
+        PaymentSuccess.route: (context) => PaymentSuccess(),
+
+        // Objective Routes
+        ObjectiveExamList.ExamList.route: (context) =>
+            ObjectiveExamList.ExamList(),
+        ObjectiveSubjectList.SubjectList.route: (context) =>
+            ObjectiveSubjectList.SubjectList(),
+        ObjectiveChapterList.ChapterList.route: (context) =>
+            ObjectiveChapterList.ChapterList(),
+        ObjectiveMCQList.route: (context) => ObjectiveMCQList(),
+        ObjectiveMCQ.route: (context) => ObjectiveMCQ(),
+        ObjectiveScores.route: (context) => ObjectiveScores()
       },
     ),
   ));
