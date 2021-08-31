@@ -9,6 +9,10 @@ import 'package:http/http.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:provider/provider.dart';
+import 'package:flutter_virash/providers/internet_provider.dart';
+import 'package:flutter_virash/animationWidgets.dart';
+
 class OTPVerificationScreen extends StatefulWidget {
   static var route = '/otpVerification';
 
@@ -31,6 +35,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
 
   @override
   void initState() {
+    context.read<InternetProvider>().startMonitoring();
     errorController = StreamController<ErrorAnimationType>();
     getMobile();
     super.initState();
@@ -70,203 +75,214 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {},
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: ListView(
-            children: <Widget>[
-              SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  'Phone Number Verification',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-                  textAlign: TextAlign.center,
+    bool isConnected = context.watch<InternetProvider>().isConnected;
+    if (!isConnected) {
+      return Scaffold(
+        body: SafeArea(
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: AnimationWidgets().noInternet,
+        )),
+      );
+    } else {
+      return Scaffold(
+        body: GestureDetector(
+          onTap: () {},
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: ListView(
+              children: <Widget>[
+                SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    'Phone Number Verification',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
-                child: RichText(
-                  text: TextSpan(
-                      text: "Enter the code sent to ",
-                      children: [
-                        TextSpan(
-                            text: mobile_no,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15)),
-                      ],
-                      style: TextStyle(color: Colors.black54, fontSize: 15)),
-                  textAlign: TextAlign.center,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
+                  child: RichText(
+                    text: TextSpan(
+                        text: "Enter the code sent to ",
+                        children: [
+                          TextSpan(
+                              text: mobile_no,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15)),
+                        ],
+                        style: TextStyle(color: Colors.black54, fontSize: 15)),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Form(
-                key: formKey,
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 30),
-                    child: PinCodeTextField(
-                      appContext: context,
-                      pastedTextStyle: TextStyle(
-                        color: Colors.green.shade600,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      length: 6,
-                      obscureText: false,
-                      blinkWhenObscuring: true,
-                      animationType: AnimationType.fade,
-                      validator: (v) {
-                        if (v!.length < 3) {
-                          return "I'm from validator";
+                SizedBox(
+                  height: 20,
+                ),
+                Form(
+                  key: formKey,
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 30),
+                      child: PinCodeTextField(
+                        appContext: context,
+                        pastedTextStyle: TextStyle(
+                          color: Colors.green.shade600,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        length: 6,
+                        obscureText: false,
+                        blinkWhenObscuring: true,
+                        animationType: AnimationType.fade,
+                        validator: (v) {
+                          if (v!.length < 3) {
+                            return "I'm from validator";
+                          } else {
+                            return null;
+                          }
+                        },
+                        pinTheme: PinTheme(
+                          shape: PinCodeFieldShape.box,
+                          borderRadius: BorderRadius.circular(5),
+                          fieldHeight: 50,
+                          fieldWidth: 40,
+                          activeFillColor: Colors.white,
+                        ),
+                        cursorColor: Colors.black,
+                        animationDuration: Duration(milliseconds: 300),
+                        enableActiveFill: true,
+                        errorAnimationController: errorController,
+                        controller: textEditingController,
+                        keyboardType: TextInputType.number,
+                        boxShadows: [
+                          BoxShadow(
+                            offset: Offset(0, 1),
+                            color: Colors.black12,
+                            blurRadius: 10,
+                          )
+                        ],
+                        onCompleted: (v) {
+                          print("Completed" + currentText);
+                        },
+                        // onTap: () {
+                        //   print("Pressed");
+                        // },
+                        onChanged: (value) {
+                          print(value);
+                          setState(() {
+                            currentText = value;
+                          });
+                        },
+                        beforeTextPaste: (text) {
+                          print("Allowing to paste $text");
+                          //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                          //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                          return true;
+                        },
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Text(
+                    hasError ? "*Invalid OTP, Please re-enter the OTP" : "",
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Didn't receive the code? ",
+                      style: TextStyle(color: Colors.black54, fontSize: 15),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          sendOTP(otp, mobile_no);
+                        },
+                        child: Text(
+                          "RESEND",
+                          style: TextStyle(
+                              color: Color(0xFF91D3B3),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ))
+                  ],
+                ),
+                SizedBox(
+                  height: 14,
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 30),
+                  child: ButtonTheme(
+                    height: 50,
+                    child: TextButton(
+                      onPressed: () {
+                        formKey.currentState!.validate();
+                        // conditions for validating
+                        if (currentText.length != 6 || currentText != otp) {
+                          errorController!.add(ErrorAnimationType
+                              .shake); // Triggering error shake animation
+                          setState(() => hasError = true);
                         } else {
-                          return null;
+                          verifyUser(mobile_no);
+                          setState(
+                            () {
+                              hasError = false;
+                              snackBar("OTP Verified!!");
+                            },
+                          );
                         }
                       },
-                      pinTheme: PinTheme(
-                        shape: PinCodeFieldShape.box,
-                        borderRadius: BorderRadius.circular(5),
-                        fieldHeight: 50,
-                        fieldWidth: 40,
-                        activeFillColor: Colors.white,
-                      ),
-                      cursorColor: Colors.black,
-                      animationDuration: Duration(milliseconds: 300),
-                      enableActiveFill: true,
-                      errorAnimationController: errorController,
-                      controller: textEditingController,
-                      keyboardType: TextInputType.number,
-                      boxShadows: [
-                        BoxShadow(
-                          offset: Offset(0, 1),
-                          color: Colors.black12,
-                          blurRadius: 10,
-                        )
-                      ],
-                      onCompleted: (v) {
-                        print("Completed" + currentText);
-                      },
-                      // onTap: () {
-                      //   print("Pressed");
-                      // },
-                      onChanged: (value) {
-                        print(value);
-                        setState(() {
-                          currentText = value;
-                        });
-                      },
-                      beforeTextPaste: (text) {
-                        print("Allowing to paste $text");
-                        //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                        //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                        return true;
-                      },
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Text(
-                  hasError ? "*Invalid OTP, Please re-enter the OTP" : "",
-                  style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Didn't receive the code? ",
-                    style: TextStyle(color: Colors.black54, fontSize: 15),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        sendOTP(otp, mobile_no);
-                      },
-                      child: Text(
-                        "RESEND",
+                      child: Center(
+                          child: Text(
+                        "VERIFY".toUpperCase(),
                         style: TextStyle(
-                            color: Color(0xFF91D3B3),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
-                      ))
-                ],
-              ),
-              SizedBox(
-                height: 14,
-              ),
-              Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30),
-                child: ButtonTheme(
-                  height: 50,
-                  child: TextButton(
-                    onPressed: () {
-                      formKey.currentState!.validate();
-                      // conditions for validating
-                      if (currentText.length != 6 || currentText != otp) {
-                        errorController!.add(ErrorAnimationType
-                            .shake); // Triggering error shake animation
-                        setState(() => hasError = true);
-                      } else {
-                        verifyUser(mobile_no);
-                        setState(
-                          () {
-                            hasError = false;
-                            snackBar("OTP Verified!!");
-                          },
-                        );
-                      }
-                    },
-                    child: Center(
-                        child: Text(
-                      "VERIFY".toUpperCase(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    )),
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      )),
+                    ),
                   ),
+                  decoration: BoxDecoration(
+                      color: Colors.green.shade300,
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.green.shade200,
+                            offset: Offset(1, -2),
+                            blurRadius: 5),
+                        BoxShadow(
+                            color: Colors.green.shade200,
+                            offset: Offset(-1, 2),
+                            blurRadius: 5)
+                      ]),
                 ),
-                decoration: BoxDecoration(
-                    color: Colors.green.shade300,
-                    borderRadius: BorderRadius.circular(5),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.green.shade200,
-                          offset: Offset(1, -2),
-                          blurRadius: 5),
-                      BoxShadow(
-                          color: Colors.green.shade200,
-                          offset: Offset(-1, 2),
-                          blurRadius: 5)
-                    ]),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              TextButton(
-                child: Text("Clear"),
-                onPressed: () {
-                  textEditingController.clear();
-                },
-              )
-            ],
+                SizedBox(
+                  height: 16,
+                ),
+                TextButton(
+                  child: Text("Clear"),
+                  onPressed: () {
+                    textEditingController.clear();
+                  },
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   void sendOTP(String otp, String mobileNo) async {

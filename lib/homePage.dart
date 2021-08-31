@@ -24,7 +24,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<InternetProvider>().startMonitoring();
-    print(context.read<InternetProvider>().isConnected);
   }
 
   @override

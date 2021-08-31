@@ -10,6 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'animationWidgets.dart';
 import 'homePage.dart';
 
+import 'package:provider/provider.dart';
+import 'package:flutter_virash/providers/internet_provider.dart';
+
 class ExamStrategy extends StatefulWidget {
   static var route = '/examStrategy';
 
@@ -62,83 +65,100 @@ class _ExamStrategyState extends State<ExamStrategy> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    context.read<InternetProvider>().startMonitoring();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;
     var examId = args.toString();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Exam Strategy'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, HomePage.route, (r) => false);
-            },
-            icon: Icon(Icons.home),
-          ),
-        ],
-      ),
-      body: Container(
-        child: FutureBuilder(
-          future: _getStrategy(examId),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.data == null) {
-              return Container(
-                child: Center(
-                  child: SpinKitCubeGrid(
-                    color: Color(0xFFFF7801),
-                    size: 50.0,
+    bool isConnected = context.watch<InternetProvider>().isConnected;
+    if (!isConnected) {
+      return Scaffold(
+        body: SafeArea(
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: AnimationWidgets().noInternet,
+        )),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Exam Strategy'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, HomePage.route, (r) => false);
+              },
+              icon: Icon(Icons.home),
+            ),
+          ],
+        ),
+        body: Container(
+          child: FutureBuilder(
+            future: _getStrategy(examId),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.data == null) {
+                return Container(
+                  child: Center(
+                    child: SpinKitCubeGrid(
+                      color: Color(0xFFFF7801),
+                      size: 50.0,
+                    ),
                   ),
-                ),
-              );
-            } else {
-              if (count == 0) {
-                return AnimationWidgets().noData;
+                );
               } else {
-                return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: ListTile(
-                            onTap: () {
-                              Navigator.pushNamed(context, PdfViewer.route,
-                                  arguments: snapshot.data[index].attachment);
-                            },
-                            leading: CircleAvatar(
-                              radius: 40,
-                              backgroundImage:
-                                  NetworkImage(snapshot.data[index].avatar),
-                            ),
-                            title: Text(
-                              snapshot.data[index].title,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
+                if (count == 0) {
+                  return AnimationWidgets().noData;
+                } else {
+                  return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: ListTile(
+                              onTap: () {
+                                Navigator.pushNamed(context, PdfViewer.route,
+                                    arguments: snapshot.data[index].attachment);
+                              },
+                              leading: CircleAvatar(
+                                radius: 40,
+                                backgroundImage:
+                                    NetworkImage(snapshot.data[index].avatar),
+                              ),
+                              title: Text(
+                                snapshot.data[index].title,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 0, horizontal: 30),
-                          child: Divider(
-                            thickness: 1,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 30),
+                            child: Divider(
+                              thickness: 1,
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                );
+                        ],
+                      );
+                    },
+                  );
+                }
               }
-            }
-          },
+            },
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
 

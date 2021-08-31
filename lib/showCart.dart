@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_virash/animationWidgets.dart';
 import 'package:flutter_virash/paymentSuccess.dart';
 import 'package:flutter_virash/providers/cart_provider.dart';
+import 'package:flutter_virash/providers/internet_provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -32,6 +34,7 @@ class _ShowCartState extends State<ShowCart> {
   @override
   void initState() {
     super.initState();
+    context.read<InternetProvider>().startMonitoring();
     razorpay = new Razorpay();
     razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -106,190 +109,209 @@ class _ShowCartState extends State<ShowCart> {
   Widget build(BuildContext context) {
     final cartList = context.watch<CartProvider>().cartList;
     final cartTotal = context.watch<CartProvider>().cartTotal;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Cart'),
-        actions: [
-          // ignore: deprecated_member_use
-          FlatButton(
-            onPressed: () {
-              Widget cancel = new TextButton(
-                child: Text("Cancel"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              );
-              Widget confirm = new TextButton(
-                child: Text("Clear"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  context.read<CartProvider>().clearCart();
-                  prefs.setString('cartList', CartPojo.encode(cartList));
-                },
-              );
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  if (Platform.isAndroid) {
-                    return AlertDialog(
-                      title: Text("Are You Sure?"),
-                      content: Text(
-                          "Would you like to remove all the items from your cart?"),
-                      actions: [
-                        cancel,
-                        confirm,
-                      ],
-                    );
-                  } else {
-                    return CupertinoAlertDialog(
-                      title: Text("Are You Sure?"),
-                      content: Text(
-                          "Would you like to remove all the items from your cart?"),
-                      actions: [
-                        cancel,
-                        confirm,
-                      ],
-                    );
-                  }
-                },
-              );
-            },
-            child: Row(children: [
-              Text(
-                "Clear All",
-                style: TextStyle(color: Colors.white),
-              ),
-              Icon(
-                Icons.delete_forever,
-                color: Colors.white,
-              ),
-            ]),
-          )
-        ],
-      ),
-      body: Stack(
-        children: [
-          ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: cartList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Column(
+    bool isConnected = context.watch<InternetProvider>().isConnected;
+    if (!isConnected) {
+      return Scaffold(
+        body: SafeArea(
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: AnimationWidgets().noInternet,
+        )),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Cart'),
+          actions: cartList.length > 0
+              ? [
+                  // ignore: deprecated_member_use
+                  FlatButton(
+                    onPressed: () {
+                      Widget cancel = new TextButton(
+                        child: Text("Cancel"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      );
+                      Widget confirm = new TextButton(
+                        child: Text("Clear"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          context.read<CartProvider>().clearCart();
+                          prefs.setString(
+                              'cartList', CartPojo.encode(cartList));
+                        },
+                      );
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          if (Platform.isAndroid) {
+                            return AlertDialog(
+                              title: Text("Are You Sure?"),
+                              content: Text(
+                                  "Would you like to remove all the items from your cart?"),
+                              actions: [
+                                cancel,
+                                confirm,
+                              ],
+                            );
+                          } else {
+                            return CupertinoAlertDialog(
+                              title: Text("Are You Sure?"),
+                              content: Text(
+                                  "Would you like to remove all the items from your cart?"),
+                              actions: [
+                                cancel,
+                                confirm,
+                              ],
+                            );
+                          }
+                        },
+                      );
+                    },
+                    child: Row(children: [
+                      Text(
+                        "Clear All",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Icon(
+                        Icons.delete_forever,
+                        color: Colors.white,
+                      ),
+                    ]),
+                  )
+                ]
+              : [],
+        ),
+        body: cartList.length > 0
+            ? Stack(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 40,
-                        backgroundImage: NetworkImage(cartList[index].avatar),
-                      ),
-                      title: Text(
-                        cartList[index].name,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                      subtitle: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: cartList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
                         children: [
-                          Text(
-                            "₹  " + cartList[index].mrp,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                radius: 40,
+                                backgroundImage:
+                                    NetworkImage(cartList[index].avatar),
+                              ),
+                              title: Text(
+                                cartList[index].name,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "₹  " + cartList[index].mrp,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Widget cancel = new TextButton(
+                                        child: Text("Cancel"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      );
+                                      Widget confirm = new TextButton(
+                                        child: Text("Remove"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          context
+                                              .read<CartProvider>()
+                                              .removeFromCart(
+                                                  cartList[index].id);
+                                          prefs.setString('cartList',
+                                              CartPojo.encode(cartList));
+                                        },
+                                      );
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          if (Platform.isAndroid) {
+                                            return AlertDialog(
+                                              title: Text("Are You Sure?"),
+                                              content: Text(
+                                                  "Would you like to remove this item from your cart?"),
+                                              actions: [
+                                                cancel,
+                                                confirm,
+                                              ],
+                                            );
+                                          } else {
+                                            return CupertinoAlertDialog(
+                                              title: Text("Are You Sure?"),
+                                              content: Text(
+                                                  "Would you like to remove this item from your cart?"),
+                                              actions: [
+                                                cancel,
+                                                confirm,
+                                              ],
+                                            );
+                                          }
+                                        },
+                                      );
+                                    },
+                                    child: Text('Remove'),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              Widget cancel = new TextButton(
-                                child: Text("Cancel"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              );
-                              Widget confirm = new TextButton(
-                                child: Text("Remove"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  context
-                                      .read<CartProvider>()
-                                      .removeFromCart(cartList[index].id);
-                                  prefs.setString(
-                                      'cartList', CartPojo.encode(cartList));
-                                },
-                              );
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  if (Platform.isAndroid) {
-                                    return AlertDialog(
-                                      title: Text("Are You Sure?"),
-                                      content: Text(
-                                          "Would you like to remove this item from your cart?"),
-                                      actions: [
-                                        cancel,
-                                        confirm,
-                                      ],
-                                    );
-                                  } else {
-                                    return CupertinoAlertDialog(
-                                      title: Text("Are You Sure?"),
-                                      content: Text(
-                                          "Would you like to remove this item from your cart?"),
-                                      actions: [
-                                        cancel,
-                                        confirm,
-                                      ],
-                                    );
-                                  }
-                                },
-                              );
-                            },
-                            child: Text('Remove'),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 30),
+                            child: Divider(
+                              thickness: 1,
+                            ),
                           ),
                         ],
-                      ),
-                    ),
+                      );
+                    },
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-                    child: Divider(
-                      thickness: 1,
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    color: Colors.blue,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text('Total Amount : $cartTotal'),
-                        GestureDetector(
-                          onTap: () {
-                            submitCart();
-                          },
-                          child: loginChild,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            color: Colors.blue,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text('Total Amount : $cartTotal'),
+                                GestureDetector(
+                                  onTap: () {
+                                    submitCart();
+                                  },
+                                  child: loginChild,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
+                      ),
+                    ],
+                  )
+                ],
+              )
+            : AnimationWidgets().noData,
+      );
+    }
   }
 
   submitCart() async {

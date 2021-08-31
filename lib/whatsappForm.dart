@@ -4,6 +4,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
+import 'package:provider/provider.dart';
+import 'package:flutter_virash/providers/internet_provider.dart';
+import 'animationWidgets.dart';
+
 class WhatsappForm extends StatefulWidget {
   WhatsappForm({Key? key}) : super(key: key);
 
@@ -211,6 +215,7 @@ class _WhatsappFormState extends State<WhatsappForm> {
   @override
   void initState() {
     super.initState();
+    context.read<InternetProvider>().startMonitoring();
     fetchCourse();
     fetchAttempts();
     fetchCities();
@@ -218,352 +223,363 @@ class _WhatsappFormState extends State<WhatsappForm> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Whatsapp Group Form'),
-        ),
+    bool isConnected = context.watch<InternetProvider>().isConnected;
+    if (!isConnected) {
+      return Scaffold(
         body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(15.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
-                    child: TextField(
-                      controller: name,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(
-                            left: 14.0, bottom: 8.0, top: 8.0),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 2, color: Color(0xFFFF7801))),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        hintText: "Enter Name",
-                        labelStyle: TextStyle(
-                          fontFamily: 'Poppins',
-                          color: Colors.black,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFFF7801)),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
-                    child: TextField(
-                      controller: number,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(
-                            left: 14.0, bottom: 8.0, top: 8.0),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 2, color: Color(0xFFFF7801))),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        hintText: "Enter Mobile Number",
-                        labelStyle: TextStyle(
-                          fontFamily: 'Poppins',
-                          color: Colors.black,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFFF7801)),
-                        ),
-                        counterText: "",
-                      ),
-                      maxLength: 10,
-                      keyboardType: TextInputType.phone,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
-                    child: TextField(
-                      controller: email,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(
-                            left: 14.0, bottom: 8.0, top: 8.0),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 2, color: Color(0xFFFF7801))),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        hintText: "Enter Email Id",
-                        labelStyle: TextStyle(
-                          fontFamily: 'Poppins',
-                          color: Colors.black,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFFF7801)),
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: AnimationWidgets().noInternet,
+        )),
+      );
+    } else {
+      return GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Whatsapp Group Form'),
+          ),
+          body: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(15.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
+                      child: TextField(
+                        controller: name,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(
+                              left: 14.0, bottom: 8.0, top: 8.0),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2, color: Color(0xFFFF7801))),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          hintText: "Enter Name",
+                          labelStyle: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.black,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFFF7801)),
+                          ),
                         ),
                       ),
-                      keyboardType: TextInputType.emailAddress,
                     ),
-                  ),
-                  Text(
-                    'Select your gender:',
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        color: Colors.black),
-                  ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: RadioListTile(
-                              value: "Male",
-                              groupValue: selectedGender,
-                              title: Text("Male"),
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedGender = value;
-                                });
-                              }),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: TextField(
+                        controller: number,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(
+                              left: 14.0, bottom: 8.0, top: 8.0),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2, color: Color(0xFFFF7801))),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          hintText: "Enter Mobile Number",
+                          labelStyle: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.black,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFFF7801)),
+                          ),
+                          counterText: "",
                         ),
-                        Expanded(
-                          child: RadioListTile(
-                              value: "Female",
-                              groupValue: selectedGender,
-                              title: Text("Female"),
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedGender = value;
-                                });
-                              }),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 14.0),
-                    margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.black.withOpacity(0.6), width: 1),
-                        borderRadius: BorderRadius.circular(4)),
-                    child: DropdownButton<int>(
-                      isExpanded: true,
-                      value: selectedCourse,
-                      hint: Text(
-                        "Select Course",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                        ),
+                        maxLength: 10,
+                        keyboardType: TextInputType.phone,
                       ),
-                      items: _courses.map(
-                        (course) {
-                          return DropdownMenuItem(
-                            child: Text(
-                              course['course_name'],
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                color: Colors.black,
-                              ),
-                            ),
-                            value: course['course_id'] as int,
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (int? value) {
-                        setState(() {
-                          selectedCourse = value ?? 0;
-                        });
-                        fetchExams(value ?? 0);
-                      },
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 14.0),
-                    margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.black.withOpacity(0.6), width: 1),
-                        borderRadius: BorderRadius.circular(4)),
-                    child: DropdownButton<int>(
-                      isExpanded: true,
-                      value: selectedExam,
-                      hint: Text(
-                        "Select Exam",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: TextField(
+                        controller: email,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(
+                              left: 14.0, bottom: 8.0, top: 8.0),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2, color: Color(0xFFFF7801))),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          hintText: "Enter Email Id",
+                          labelStyle: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.black,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFFF7801)),
+                          ),
                         ),
+                        keyboardType: TextInputType.emailAddress,
                       ),
-                      items: _exams.map(
-                        (exam) {
-                          return DropdownMenuItem(
-                            child: Text(
-                              exam['exam_name'],
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                color: Colors.black,
-                              ),
-                            ),
-                            value: exam['exam_id'] as int,
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (int? value) {
-                        setState(() {
-                          selectedExam = value ?? 0;
-                        });
-                      },
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 14.0),
-                    margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.black.withOpacity(0.6), width: 1),
-                        borderRadius: BorderRadius.circular(4)),
-                    child: DropdownButton<int>(
-                      isExpanded: true,
-                      value: selectedAttempt,
-                      hint: Text(
-                        "Select Attempts",
-                        style: TextStyle(
+                    Text(
+                      'Select your gender:',
+                      style: TextStyle(
                           fontFamily: 'Poppins',
-                        ),
-                      ),
-                      items: _attempts.map(
-                        (attempt) {
-                          return DropdownMenuItem(
-                            child: Text(
-                              attempt['attempt'],
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                color: Colors.black,
-                              ),
-                            ),
-                            value: attempt['attempt_id'] as int,
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (int? value) {
-                        setState(() {
-                          selectedAttempt = value ?? 0;
-                        });
-                      },
+                          fontSize: 16,
+                          color: Colors.black),
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 14.0),
-                    margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.black.withOpacity(0.6), width: 1),
-                        borderRadius: BorderRadius.circular(4)),
-                    child: DropdownButton<int>(
-                      isExpanded: true,
-                      value: selectedCity,
-                      hint: Text(
-                        "Select City",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                        ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: RadioListTile(
+                                value: "Male",
+                                groupValue: selectedGender,
+                                title: Text("Male"),
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedGender = value;
+                                  });
+                                }),
+                          ),
+                          Expanded(
+                            child: RadioListTile(
+                                value: "Female",
+                                groupValue: selectedGender,
+                                title: Text("Female"),
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedGender = value;
+                                  });
+                                }),
+                          )
+                        ],
                       ),
-                      items: _cities.map(
-                        (city) {
-                          return DropdownMenuItem(
-                            child: Text(
-                              city['name'],
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                color: Colors.black,
-                              ),
-                            ),
-                            value: city['id'] as int,
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (int? value) {
-                        setState(() {
-                          selectedCity = value ?? 0;
-                        });
-                      },
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 14.0),
-                    margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.black.withOpacity(0.6), width: 1),
-                        borderRadius: BorderRadius.circular(4)),
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      value: selectedPurpose,
-                      hint: Text(
-                        "Select Purpose",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
+                    Container(
+                      padding: const EdgeInsets.only(left: 14.0),
+                      margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.black.withOpacity(0.6), width: 1),
+                          borderRadius: BorderRadius.circular(4)),
+                      child: DropdownButton<int>(
+                        isExpanded: true,
+                        value: selectedCourse,
+                        hint: Text(
+                          "Select Course",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                          ),
                         ),
-                      ),
-                      items: _purpose.map(
-                        (val) {
-                          return DropdownMenuItem(
-                            child: Text(
-                              val,
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                color: Colors.black,
-                              ),
-                            ),
-                            value: val as String,
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (String? value) {
-                        setState(() {
-                          selectedPurpose = value ?? "";
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Material(
-                    color: Color(0xFFFF7801),
-                    borderRadius: BorderRadius.circular(4),
-                    child: InkWell(
-                      onTap: submitData,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 45,
-                        alignment: Alignment.center,
-                        child: loading
-                            ? SpinKitCircle(
-                                color: Colors.white,
-                                size: 25.0,
-                              )
-                            : Text(
-                                "Submit",
+                        items: _courses.map(
+                          (course) {
+                            return DropdownMenuItem(
+                              child: Text(
+                                course['course_name'],
                                 style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black,
+                                ),
                               ),
+                              value: course['course_id'] as int,
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (int? value) {
+                          setState(() {
+                            selectedCourse = value ?? 0;
+                          });
+                          fetchExams(value ?? 0);
+                        },
                       ),
                     ),
-                  )
-                ],
+                    Container(
+                      padding: const EdgeInsets.only(left: 14.0),
+                      margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.black.withOpacity(0.6), width: 1),
+                          borderRadius: BorderRadius.circular(4)),
+                      child: DropdownButton<int>(
+                        isExpanded: true,
+                        value: selectedExam,
+                        hint: Text(
+                          "Select Exam",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                        items: _exams.map(
+                          (exam) {
+                            return DropdownMenuItem(
+                              child: Text(
+                                exam['exam_name'],
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black,
+                                ),
+                              ),
+                              value: exam['exam_id'] as int,
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (int? value) {
+                          setState(() {
+                            selectedExam = value ?? 0;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 14.0),
+                      margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.black.withOpacity(0.6), width: 1),
+                          borderRadius: BorderRadius.circular(4)),
+                      child: DropdownButton<int>(
+                        isExpanded: true,
+                        value: selectedAttempt,
+                        hint: Text(
+                          "Select Attempts",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                        items: _attempts.map(
+                          (attempt) {
+                            return DropdownMenuItem(
+                              child: Text(
+                                attempt['attempt'],
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black,
+                                ),
+                              ),
+                              value: attempt['attempt_id'] as int,
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (int? value) {
+                          setState(() {
+                            selectedAttempt = value ?? 0;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 14.0),
+                      margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.black.withOpacity(0.6), width: 1),
+                          borderRadius: BorderRadius.circular(4)),
+                      child: DropdownButton<int>(
+                        isExpanded: true,
+                        value: selectedCity,
+                        hint: Text(
+                          "Select City",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                        items: _cities.map(
+                          (city) {
+                            return DropdownMenuItem(
+                              child: Text(
+                                city['name'],
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black,
+                                ),
+                              ),
+                              value: city['id'] as int,
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (int? value) {
+                          setState(() {
+                            selectedCity = value ?? 0;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 14.0),
+                      margin: EdgeInsets.fromLTRB(0, 16, 0, 8),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.black.withOpacity(0.6), width: 1),
+                          borderRadius: BorderRadius.circular(4)),
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: selectedPurpose,
+                        hint: Text(
+                          "Select Purpose",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                        items: _purpose.map(
+                          (val) {
+                            return DropdownMenuItem(
+                              child: Text(
+                                val,
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black,
+                                ),
+                              ),
+                              value: val as String,
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            selectedPurpose = value ?? "";
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Material(
+                      color: Color(0xFFFF7801),
+                      borderRadius: BorderRadius.circular(4),
+                      child: InkWell(
+                        onTap: submitData,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 45,
+                          alignment: Alignment.center,
+                          child: loading
+                              ? SpinKitCircle(
+                                  color: Colors.white,
+                                  size: 25.0,
+                                )
+                              : Text(
+                                  "Submit",
+                                  style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
