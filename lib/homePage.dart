@@ -209,11 +209,11 @@ class MainCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          bottom: 130,
-          left: 110,
+          bottom: MediaQuery.of(context).size.height * 0.15,
+          left: MediaQuery.of(context).size.height * 0.14,
           child: Container(
-            height: 80,
-            width: 80,
+            height: MediaQuery.of(context).size.height * 0.09,
+            width: MediaQuery.of(context).size.height * 0.09,
             child: Card(
                 color: Color(0xFFFFFFFF),
                 elevation: 5,
