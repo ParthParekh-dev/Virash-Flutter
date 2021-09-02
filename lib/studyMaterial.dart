@@ -73,8 +73,9 @@ class _StudyMaterialState extends State<StudyMaterial> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments;
-    var chapterId = args.toString();
+    final args = ModalRoute.of(context)!.settings.arguments as List;
+    var chapterId = args[0].toString();
+    var chapterName = args[1].toString();
 
     bool isConnected = context.watch<InternetProvider>().isConnected;
     if (!isConnected) {
@@ -88,7 +89,7 @@ class _StudyMaterialState extends State<StudyMaterial> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Study Material'),
+          title: Text(chapterName),
           actions: [
             IconButton(
               onPressed: () {
@@ -126,7 +127,10 @@ class _StudyMaterialState extends State<StudyMaterial> {
                             child: ListTile(
                               onTap: () {
                                 Navigator.pushNamed(context, PdfViewer.route,
-                                    arguments: snapshot.data[index].attachment);
+                                    arguments: [
+                                      snapshot.data[index].attachment,
+                                      snapshot.data[index].title
+                                    ]);
                               },
                               leading: CircleAvatar(
                                 radius: 40,

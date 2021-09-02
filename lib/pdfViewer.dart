@@ -23,8 +23,9 @@ class _PdfViewerState extends State<PdfViewer> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments;
-    var pdfUrl = args.toString();
+    final args = ModalRoute.of(context)!.settings.arguments as List;
+    var pdfUrl = args[0].toString();
+    var title = args[1].toString();
 
     bool isConnected = context.watch<InternetProvider>().isConnected;
     if (!isConnected) {
@@ -38,7 +39,7 @@ class _PdfViewerState extends State<PdfViewer> {
     } else {
       return Scaffold(
           appBar: AppBar(
-            title: const Text('Pdf Viewer'),
+            title: Text(title),
             actions: [
               IconButton(
                 onPressed: () {

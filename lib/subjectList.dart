@@ -1,13 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/chapterList.dart';
 import 'package:flutter_virash/homePage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'dart:async';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import 'animationWidgets.dart';
 
@@ -49,7 +53,8 @@ class _SubjectListState extends State<SubjectList> {
     for (int i = 0; i <= listSubjects.length - 1; i++) {
       var name = u[i]['subject_name'];
       var id = u[i]['subject_id'].toString();
-      Subject user = Subject(id, name);
+      var thumbnail = u[i]['sub_thumbnail'].toString();
+      Subject user = Subject(id, name, thumbnail);
 
       users.add(user);
     }
@@ -67,8 +72,10 @@ class _SubjectListState extends State<SubjectList> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments;
-    var examId = args.toString();
+    final args = ModalRoute.of(context)!.settings.arguments as List;
+    var examId = args[0].toString();
+    var examName = args[1].toString();
+    var from = args[2].toString();
 
     bool isConnected = context.watch<InternetProvider>().isConnected;
     if (!isConnected) {
@@ -82,7 +89,7 @@ class _SubjectListState extends State<SubjectList> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text('All Subjects'),
+          title: Text(examName),
           actions: [
             IconButton(
               onPressed: () {
@@ -113,33 +120,50 @@ class _SubjectListState extends State<SubjectList> {
                   return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: ListTile(
-                              onTap: () {
-                                print(snapshot.data[index].id);
-                                Navigator.pushNamed(context, ChapterList.route,
-                                    arguments: snapshot.data[index].id);
-                              },
-                              title: Text(
-                                snapshot.data[index].name,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, ChapterList.route,
+                                arguments: [
+                                  snapshot.data[index].id,
+                                  snapshot.data[index].name,
+                                  from
+                                ]);
+                          },
+                          child: Card(
+                            elevation: 10,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 4,
+                                    child: Center(
+                                      child: FadeInImage.memoryNetwork(
+                                          placeholder: kTransparentImage,
+                                          image:
+                                              snapshot.data[index].thumbnail),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 6,
+                                    child: Center(
+                                      child: Text(
+                                        snapshot.data[index].name,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 30),
-                            child: Divider(
-                              thickness: 1,
-                            ),
-                          ),
-                        ],
+                        ),
                       );
                     },
                   );
@@ -156,6 +180,7 @@ class _SubjectListState extends State<SubjectList> {
 class Subject {
   final String id;
   final String name;
+  final String thumbnail;
 
-  Subject(this.id, this.name);
+  Subject(this.id, this.name, this.thumbnail);
 }
