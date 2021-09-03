@@ -18,6 +18,7 @@ import 'package:flutter_virash/objective/scores.dart';
 import 'package:flutter_virash/objectiveTest.dart';
 import 'package:flutter_virash/paymentSuccess.dart';
 import 'package:flutter_virash/pdfViewer.dart';
+import 'package:flutter_virash/productDetail.dart';
 import 'package:flutter_virash/productList.dart';
 import 'package:flutter_virash/providers/cart_provider.dart';
 import 'package:flutter_virash/providers/internet_provider.dart';
@@ -78,6 +79,7 @@ main() async {
         PdfViewer.route: (context) => PdfViewer(),
         StrategyExamList.route: (context) => StrategyExamList(),
         ExamStrategy.route: (context) => ExamStrategy(),
+        ProductDetail.route: (context) => ProductDetail(),
         PaymentSuccess.route: (context) => PaymentSuccess(),
 
         // Objective Routes

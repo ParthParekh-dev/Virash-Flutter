@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/cartDataType.dart';
+import 'package:flutter_virash/productDetail.dart';
 import 'package:flutter_virash/providers/cart_provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
@@ -48,7 +49,7 @@ class _ProductListState extends State<ProductList> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode([
-        {"exam_id": "5"}
+        {"exam_id": "1"}
       ]),
     );
     var jsonData = json.decode(response.body);
@@ -117,10 +118,10 @@ class _ProductListState extends State<ProductList> {
                               child: Stack(
                               children: <Widget>[
                                 Icon(Icons.brightness_1,
-                                    size: 20.0, color: Colors.green[800]),
+                                    size: 20.0, color: Colors.blue[800]),
                                 Positioned(
-                                    top: 3.0,
-                                    right: 4.0,
+                                    top: 2.0,
+                                    right: 7.0,
                                     child: Center(
                                       child: Text(
                                         context
@@ -166,8 +167,11 @@ class _ProductListState extends State<ProductList> {
                             padding: const EdgeInsets.all(5.0),
                             child: ListTile(
                               onTap: () {
-                                print(
-                                    categoryId + " " + snapshot.data[index].id);
+                                Navigator.pushNamed(
+                                    context, ProductDetail.route, arguments: [
+                                  snapshot.data[index].id,
+                                  snapshot.data[index].name
+                                ]);
                               },
                               leading: CircleAvatar(
                                 radius: 40,
