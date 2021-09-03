@@ -54,15 +54,16 @@ class ObjectiveProvider with ChangeNotifier {
           duration: Duration(milliseconds: 250), curve: Curves.ease);
       notifyListeners();
     } else {
-      print("${numOfCorrectAns * 10} / ${mcqs.length * 10}");
+      Navigator.pushNamedAndRemoveUntil(
+          context, ObjectiveScores.route, (route) => false,
+          arguments: ScoresArg(numOfCorrectAns, mcqs));
+
       _isAnswered = false;
       _correctAns = 0;
       _numOfCorrectAns = 0;
       _questionNumber = 1;
 
       notifyListeners();
-
-      Navigator.pushNamed(context, ObjectiveScores.route);
     }
   }
 
