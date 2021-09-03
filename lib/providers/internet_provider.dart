@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 class InternetProvider with ChangeNotifier {
   Connectivity _connectivity = new Connectivity();
 
-  bool _isConnected = false;
+  bool _isConnected = true;
   bool get isConnected => _isConnected;
 
   startMonitoring() async {

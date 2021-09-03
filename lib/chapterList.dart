@@ -1,12 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_virash/liveSession.dart';
 import 'package:flutter_virash/studyMaterial.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'dart:async';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import 'animationWidgets.dart';
 import 'homePage.dart';
@@ -49,7 +54,8 @@ class _ChapterListState extends State<ChapterList> {
     for (int i = 0; i <= listSubjects.length - 1; i++) {
       var name = u[i]['chapter_name'];
       var id = u[i]['chapter_id'].toString();
-      Chapter user = Chapter(id, name);
+      var thumbnail = u[i]['ch_thumbnail'].toString();
+      Chapter user = Chapter(id, name, thumbnail);
 
       users.add(user);
     }
@@ -67,8 +73,10 @@ class _ChapterListState extends State<ChapterList> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments;
-    var subjectId = args.toString();
+    final args = ModalRoute.of(context)!.settings.arguments as List;
+    var subjectId = args[0].toString();
+    var subjectName = args[1].toString();
+    var from = args[2].toString();
 
     bool isConnected = context.watch<InternetProvider>().isConnected;
     if (!isConnected) {
@@ -82,7 +90,7 @@ class _ChapterListState extends State<ChapterList> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text('All Chapters'),
+          title: Text(subjectName),
           actions: [
             IconButton(
               onPressed: () {
@@ -113,34 +121,53 @@ class _ChapterListState extends State<ChapterList> {
                   return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: ListTile(
-                              onTap: () {
-                                // print(snapshot.data[index].id);
-                                Navigator.pushNamed(
-                                    context, StudyMaterial.route,
-                                    arguments: snapshot.data[index].id);
-                              },
-                              title: Text(
-                                snapshot.data[index].name,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            if (from == "study_material") {
+                              Navigator.pushNamed(context, StudyMaterial.route,
+                                  arguments: [
+                                    snapshot.data[index].id,
+                                    snapshot.data[index].name
+                                  ]);
+                            } else {
+                              Navigator.pushNamed(context, LiveSession.route);
+                            }
+                          },
+                          child: Card(
+                            elevation: 10,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 4,
+                                    child: Center(
+                                      child: FadeInImage.memoryNetwork(
+                                          placeholder: kTransparentImage,
+                                          image:
+                                              snapshot.data[index].thumbnail),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 6,
+                                    child: Center(
+                                      child: Text(
+                                        snapshot.data[index].name,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 30),
-                            child: Divider(
-                              thickness: 1,
-                            ),
-                          ),
-                        ],
+                        ),
                       );
                     },
                   );
@@ -157,6 +184,7 @@ class _ChapterListState extends State<ChapterList> {
 class Chapter {
   final String id;
   final String name;
+  final String thumbnail;
 
-  Chapter(this.id, this.name);
+  Chapter(this.id, this.name, this.thumbnail);
 }

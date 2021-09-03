@@ -79,10 +79,11 @@ class _ExamStrategyState extends State<ExamStrategy> {
     if (!isConnected) {
       return Scaffold(
         body: SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: AnimationWidgets().noInternet,
-        )),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: AnimationWidgets().noInternet,
+          ),
+        ),
       );
     } else {
       return Scaffold(

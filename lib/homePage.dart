@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_virash/animationWidgets.dart';
@@ -7,9 +9,10 @@ import 'package:flutter_virash/liveSession.dart';
 import 'package:flutter_virash/providers/internet_provider.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/strategyExamList.dart';
-// import 'package:flutter_virash/studyMaterial.dart';
+import 'dart:developer';
 import 'package:flutter_virash/testSeries.dart';
 import 'package:flutter_virash/whatsappForm.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,6 +23,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var imageUrl =
+      "https://virashtechnologies.com/unique/img/slider/slider_1630441324.jpg";
+
   @override
   void initState() {
     super.initState();
@@ -41,10 +47,15 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Expanded(
                         flex: 1,
-                        child: Center(
-                          child: Hero(
-                            tag: "HeroOne",
-                            child: Image.asset('assets/logo_unique.png'),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Card(
+                            color: Color(0xFFFFFFFF),
+                            elevation: 20,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Image.network(imageUrl),
                           ),
                         ),
                       ),
@@ -57,8 +68,8 @@ class _HomePageState extends State<HomePage> {
                               flex: 1,
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.pushNamed(
-                                      context, LiveSession.route);
+                                  Navigator.pushNamed(context, ExamList.route,
+                                      arguments: "live_session");
                                 },
                                 child: MainCard(
                                     title: 'Recorded Sessions',
@@ -91,7 +102,8 @@ class _HomePageState extends State<HomePage> {
                               flex: 1,
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.pushNamed(context, ExamList.route);
+                                  Navigator.pushNamed(context, ExamList.route,
+                                      arguments: "study_material");
                                 },
                                 child: MainCard(
                                     title: 'Study Material',
@@ -156,6 +168,26 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  // Future<String> getSlider() async {
+  //   Response response = await post(
+  //     Uri.parse('https://virashtechnologies.com/unique/api/slider.php'),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //     },
+  //   );
+  //
+  //   print(response.statusCode);
+  //
+  //   if (response.statusCode == 200) {
+  //     var result = json.decode(response.body)[0];
+  //     log(result);
+  //     print(result);
+  //     return result['slider_url'];
+  //   }
+  //
+  //   return "";
+  // }
 }
 
 class MainCard extends StatelessWidget {
@@ -231,13 +263,9 @@ class MainCard extends StatelessWidget {
   }
 }
 
-/*
-IconButton(
-                  icon: FaIcon(
-                    childIcon,
-                    size: 40,
-                    color: Color(0xFFFF7801),
-                  ),
-                  onPressed: () {},
-                )
- */
+class Slider {
+  final String id;
+  final String image;
+
+  Slider(this.id, this.image);
+}
