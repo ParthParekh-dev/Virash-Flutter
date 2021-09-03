@@ -15,9 +15,11 @@ class AnimationWidgets {
   );
 
   Widget noData = Container(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [Lottie.asset('assets/nodata.json'), Text('No Data Found')],
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [Lottie.asset('assets/nodata.json'), Text('No Data Found')],
+      ),
     ),
   );
 }
