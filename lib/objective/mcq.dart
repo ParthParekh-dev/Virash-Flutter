@@ -147,7 +147,7 @@ class _ObjectiveMCQState extends State<ObjectiveMCQ>
           ),
           body: Container(
             child: Center(
-              child: SpinKitCubeGrid(
+              child: SpinKitFadingCircle(
                 color: Color(0xFFFF7801),
                 size: 50.0,
               ),

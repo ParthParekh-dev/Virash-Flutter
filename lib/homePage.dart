@@ -1,18 +1,18 @@
 // import 'dart:convert';
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_virash/animationWidgets.dart';
 import 'package:flutter_virash/examList.dart';
 import 'package:flutter_virash/exitPopup.dart';
-// import 'package:flutter_virash/liveSession.dart';
 import 'package:flutter_virash/providers/internet_provider.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/strategyExamList.dart';
-// import 'dart:developer';
-import 'package:flutter_virash/testSeries.dart';
 import 'package:flutter_virash/whatsappForm.dart';
-// import 'package:http/http.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,12 +23,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var slider_image = [];
   var imageUrl =
       "https://virashtechnologies.com/unique/img/slider/slider_1630441324.jpg";
 
   @override
   void initState() {
     super.initState();
+    getSlider();
     context.read<InternetProvider>().startMonitoring();
   }
 
@@ -38,156 +40,222 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
       onWillPop: () => showExitPopup(context),
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          title: Text('Unique'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, HomePage.route, (r) => false);
+              },
+              icon: Icon(Icons.power_settings_new_outlined),
+            ),
+          ],
+        ),
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: isConnected
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Card(
-                            color: Color(0xFFFFFFFF),
-                            elevation: 20,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Image.network(imageUrl),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(context, ExamList.route,
-                                      arguments: "live_session");
-                                },
-                                child: MainCard(
-                                    title: 'Recorded Sessions',
-                                    subTitle: '7k+',
-                                    childIcon: 'assets/live.png'),
+          child: Container(
+            child: CustomScrollView(
+              slivers: [
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: isConnected
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.20,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Card(
+                                    color: Color(0xFFFFFFFF),
+                                    elevation: 20,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Image.network(imageUrl),
+                                  ),
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, ShopCourse.route);
-                                },
-                                child: MainCard(
-                                    title: 'Buy Course',
-                                    subTitle: '50+',
-                                    childIcon: 'assets/course.png'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(context, ExamList.route,
-                                      arguments: "study_material");
-                                },
-                                child: MainCard(
-                                    title: 'Study Material',
-                                    subTitle: '14k+',
-                                    childIcon: 'assets/material.png'),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, TestSeries.route);
-                                },
-                                child: MainCard(
-                                    title: 'Test Series',
-                                    subTitle: '700+',
-                                    childIcon: 'assets/test.png'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Expanded(
+                              Expanded(
                                 flex: 1,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, WhatsappForm.route);
-                                  },
-                                  child: MainCard(
-                                      title: 'Whatsapp Groups',
-                                      subTitle: '70+',
-                                      childIcon: 'assets/whatsapp.png'),
-                                )),
-                            Expanded(
-                              flex: 1,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, StrategyExamList.route);
-                                },
-                                child: MainCard(
-                                    title: 'Exam Strategy',
-                                    subTitle: '14k+',
-                                    childIcon: 'assets/strategy.png'),
+                                child: Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, ExamList.route,
+                                              arguments: "live_session");
+                                        },
+                                        child: MainCard(
+                                            title: 'Recorded Sessions',
+                                            subTitle: '7k+',
+                                            childIcon: 'assets/live.png'),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, ShopCourse.route);
+                                        },
+                                        child: MainCard(
+                                            title: 'Buy Course',
+                                            subTitle: '50+',
+                                            childIcon: 'assets/course.png'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                : AnimationWidgets().noInternet,
+                              Expanded(
+                                flex: 1,
+                                child: Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, ExamList.route,
+                                              arguments: "study_material");
+                                        },
+                                        child: MainCard(
+                                            title: 'Study Material',
+                                            subTitle: '14k+',
+                                            childIcon: 'assets/material.png'),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          // Navigator.pushNamed(
+                                          //     context, TestSeries.route);
+                                          Navigator.pushNamed(
+                                              context, ExamList.route,
+                                              arguments: "test_series");
+                                        },
+                                        child: MainCard(
+                                            title: 'MCQ\'s',
+                                            subTitle: '700+',
+                                            childIcon: 'assets/test.png'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Expanded(
+                                        flex: 1,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                                context, WhatsappForm.route);
+                                          },
+                                          child: MainCard(
+                                              title: 'Whatsapp Groups',
+                                              subTitle: '70+',
+                                              childIcon: 'assets/whatsapp.png'),
+                                        )),
+                                    Expanded(
+                                      flex: 1,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, StrategyExamList.route);
+                                        },
+                                        child: MainCard(
+                                            title: 'Exam Strategy',
+                                            subTitle: '14k+',
+                                            childIcon: 'assets/strategy.png'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.20,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Card(
+                                    color: Color(0xFFFFFFFF),
+                                    elevation: 20,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Image.network(
+                                        "https://virashtechnologies.com/unique/img/slider/mobile-app.jpg"),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.20,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Card(
+                                    color: Color(0xFFFFFFFF),
+                                    elevation: 20,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Image.network(
+                                        "https://virashtechnologies.com/unique/img/slider/web-development.jpg"),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : AnimationWidgets().noInternet,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  // Future<String> getSlider() async {
-  //   Response response = await post(
-  //     Uri.parse('https://virashtechnologies.com/unique/api/slider.php'),
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //   );
-  //
-  //   print(response.statusCode);
-  //
-  //   if (response.statusCode == 200) {
-  //     var result = json.decode(response.body)[0];
-  //     log(result);
-  //     print(result);
-  //     return result['slider_url'];
-  //   }
-  //
-  //   return "";
-  // }
+  Future<void> getSlider() async {
+    Response response = await get(
+      Uri.parse('https://virashtechnologies.com/unique/api/slider.php'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    var result = json.decode(response.body);
+
+    var api_list = [];
+
+    for (var i in result) {
+      api_list.add(i['slider_image']);
+    }
+
+    setState(() {
+      slider_image = api_list;
+    });
+
+    print(slider_image);
+  }
 }
 
 class MainCard extends StatelessWidget {
@@ -241,8 +309,8 @@ class MainCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          bottom: MediaQuery.of(context).size.height * 0.15,
-          left: MediaQuery.of(context).size.height * 0.14,
+          bottom: MediaQuery.of(context).size.height * 0.11,
+          left: MediaQuery.of(context).size.height * 0.13,
           child: Container(
             height: MediaQuery.of(context).size.height * 0.09,
             width: MediaQuery.of(context).size.height * 0.09,

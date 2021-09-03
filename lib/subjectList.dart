@@ -107,7 +107,7 @@ class _SubjectListState extends State<SubjectList> {
               if (snapshot.data == null) {
                 return Container(
                   child: Center(
-                    child: SpinKitCubeGrid(
+                    child: SpinKitFadingCircle(
                       color: Color(0xFFFF7801),
                       size: 50.0,
                     ),

@@ -148,7 +148,7 @@ class _ProductListState extends State<ProductList> {
               if (snapshot.data == null) {
                 return Container(
                   child: Center(
-                    child: SpinKitCubeGrid(
+                    child: SpinKitFadingCircle(
                       color: Color(0xFFFF7801),
                       size: 50.0,
                     ),
@@ -173,10 +173,16 @@ class _ProductListState extends State<ProductList> {
                                   snapshot.data[index].name
                                 ]);
                               },
-                              leading: CircleAvatar(
-                                radius: 40,
-                                backgroundImage:
+                              leading: FadeInImage(
+                                image:
                                     NetworkImage(snapshot.data[index].avatar),
+                                placeholder: AssetImage("assets/noimage.jpg"),
+                                imageErrorBuilder:
+                                    (context, error, stackTrace) {
+                                  return Image.asset('assets/noimage.jpg',
+                                      fit: BoxFit.fitWidth);
+                                },
+                                fit: BoxFit.fitWidth,
                               ),
                               title: Text(
                                 snapshot.data[index].name,
