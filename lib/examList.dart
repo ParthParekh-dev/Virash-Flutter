@@ -137,9 +137,11 @@ class _ExamListState extends State<ExamList> {
                                     flex: 4,
                                     child: Center(
                                         child: FadeInImage.memoryNetwork(
-                                      placeholder: kTransparentImage,
-                                      image: snapshot.data[index].thumbnail,
-                                    )),
+                                            placeholder: kTransparentImage,
+                                            image:
+                                                snapshot.data[index].thumbnail,
+                                            height: 120,
+                                            fit: BoxFit.fitHeight)),
                                   ),
                                   Expanded(
                                     flex: 6,

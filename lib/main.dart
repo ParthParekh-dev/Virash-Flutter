@@ -7,11 +7,6 @@ import 'package:flutter_virash/cartDataType.dart';
 import 'package:flutter_virash/examStrategy.dart';
 import 'package:flutter_virash/liveSession.dart';
 import 'package:flutter_virash/newUserRegistration.dart';
-import 'package:flutter_virash/objective/examList.dart' as ObjectiveExamList;
-import 'package:flutter_virash/objective/subjectList.dart'
-    as ObjectiveSubjectList;
-import 'package:flutter_virash/objective/chapterList.dart'
-    as ObjectiveChapterList;
 import 'package:flutter_virash/objective/mcqList.dart';
 import 'package:flutter_virash/objective/mcq.dart';
 import 'package:flutter_virash/objective/scores.dart';
@@ -81,14 +76,6 @@ main() async {
         ExamStrategy.route: (context) => ExamStrategy(),
         ProductDetail.route: (context) => ProductDetail(),
         PaymentSuccess.route: (context) => PaymentSuccess(),
-
-        // Objective Routes
-        ObjectiveExamList.ExamList.route: (context) =>
-            ObjectiveExamList.ExamList(),
-        ObjectiveSubjectList.SubjectList.route: (context) =>
-            ObjectiveSubjectList.SubjectList(),
-        ObjectiveChapterList.ChapterList.route: (context) =>
-            ObjectiveChapterList.ChapterList(),
         ObjectiveMCQList.route: (context) => ObjectiveMCQList(),
         ObjectiveMCQ.route: (context) => ObjectiveMCQ(),
         ObjectiveScores.route: (context) => ObjectiveScores()

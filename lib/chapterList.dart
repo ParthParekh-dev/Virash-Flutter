@@ -19,6 +19,8 @@ import 'homePage.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_virash/providers/internet_provider.dart';
 
+import 'objective/mcqList.dart';
+
 class ChapterList extends StatefulWidget {
   static var route = '/chapterList';
 
@@ -131,8 +133,14 @@ class _ChapterListState extends State<ChapterList> {
                                     snapshot.data[index].id,
                                     snapshot.data[index].name
                                   ]);
-                            } else {
+                            } else if (from == "live_session") {
                               Navigator.pushNamed(context, LiveSession.route);
+                            } else if (from == "test_series") {
+                              Navigator.pushNamed(
+                                  context, ObjectiveMCQList.route,
+                                  arguments: MCQListArguments(
+                                      int.parse(snapshot.data[index].id),
+                                      int.parse(subjectId)));
                             }
                           },
                           child: Card(
@@ -146,8 +154,9 @@ class _ChapterListState extends State<ChapterList> {
                                     child: Center(
                                       child: FadeInImage.memoryNetwork(
                                           placeholder: kTransparentImage,
-                                          image:
-                                              snapshot.data[index].thumbnail),
+                                          image: snapshot.data[index].thumbnail,
+                                          height: 120,
+                                          fit: BoxFit.fitHeight),
                                     ),
                                   ),
                                   Expanded(

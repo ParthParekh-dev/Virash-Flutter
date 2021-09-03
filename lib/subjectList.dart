@@ -142,8 +142,9 @@ class _SubjectListState extends State<SubjectList> {
                                     child: Center(
                                       child: FadeInImage.memoryNetwork(
                                           placeholder: kTransparentImage,
-                                          image:
-                                              snapshot.data[index].thumbnail),
+                                          image: snapshot.data[index].thumbnail,
+                                          height: 120,
+                                          fit: BoxFit.fitHeight),
                                     ),
                                   ),
                                   Expanded(
