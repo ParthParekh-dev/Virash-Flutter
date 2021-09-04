@@ -19,7 +19,9 @@ class _ProductDetailState extends State<ProductDetail> {
   var mrp = "";
   var image = "";
   var description = "";
+  // ignore: non_constant_identifier_names
   var product_id = "";
+  // ignore: non_constant_identifier_names
   var product_name = "";
   bool loading = true;
   late var args;

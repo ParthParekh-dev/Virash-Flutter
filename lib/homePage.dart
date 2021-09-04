@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/animationWidgets.dart';
 import 'package:flutter_virash/examList.dart';
 import 'package:flutter_virash/exitPopup.dart';
@@ -11,9 +12,10 @@ import 'package:flutter_virash/providers/internet_provider.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/strategyExamList.dart';
 import 'package:flutter_virash/whatsappForm.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomePage extends StatefulWidget {
   static var route = '/home';
@@ -23,7 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var slider_image = [];
+  var sliderImage = [];
   var imageUrl =
       "https://virashtechnologies.com/unique/img/slider/slider_1630441324.jpg";
 
@@ -68,16 +70,50 @@ class _HomePageState extends State<HomePage> {
                               Container(
                                 height:
                                     MediaQuery.of(context).size.height * 0.20,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Card(
-                                    color: Color(0xFFFFFFFF),
-                                    elevation: 20,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Image.network(imageUrl),
-                                  ),
+                                margin: EdgeInsets.symmetric(vertical: 8),
+                                child: FutureBuilder(
+                                  future: getSlider(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot snapshot) {
+                                    if (snapshot.data == null) {
+                                      return Container(
+                                        child: Center(
+                                          child: SpinKitFadingCircle(
+                                            color: Color(0xFFFF7801),
+                                            size: 50.0,
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      return CarouselSlider(
+                                        options: CarouselOptions(
+                                          autoPlay: true,
+                                          autoPlayCurve: Curves.fastOutSlowIn,
+                                          enableInfiniteScroll: false,
+                                          // enlargeCenterPage: true,
+                                        ),
+                                        items: [
+                                          ...List.generate(
+                                            snapshot.data.length,
+                                            (index) => Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 5.0),
+                                              decoration: BoxDecoration(
+                                                color: Colors.amber,
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                              ),
+                                              child: Image.network(
+                                                  snapshot.data[index]),
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    }
+                                  },
                                 ),
                               ),
                               Expanded(
@@ -234,7 +270,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> getSlider() async {
+  Future<List<dynamic>> getSlider() async {
     Response response = await get(
       Uri.parse('https://virashtechnologies.com/unique/api/slider.php'),
       headers: <String, String>{
@@ -244,17 +280,13 @@ class _HomePageState extends State<HomePage> {
 
     var result = json.decode(response.body);
 
-    var api_list = [];
+    var apiList = [];
 
     for (var i in result) {
-      api_list.add(i['slider_image']);
+      apiList.add(i['slider_image']);
     }
 
-    setState(() {
-      slider_image = api_list;
-    });
-
-    print(slider_image);
+    return apiList;
   }
 }
 
