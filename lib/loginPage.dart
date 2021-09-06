@@ -8,6 +8,7 @@ import 'package:flutter_virash/newUserRegistration.dart';
 import 'package:http/http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:provider/provider.dart';
@@ -68,13 +69,9 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Hero(
-                        tag: "HeroOne",
-                        child: Image.asset(
-                          'assets/logo_unique.png',
-                          height: MediaQuery.of(context).size.height * 0.2,
-                        ),
-                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height*0.20,
+                          child: Lottie.asset('assets/login.json'),),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 0, horizontal: 20),
@@ -99,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                             'To continue with your account',
                             style: TextStyle(
                               fontSize: 18,
-                              color: Color(0xFF37DBFF),
+                              color: Colors.grey[700],
                             ),
                           ),
                         ),
@@ -120,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                             filled: true,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2, color: Color(0xFFFF7801)),
+                                  width: 2, color: Color(0xFF00008B)),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(40)),
                             ),
@@ -153,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Color(0xFFFF7801),
+                            primary: Color(0xFF00008B),
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(5.0),
                             ),
@@ -172,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           'OR',
                           style: TextStyle(
-                            color: Color(0xFFFF7801),
+                            color: Color(0xFF00008B),
                           ),
                         ),
                       ),
@@ -186,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                                   context, NewUserRegistration.route);
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: Color(0xFFFF7801),
+                              primary: Color(0xFF00008B),
                               shape: new RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(5.0),
                               ),

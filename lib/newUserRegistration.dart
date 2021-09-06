@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:flutter_virash/homePage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_virash/providers/internet_provider.dart';
@@ -79,13 +80,9 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Hero(
-                        tag: "HeroOne",
-                        child: Image.asset(
-                          'assets/logo_unique.png',
-                          height: MediaQuery.of(context).size.width * 0.3,
-                        ),
-                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height*0.20,
+                        child: Lottie.asset('assets/login.json'),),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 0, horizontal: 20),
@@ -116,7 +113,7 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
                             filled: true,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2, color: Color(0xFFFF7801)),
+                                  width: 2, color: Color(0xFF00008B)),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(40)),
                             ),
@@ -147,7 +144,7 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
                             filled: true,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2, color: Color(0xFFFF7801)),
+                                  width: 2, color: Color(0xFF00008B)),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(40)),
                             ),
@@ -178,7 +175,7 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
                             filled: true,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2, color: Color(0xFFFF7801)),
+                                  width: 2, color: Color(0xFF00008B)),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(40)),
                             ),
@@ -269,7 +266,7 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFFF7801),
+                          primary: Color(0xFF00008B),
                           shape: new RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(5.0),
                           ),

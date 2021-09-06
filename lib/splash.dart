@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_virash/introPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'homePage.dart';
@@ -69,7 +70,7 @@ Route _createRoute(bool isLoggedIn) {
     );
   } else {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => LoginPage(),
+      pageBuilder: (context, animation, secondaryAnimation) => IntroPage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 1.0);
         const end = Offset.zero;

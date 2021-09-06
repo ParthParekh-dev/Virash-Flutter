@@ -47,10 +47,10 @@ main() async {
           fontFamily: 'Poppins',
           scaffoldBackgroundColor: Color(0xFFFFFFFF),
           appBarTheme: AppBarTheme(
-            color: Color(0xFFFF7801),
+            color: Color(0xFF00008B),
           ),
           textSelectionTheme:
-              TextSelectionThemeData(cursorColor: Color(0xFFFF7801))),
+              TextSelectionThemeData(cursorColor: Color(0xFF00008B))),
       debugShowCheckedModeBanner: false,
       home: Splash(),
       initialRoute: '/',

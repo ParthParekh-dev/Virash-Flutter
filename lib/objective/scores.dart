@@ -78,7 +78,7 @@ class _ObjectiveScoresState extends State<ObjectiveScores> {
                           strokeWidth: 10,
                           value: percentage / 100,
                           backgroundColor: Colors.grey[200],
-                          valueColor: AlwaysStoppedAnimation(Color(0xFFFF7801)),
+                          valueColor: AlwaysStoppedAnimation(Color(0xFF00008B)),
                         ),
                       ),
                     ),
@@ -122,7 +122,7 @@ class _ObjectiveScoresState extends State<ObjectiveScores> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFFF7801),
+                  primary: Color(0xFF00008B),
                   padding: EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

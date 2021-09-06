@@ -94,7 +94,7 @@ class _ShopCourseState extends State<ShopCourse> {
                 return Container(
                   child: Center(
                     child: SpinKitFadingCircle(
-                      color: Color(0xFFFF7801),
+                      color: Color(0xFF00008B),
                       size: 50.0,
                     ),
                   ),
