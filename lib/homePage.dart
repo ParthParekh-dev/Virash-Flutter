@@ -87,13 +87,7 @@ class _HomePageState extends State<HomePage> {
                                           child: SpinKitFadingCircle(
                                             color: Color(0xFF00008B),
                                             size: 50.0,
-                                          ),
-                                      return Center(
-                                        child: SpinKitFadingCircle(
-                                          color: Color(0xFFFF7801),
-                                          size: 50.0,
-                                        ),
-                                      );
+                                          ),),);
                                     } else {
                                       return CarouselSlider(
                                         options: CarouselOptions(

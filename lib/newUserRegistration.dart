@@ -81,8 +81,8 @@ class _NewUserRegistrationState extends State<NewUserRegistration> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: MediaQuery.of(context).size.height*0.20,
-                        child: Lottie.asset('assets/login.json'),),
+                        height: MediaQuery.of(context).size.height*0.25,
+                        child: Lottie.asset('assets/register.json'),),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 0, horizontal: 20),
