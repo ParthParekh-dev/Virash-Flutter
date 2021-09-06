@@ -102,15 +102,24 @@ class _HomePageState extends State<HomePage> {
                                         items: [
                                           ...List.generate(
                                             snapshot.data.length,
-                                            (index) => ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              child: Image.network(
-                                                snapshot.data[index],
-                                                fit: BoxFit.fill,
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
+                                            (index) => Card(
+                                              elevation: 5,
+                                              color: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 8),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Image.network(
+                                                  snapshot.data[index],
+                                                  fit: BoxFit.fill,
+                                                  // width: double.infinity,
+                                                  // height: 100,
+                                                ),
                                               ),
                                             ),
                                             // Container(
@@ -257,8 +266,8 @@ class _HomePageState extends State<HomePage> {
                                     child: Image.asset(
                                       "assets/v1.png",
                                       fit: BoxFit.fill,
-                                      width: double.infinity,
-                                      height: 100,
+                                      // width: double.infinity,
+                                      // height: 100,
                                     ),
                                   ),
                                 ),
@@ -278,8 +287,8 @@ class _HomePageState extends State<HomePage> {
                                     child: Image.asset(
                                       "assets/v2.png",
                                       fit: BoxFit.fill,
-                                      width: double.infinity,
-                                      height: 100,
+                                      // width: double.infinity,
+                                      // height: 100,
                                     ),
                                   ),
                                 ),
@@ -299,8 +308,8 @@ class _HomePageState extends State<HomePage> {
                                     child: Image.asset(
                                       "assets/v3.png",
                                       fit: BoxFit.fill,
-                                      width: double.infinity,
-                                      height: 100,
+                                      // width: double.infinity,
+                                      // height: 100,
                                     ),
                                   ),
                                 ),
