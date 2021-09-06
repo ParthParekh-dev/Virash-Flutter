@@ -156,7 +156,7 @@ class _ChapterListState extends State<ChapterList> {
                                           placeholder: kTransparentImage,
                                           image: snapshot.data[index].thumbnail,
                                           height: 120,
-                                          fit: BoxFit.fitHeight),
+                                          fit: BoxFit.contain),
                                     ),
                                   ),
                                   Expanded(
