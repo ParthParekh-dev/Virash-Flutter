@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'loginPage.dart';
 
-Future<bool> showLogoutPopup(context) async {
+Future<void> showLogoutPopup(context) async {
   return await showDialog(
       context: context,
       builder: (BuildContext context) {
