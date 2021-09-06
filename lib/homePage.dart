@@ -9,6 +9,7 @@ import 'package:flutter_virash/animationWidgets.dart';
 import 'package:flutter_virash/examList.dart';
 import 'package:flutter_virash/exitPopup.dart';
 import 'package:flutter_virash/logoutPopup.dart';
+import 'package:flutter_virash/loginPage.dart';
 import 'package:flutter_virash/providers/internet_provider.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/strategyExamList.dart';
@@ -46,7 +47,12 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
-          title: Text('Unique'),
+          title: Text(
+            'Unique Commerce Academy',
+            style: TextStyle(
+              fontSize: 17,
+            ),
+          ),
           actions: [
             IconButton(
               onPressed: () {
@@ -69,8 +75,7 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.20,
+                                height: 180,
                                 margin: EdgeInsets.symmetric(vertical: 8),
                                 child: FutureBuilder(
                                   future: getSlider(),
@@ -83,6 +88,10 @@ class _HomePageState extends State<HomePage> {
                                             color: Color(0xFF00008B),
                                             size: 50.0,
                                           ),
+                                      return Center(
+                                        child: SpinKitFadingCircle(
+                                          color: Color(0xFFFF7801),
+                                          size: 50.0,
                                         ),
                                       );
                                     } else {
@@ -90,26 +99,36 @@ class _HomePageState extends State<HomePage> {
                                         options: CarouselOptions(
                                           autoPlay: true,
                                           autoPlayCurve: Curves.fastOutSlowIn,
-                                          enableInfiniteScroll: false,
-                                          // enlargeCenterPage: true,
+                                          // enableInfiniteScroll: false,
+                                          enlargeCenterPage: true,
                                         ),
                                         items: [
                                           ...List.generate(
                                             snapshot.data.length,
-                                            (index) => Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              margin: EdgeInsets.symmetric(
-                                                  horizontal: 5.0),
-                                              decoration: BoxDecoration(
-                                                color: Colors.amber,
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                              ),
+                                            (index) => ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
                                               child: Image.network(
-                                                  snapshot.data[index]),
+                                                snapshot.data[index],
+                                                fit: BoxFit.fill,
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                              ),
                                             ),
+                                            // Container(
+                                            //   width: MediaQuery.of(context)
+                                            //       .size
+                                            //       .width,
+                                            //   // margin: EdgeInsets.symmetric(
+                                            //   //     horizontal: 5.0),
+                                            //   decoration: BoxDecoration(
+                                            //     color: Colors.amber,
+                                            //     borderRadius:
+                                            //         BorderRadius.circular(8.0),
+                                            //   ),
+                                            //   child: ,
+                                            // ),
                                           )
                                         ],
                                       );
@@ -226,35 +245,66 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 ),
                               ),
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.20,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Card(
-                                    color: Color(0xFFFFFFFF),
-                                    elevation: 20,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Card(
+                                  elevation: 5,
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  margin: EdgeInsets.symmetric(vertical: 8),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.asset(
+                                      "assets/v1.png",
+                                      fit: BoxFit.fill,
+                                      width: double.infinity,
+                                      height: 100,
                                     ),
-                                    child: Image.network(
-                                        "https://virashtechnologies.com/unique/img/slider/mobile-app.jpg"),
                                   ),
                                 ),
                               ),
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.20,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Card(
-                                    color: Color(0xFFFFFFFF),
-                                    elevation: 20,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Card(
+                                  elevation: 5,
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  margin: EdgeInsets.symmetric(vertical: 8),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.asset(
+                                      "assets/v2.png",
+                                      fit: BoxFit.fill,
+                                      width: double.infinity,
+                                      height: 100,
                                     ),
-                                    child: Image.network(
-                                        "https://virashtechnologies.com/unique/img/slider/web-development.jpg"),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Card(
+                                  elevation: 5,
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  margin: EdgeInsets.symmetric(vertical: 8),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.asset(
+                                      "assets/v3.png",
+                                      fit: BoxFit.fill,
+                                      width: double.infinity,
+                                      height: 100,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -304,7 +354,7 @@ class MainCard extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: MediaQuery.of(context).size.height * 0.20,
+          height: 120,
           width: MediaQuery.of(context).size.width * 0.45,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -315,7 +365,8 @@ class MainCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -324,14 +375,14 @@ class MainCard extends StatelessWidget {
                       title,
                       style: TextStyle(
                           fontFamily: 'Poppins-SemiBold',
-                          fontSize: 16,
+                          fontSize: 14,
                           color: Colors.black),
                     ),
                     Text(
                       subTitle,
                       style: TextStyle(
                           fontFamily: 'Poppins-SemiBold',
-                          fontSize: 30,
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
@@ -341,22 +392,25 @@ class MainCard extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
-          bottom: MediaQuery.of(context).size.height * 0.11,
-          left: MediaQuery.of(context).size.height * 0.13,
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.09,
-            width: MediaQuery.of(context).size.height * 0.09,
-            child: Card(
-                color: Color(0xFFFFFFFF),
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Image.asset(childIcon),
-                )),
+        Align(
+          // alignment: Alignment.topLeft,
+          alignment: const Alignment(1, -1.0),
+          child: Card(
+            elevation: 5,
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Container(
+              alignment: Alignment.center,
+              width: 50,
+              height: 50,
+              child: Image.asset(
+                childIcon,
+                fit: BoxFit.contain,
+                width: 28,
+              ),
+            ),
           ),
         ),
       ],
