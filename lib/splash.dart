@@ -4,7 +4,7 @@ import 'package:flutter_virash/introPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'homePage.dart';
-import 'loginPage.dart';
+// import 'loginPage.dart';
 
 class Splash extends StatefulWidget {
   @override

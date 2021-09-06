@@ -48,6 +48,7 @@ main() async {
           scaffoldBackgroundColor: Color(0xFFFFFFFF),
           appBarTheme: AppBarTheme(
             color: Color(0xFF00008B),
+            brightness: Brightness.dark,
           ),
           textSelectionTheme:
               TextSelectionThemeData(cursorColor: Color(0xFF00008B))),

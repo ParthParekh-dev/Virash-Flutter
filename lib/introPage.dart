@@ -29,7 +29,6 @@ class _IntroPageState extends State<IntroPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     mySLides = getSlides();
     controller = new PageController();
@@ -74,6 +73,7 @@ class _IntroPageState extends State<IntroPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+                    // ignore: deprecated_member_use
                     FlatButton(
                       onPressed: () {
                         controller.animateToPage(2,
@@ -98,6 +98,7 @@ class _IntroPageState extends State<IntroPage> {
                         ],
                       ),
                     ),
+                    // ignore: deprecated_member_use
                     FlatButton(
                       onPressed: () {
                         print("this is slideIndex: $slideIndex");
@@ -143,6 +144,7 @@ class _IntroPageState extends State<IntroPage> {
   }
 }
 
+// ignore: must_be_immutable
 class SlideTile extends StatelessWidget {
   String imagePath, desc;
 

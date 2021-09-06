@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 
 class SliderModel {
   String imageAssetPath;
@@ -27,8 +27,7 @@ List<SliderModel> getSlides() {
   List<SliderModel> slides = [];
 
   slides.add(SliderModel(
-      desc:
-          'Learn how to excel at your competitive exams',
+      desc: 'Learn how to excel at your competitive exams',
       imageAssetPath: 'assets/intro1.png'));
 
   slides.add(SliderModel(
