@@ -8,6 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/animationWidgets.dart';
 import 'package:flutter_virash/examList.dart';
 import 'package:flutter_virash/exitPopup.dart';
+import 'package:flutter_virash/logoutPopup.dart';
 import 'package:flutter_virash/providers/internet_provider.dart';
 import 'package:flutter_virash/shopCourse.dart';
 import 'package:flutter_virash/strategyExamList.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_virash/whatsappForm.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   static var route = '/home';
@@ -48,8 +50,7 @@ class _HomePageState extends State<HomePage> {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, HomePage.route, (r) => false);
+                showLogoutPopup(context);
               },
               icon: Icon(Icons.power_settings_new_outlined),
             ),
