@@ -423,7 +423,7 @@ class Spinner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: Center(
         child: SpinKitFadingCircle(
-          color: Color(0xFFFF7801),
+          color: Color(0xFF00008B),
           size: 50.0,
         ),
       ),

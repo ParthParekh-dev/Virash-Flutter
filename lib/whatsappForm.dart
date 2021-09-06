@@ -257,7 +257,7 @@ class _WhatsappFormState extends State<WhatsappForm> {
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2, color: Color(0xFFFF7801))),
+                                  width: 2, color: Color(0xFF00008B))),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           hintText: "Enter Name",
                           labelStyle: TextStyle(
@@ -265,7 +265,7 @@ class _WhatsappFormState extends State<WhatsappForm> {
                             color: Colors.black,
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFFFF7801)),
+                            borderSide: BorderSide(color: Color(0xFF00008B)),
                           ),
                         ),
                       ),
@@ -281,7 +281,7 @@ class _WhatsappFormState extends State<WhatsappForm> {
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2, color: Color(0xFFFF7801))),
+                                  width: 2, color: Color(0xFF00008B))),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           hintText: "Enter Mobile Number",
                           labelStyle: TextStyle(
@@ -289,7 +289,7 @@ class _WhatsappFormState extends State<WhatsappForm> {
                             color: Colors.black,
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFFFF7801)),
+                            borderSide: BorderSide(color: Color(0xFF00008B)),
                           ),
                           counterText: "",
                         ),
@@ -308,7 +308,7 @@ class _WhatsappFormState extends State<WhatsappForm> {
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  width: 2, color: Color(0xFFFF7801))),
+                                  width: 2, color: Color(0xFF00008B))),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           hintText: "Enter Email Id",
                           labelStyle: TextStyle(
@@ -316,7 +316,7 @@ class _WhatsappFormState extends State<WhatsappForm> {
                             color: Colors.black,
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFFFF7801)),
+                            borderSide: BorderSide(color: Color(0xFF00008B)),
                           ),
                         ),
                         keyboardType: TextInputType.emailAddress,
@@ -549,7 +549,7 @@ class _WhatsappFormState extends State<WhatsappForm> {
                       height: 20,
                     ),
                     Material(
-                      color: Color(0xFFFF7801),
+                      color: Color(0xFF00008B),
                       borderRadius: BorderRadius.circular(4),
                       child: InkWell(
                         onTap: submitData,

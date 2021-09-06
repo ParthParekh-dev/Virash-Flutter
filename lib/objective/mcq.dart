@@ -148,7 +148,7 @@ class _ObjectiveMCQState extends State<ObjectiveMCQ>
           body: Container(
             child: Center(
               child: SpinKitFadingCircle(
-                color: Color(0xFFFF7801),
+                color: Color(0xFF00008B),
                 size: 50.0,
               ),
             ),
@@ -192,7 +192,7 @@ class _ObjectiveMCQState extends State<ObjectiveMCQ>
                     //             child: LinearProgressIndicator(
                     //               value: _controller.value,
                     //               valueColor: AlwaysStoppedAnimation<Color>(
-                    //                   Color(0xFFFF7801)),
+                    //                   Color(0xFF00008B)),
                     //               backgroundColor: Color(0xFFFFDAB8),
                     //             ),
                     //           ),
@@ -225,7 +225,7 @@ class _ObjectiveMCQState extends State<ObjectiveMCQ>
                                   Text(
                                     "Question ${index + 1} of ${mcqs.length}",
                                     style: TextStyle(
-                                        color: Color(0xFFFF7801),
+                                        color: Color(0xFF00008B),
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18),
                                   ),
@@ -408,7 +408,7 @@ class _ObjectiveMCQState extends State<ObjectiveMCQ>
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Color(0xFFFF7801),
+                              primary: Color(0xFF00008B),
                               padding: EdgeInsets.all(12),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),

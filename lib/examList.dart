@@ -104,7 +104,7 @@ class _ExamListState extends State<ExamList> {
                 return Container(
                   child: Center(
                     child: SpinKitFadingCircle(
-                      color: Color(0xFFFF7801),
+                      color: Color(0xFF00008B),
                       size: 50.0,
                     ),
                   ),
@@ -141,7 +141,7 @@ class _ExamListState extends State<ExamList> {
                                             image:
                                                 snapshot.data[index].thumbnail,
                                             height: 120,
-                                            fit: BoxFit.fitHeight)),
+                                            fit: BoxFit.contain)),
                                   ),
                                   Expanded(
                                     flex: 6,

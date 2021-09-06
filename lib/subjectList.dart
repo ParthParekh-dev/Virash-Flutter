@@ -108,7 +108,7 @@ class _SubjectListState extends State<SubjectList> {
                 return Container(
                   child: Center(
                     child: SpinKitFadingCircle(
-                      color: Color(0xFFFF7801),
+                      color: Color(0xFF00008B),
                       size: 50.0,
                     ),
                   ),
@@ -144,7 +144,7 @@ class _SubjectListState extends State<SubjectList> {
                                           placeholder: kTransparentImage,
                                           image: snapshot.data[index].thumbnail,
                                           height: 120,
-                                          fit: BoxFit.fitHeight),
+                                          fit: BoxFit.contain),
                                     ),
                                   ),
                                   Expanded(

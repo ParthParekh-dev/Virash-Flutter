@@ -116,7 +116,7 @@ class _ObjectiveTestState extends State<ObjectiveTest>
                     width: double.infinity,
                     height: 35,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xFFFF7801), width: 1),
+                      border: Border.all(color: Color(0xFF00008B), width: 1),
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Stack(
@@ -130,7 +130,7 @@ class _ObjectiveTestState extends State<ObjectiveTest>
                             width: constraints.maxWidth * _animation.value,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                colors: [Color(0xFFFF7801), Color(0xFFFF7801)],
+                                colors: [Color(0xFF00008B), Color(0xFF00008B)],
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
                               ),

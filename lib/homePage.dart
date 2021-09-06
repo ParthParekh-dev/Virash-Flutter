@@ -8,6 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_virash/animationWidgets.dart';
 import 'package:flutter_virash/examList.dart';
 import 'package:flutter_virash/exitPopup.dart';
+import 'package:flutter_virash/logoutPopup.dart';
 import 'package:flutter_virash/loginPage.dart';
 import 'package:flutter_virash/providers/internet_provider.dart';
 import 'package:flutter_virash/shopCourse.dart';
@@ -54,12 +55,8 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             IconButton(
-              onPressed: () async {
-                SharedPreferences preferences =
-                    await SharedPreferences.getInstance();
-                await preferences.clear();
-                Navigator.pushNamedAndRemoveUntil(
-                    context, LoginPage.route, (r) => false);
+              onPressed: () {
+                showLogoutPopup(context);
               },
               icon: Icon(Icons.power_settings_new_outlined),
             ),
@@ -85,12 +82,12 @@ class _HomePageState extends State<HomePage> {
                                   builder: (BuildContext context,
                                       AsyncSnapshot snapshot) {
                                     if (snapshot.data == null) {
-                                      return Center(
-                                        child: SpinKitFadingCircle(
-                                          color: Color(0xFFFF7801),
-                                          size: 50.0,
-                                        ),
-                                      );
+                                      return Container(
+                                        child: Center(
+                                          child: SpinKitFadingCircle(
+                                            color: Color(0xFF00008B),
+                                            size: 50.0,
+                                          ),),);
                                     } else {
                                       return CarouselSlider(
                                         options: CarouselOptions(
