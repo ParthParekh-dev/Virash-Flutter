@@ -64,14 +64,15 @@ class _HomePageState extends State<HomePage> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Color(0xFF00008B),
+          backgroundColor: Colors.white,
           // showSelectedLabels: false,
           // showUnselectedLabels: false,
           iconSize: 24,
           currentIndex: 0,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white.withOpacity(0.7),
+          selectedItemColor: Color(0xFF00008B),
+          unselectedItemColor: Color(0xFF00008B).withOpacity(0.7),
           // unselectedLabelStyle: TextStyle(fontSize: 13),
+          elevation: 15,
           onTap: (index) {
             switch (index) {
               case 1:
