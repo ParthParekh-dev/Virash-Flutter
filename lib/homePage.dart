@@ -62,6 +62,60 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Color(0xFF00008B),
+          // showSelectedLabels: false,
+          // showUnselectedLabels: false,
+          iconSize: 24,
+          currentIndex: 0,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white.withOpacity(0.7),
+          // unselectedLabelStyle: TextStyle(fontSize: 13),
+          onTap: (index) {
+            switch (index) {
+              case 1:
+                Navigator.pushNamed(context, ExamList.route,
+                    arguments: "study_material");
+
+                break;
+              case 2:
+                Navigator.pushNamed(context, ShopCourse.route);
+                break;
+              case 3:
+                Navigator.pushNamed(context, ExamList.route,
+                    arguments: "test_series");
+                break;
+              // case 4:
+              //   Navigator.pushNamed(context, ShopCourse.route);
+              //   break;
+              default:
+                print("Invalid Route");
+            }
+          },
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book),
+              label: 'Courses',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag),
+              label: 'Shop',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.sticky_note_2),
+              label: 'MCQs',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.info_outline),
+              label: 'About',
+            ),
+          ],
+        ),
         body: SafeArea(
           child: Container(
             child: CustomScrollView(
